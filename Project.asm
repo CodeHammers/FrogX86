@@ -6,7 +6,7 @@ include Drawing.inc
 
 .data
 
-tiles db 160 dup(2)
+tiles db 160 dup(3)    ;Code byte for the content of each tile 2:Log | 3:Water | 4:Pavement | 
 
 xpos dw 0
 ypos dw 0
@@ -22,47 +22,57 @@ mov ah,0
 mov al,13h
 int 10h
 
-mov cx,16
-PavementSet:
-mov bx,offset tiles
-add bx,cx
-dec bx
-mov [bx],4
-loop PavementSet
+InitializeArena
 
-mov cx,15
-Water1Set:
-inc cx
-mov bx,offset tiles
-add bx,cx
-dec bx
-mov [bx],3
-cmp cx,64
-jnz Water1Set
+mov tiles+16,2
+mov tiles+17,2
+mov tiles+26,2
+mov tiles+27,2
+mov tiles+28,2
 
-mov cx,0
-drawCubes:
+mov tiles+38,2
+mov tiles+39,2
+mov tiles+40,2
 
-mov bx, offset tiles
-add bx,cx
+mov tiles+49,2
+mov tiles+50,2
+mov tiles+51,2
+mov tiles+59,2
+mov tiles+60,2
+mov tiles+61,2
 
-pushA
-DrawTileCode xpos ypos [bx]
-popA
+mov tiles+67,2
+mov tiles+68,2
+mov tiles+69,2
+mov tiles+70,2
+mov tiles+71,2
+mov tiles+72,2
 
-add xpos, 20
-cmp xpos, 320
-jnz rowCompleted
-mov xpos,0
-add ypos,20
-rowCompleted:
-
-
-inc cx
-cmp cx,160
-jnz drawCubes 
-
- 
+GameLoop:
+    mov cx,0
+    mov xpos,0
+    mov ypos,0
+    drawCubes:
+    
+    mov bx, offset tiles
+    add bx,cx
+    
+    pushA
+    DrawTileCode xpos ypos [bx]
+    popA
+    
+    add xpos, 20
+    cmp xpos, 320
+    jnz rowCompleted
+    mov xpos,0
+    add ypos,20
+    rowCompleted:
+    
+    
+    inc cx
+    cmp cx,160
+    jnz drawCubes 
+jmp GameLoop 
  
 
 hlt               
