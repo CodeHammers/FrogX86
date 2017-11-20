@@ -1,4 +1,4 @@
-TakeInput MACRO FrogPos, BoundsFlag
+TakeInputGame MACRO FrogPos, BoundsFlag
     ;Inputs to this macro are the frog position (word) and a collision flag (byte)
     LOCAL KeyPressed
     LOCAL Up
@@ -43,11 +43,11 @@ TakeInput MACRO FrogPos, BoundsFlag
     
     Down:
         add FrogPos, 16  ;y++
-        cmp FrogPos,150  ;if(y>=150 && y<=165) then it's in the buttom row (pavement)
-        jge AgainD
+        cmp FrogPos, 144  ;if(y>=144 && y<=159) then it's in the buttom row (pavement)
+        jae AgainD
         jmp Finished
         AgainD:
-            cmp FrogPos,165
+            cmp FrogPos, 159
             jbe TouchedDown
             jmp Finished
         TouchedDown:
@@ -60,7 +60,7 @@ TakeInput MACRO FrogPos, BoundsFlag
         inc ax
         mov bl,16
         div bl
-        cmp dl,0
+        cmp ah,0
         je TouchedRight
         jmp Finished
         TouchedRight:
@@ -72,7 +72,7 @@ TakeInput MACRO FrogPos, BoundsFlag
         mov ax, FrogPos ;if(y%16==0) then it's on the left col
         mov bl,16
         div bl
-        cmp dl,0
+        cmp ah,0
         je TouchedLeft
         jmp Finished
         TouchedLeft:
@@ -82,4 +82,4 @@ TakeInput MACRO FrogPos, BoundsFlag
     Finished:
         popa
 
-ENDM TakeInput
+ENDM TakeInputGame
