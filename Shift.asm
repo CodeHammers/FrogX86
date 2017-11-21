@@ -1,11 +1,9 @@
-;sflag => flag to indicate whether to shift right or left
-;0=> right , 1=>left
-;size => the number of bytes in the array to be shifted of the array to be shifted
+
 ;base_addr => offset address of an array
-;y => start of the array (y*size)
+;sflag => 0 => shift left , 1=> shift right
 
 
-Shift MACRO size,base_addr,y,sflag
+Shift MACRO base_addr,start,sflag
     
     LOCAL ShiftRight
     LOCAL ShiftLeft
@@ -24,45 +22,36 @@ Shift MACRO size,base_addr,y,sflag
      
      ShiftLeft:
        mov bx,base_addr 
-       mov al,size
-       mov ah,y
-       mul ah
-       ;ah => start of my array 
-       add bx,ax
-       add ax,size
+		add bx, start 
        
        mov dh,[bx]
        shift_loop:
          mov dl,[bx+1]
          mov [bx],dl
          inc bx
-         cmp bx,ax
+         cmp bx,15
          jne ShiftRight 
+		 
        mov [bx],dh;put the first element in the last element
      
      jmp Done
      
      ShiftRight
        mov bx,base_addr 
-       mov al,size
-       mov ah,y
-       mul ah
-       ;ah => start of my array 
-       add bx,ax
-       add bx,size
-       
+		add bx,start
+       add bx,15
        mov dh,[bx]
        shift_loop:
          mov dl,[bx-1]
          mov [bx],dl
          dec bx
-         cmp bx,ax
+         cmp bx,base_addr
          jne ShiftRight 
-       mov [bx],dh;put the last element in the firwst element
+       mov [bx],dh;put the last element in the first element
          
          
      
      Done:
     popa
 
-ENDM TakeInput
+ENDM Shift

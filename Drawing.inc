@@ -51,12 +51,14 @@ DrawTileCode MACRO posX posY Code
 LOCAL log
 LOCAL water
 LOCAL pavement
+LOCAL frog
 
 LOCAL row
 LOCAL column
 LOCAL ColorChange
 
 mov al,0h
+
 cmp Code,02h
 jnz  log
 mov al,06h
@@ -71,6 +73,11 @@ cmp Code,04h
 jnz  pavement
 mov al,07h
 pavement:
+
+cmp Code,01h
+jnz  frog
+mov al,010b
+frog:
 
 mov cx,posX      ;Column 
 mov dx,posY       ;Row

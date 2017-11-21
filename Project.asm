@@ -1,4 +1,5 @@
 include Drawing.inc
+include InputMotion.inc
 
 .model small
 
@@ -6,7 +7,13 @@ include Drawing.inc
 
 .data
 
-tiles db 160 dup(3)    ;Code byte for the content of each tile 2:Log | 3:Water | 4:Pavement | 
+tiles db 160 dup(3)    ;Code byte for the content of each tile 1:Frog | 2:Log | 3:Water | 4:Pavement | 
+
+frogPos dw 2
+BoundsFlag db ?
+
+oldCode db 4
+oldPos dw 2
 
 xpos dw 0
 ypos dw 0
@@ -22,37 +29,61 @@ mov ah,0
 mov al,13h
 int 10h
 
-InitializeArena
-
-mov tiles+16,2
-mov tiles+17,2
-mov tiles+26,2
-mov tiles+27,2
-mov tiles+28,2
-
-mov tiles+38,2
-mov tiles+39,2
-mov tiles+40,2
-
-mov tiles+49,2
-mov tiles+50,2
-mov tiles+51,2
-mov tiles+59,2
-mov tiles+60,2
-mov tiles+61,2
-
-mov tiles+67,2
-mov tiles+68,2
-mov tiles+69,2
-mov tiles+70,2
-mov tiles+71,2
-mov tiles+72,2
-
+    pushA
+    InitializeArena
+    popA
+    
+    mov tiles+16,2
+    mov tiles+17,2
+    mov tiles+26,2
+    mov tiles+27,2
+    mov tiles+28,2
+    
+    mov tiles+38,2
+    mov tiles+39,2
+    mov tiles+40,2
+    
+    mov tiles+49,2
+    mov tiles+50,2
+    mov tiles+51,2
+    mov tiles+59,2
+    mov tiles+60,2
+    mov tiles+61,2
+    
+    mov tiles+67,2
+    mov tiles+68,2
+    mov tiles+69,2
+    mov tiles+70,2
+    mov tiles+71,2
+    mov tiles+72,2
+    
+    mov tiles+77,2
+    mov tiles+78,2
+    mov tiles+79,2
+    
 GameLoop:
     mov cx,0
     mov xpos,0
     mov ypos,0
-    drawCubes:
+    
+    mov ax,oldPos
+    mov frogPos,ax
+    
+    TakeInputGame frogPos, BoundsFlag
+    
+    lea bx,tiles
+    add bx,oldPos
+    mov al,oldCode
+    mov [bx],al
+    
+    lea bx,tiles
+    add bx,frogPos
+    mov al,[bx]
+    mov oldCode,al 
+    
+    mov [bx],01h
+    
+    drawCubes:   
     
     mov bx, offset tiles
     add bx,cx
