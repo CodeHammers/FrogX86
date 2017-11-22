@@ -96,14 +96,14 @@ GameLoop:
 	mov bh,0
 	mov bl,tiles
 	
-	Shift bx 16 1	
-	Shift bx 32 0	
-	Shift bx 48 1
-	Shift bx 64 0
+	Shift bx 16 1 frogPos	
+	Shift bx 32 0 frogPos	
+	Shift bx 48 1 frogPos
+	Shift bx 64 0 frogPos
 	
-	Shift bx 96 1	
-	Shift bx 112 0	
-	Shift bx 128 1
+	Shift bx 96 1 frogPos	
+	Shift bx 112 0 frogPos	
+	Shift bx 128 1 frogPos
 	
 	
 	mov delayLoops,4
