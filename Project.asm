@@ -1,5 +1,6 @@
 include Drawing.inc
 include InputMotion.inc
+include Shift.inc
 
 .model small
 
@@ -66,23 +67,40 @@ GameLoop:
     mov xpos,0
     mov ypos,0
     
-    mov ax,oldPos
-    mov frogPos,ax
-    
+	mov ax,frogPos
+	mov oldPos,ax
+	
     TakeInputGame frogPos, BoundsFlag
-    
-    lea bx,tiles
+	
+	lea bx,tiles
     add bx,oldPos
     mov al,oldCode
     mov [bx],al
+	
+	lea bx,tiles
+	add bx,frogPos
+	mov al,[bx]
+	mov oldCode,al
+	
+	;lea bx,tiles
+	;add bx,frogPos
+	;mov al,[bx]
+	;mov newCode,al
+	
+    ;lea bx,tiles
+	;add bx,frogPos
+	;mov al,[bx]
+	;mov oldCode,al
+	
+    ;lea bx,tiles
+    ;add bx,oldPos
+    ;mov al,oldCode
+    ;mov [bx],al
     
     lea bx,tiles
     add bx,frogPos
-    mov al,[bx]
-    mov oldCode,al 
-    
     mov [bx],01h
-    
+	
     drawCubes:   
     
     mov bx, offset tiles
