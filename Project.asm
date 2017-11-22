@@ -21,6 +21,8 @@ ypos dw 0
 
 color db 0
 
+delayLoops db 4
+
 .code
 
 mov ax,@data
@@ -60,7 +62,25 @@ int 10h
     
     mov tiles+77,2
     mov tiles+78,2
-    mov tiles+79,2
+    mov tiles+79,2 
+    
+    
+    mov tiles+96,2
+    mov tiles+97,2
+    mov tiles+106,2
+    mov tiles+107,2
+    mov tiles+108,2
+    
+    mov tiles+118,2
+    mov tiles+119,2
+    mov tiles+120,2
+    
+    mov tiles+129,2
+    mov tiles+130,2
+    mov tiles+131,2
+    mov tiles+139,2
+    mov tiles+140,2
+    mov tiles+141,2
     
 GameLoop:
     mov cx,0
@@ -70,7 +90,28 @@ GameLoop:
 	mov ax,frogPos
 	mov oldPos,ax
 	
-    TakeInputGame frogPos, BoundsFlag
+	cmp delayLoops,0
+	jnz DelayedLoop
+	;Shifting the rows
+	mov bh,0
+	mov bl,tiles
+	
+	Shift bx 16 1	
+	Shift bx 32 0	
+	Shift bx 48 1
+	Shift bx 64 0
+	
+	Shift bx 96 1	
+	Shift bx 112 0	
+	Shift bx 128 1
+	
+	
+	mov delayLoops,4
+	DelayedLoop:
+	dec delayLoops
+	
+	
+	TakeInputGame frogPos, BoundsFlag
 	
 	lea bx,tiles
     add bx,oldPos
@@ -80,26 +121,13 @@ GameLoop:
 	lea bx,tiles
 	add bx,frogPos
 	mov al,[bx]
-	mov oldCode,al
+	mov oldCode,al 
 	
-	;lea bx,tiles
-	;add bx,frogPos
-	;mov al,[bx]
-	;mov newCode,al
-	
-    ;lea bx,tiles
-	;add bx,frogPos
-	;mov al,[bx]
-	;mov oldCode,al
-	
-    ;lea bx,tiles
-    ;add bx,oldPos
-    ;mov al,oldCode
-    ;mov [bx],al
-    
     lea bx,tiles
     add bx,frogPos
     mov [bx],01h
+	
+	
 	
     drawCubes:   
     

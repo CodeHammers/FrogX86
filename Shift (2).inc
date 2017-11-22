@@ -7,10 +7,7 @@ Shift MACRO base_addr,start,sflag
     
     LOCAL ShiftRight
     LOCAL ShiftLeft
-    LOCAL shift_loopL
-	LOCAL shift_loopR
-	LOCAL Done
-
+    
     pusha   
      mov ax,0
      mov bx,0
@@ -24,36 +21,32 @@ Shift MACRO base_addr,start,sflag
      
      
      ShiftLeft:
-	   mov bx,base_addr 
+       mov bx,base_addr 
 		add bx, start 
-       mov cx,15
-
+       
        mov dh,[bx]
-       shift_loopL:
+       shift_loop:
          mov dl,[bx+1]
          mov [bx],dl
          inc bx
-         ;cmp bx,15
-         ;jne Shift_loopL 
-		 loop shift_LoopL
-
+         cmp bx,15
+         jne ShiftRight 
+		 
        mov [bx],dh;put the first element in the last element
      
      jmp Done
      
-     ShiftRight:
+     ShiftRight
        mov bx,base_addr 
 		add bx,start
        add bx,15
        mov dh,[bx]
-	   mov cx,15
-       shift_loopR:
+       shift_loop:
          mov dl,[bx-1]
          mov [bx],dl
          dec bx
-         ;cmp bx,base_addr
-         ;jne Shift_loopR
-		 loop shift_loopR 
+         cmp bx,base_addr
+         jne ShiftRight 
        mov [bx],dh;put the last element in the first element
          
          
