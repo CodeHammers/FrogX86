@@ -161,4 +161,32 @@ MACRO DrawCar startX, startY
       
 
       popa
-ENDM DrawFrog
+ENDM DrawCar
+
+MACRO DrawLog startX,startY
+	pusha
+	mov cx, startX
+    mov dx, startY
+	
+	add cx,2
+	add dx,2
+	DrawHorizontalLine cx,dx,5,06h
+	
+	inc dx
+	dec cx
+	DrawHorizontalLine cx,dx,7,06h
+	
+	inc dx
+	dec cx
+	DrawHorizontalLine cx,dx,9,06h
+	
+	inc dx
+	inc cx
+	DrawHorizontalLine cx,dx,7,06h
+	
+	inc dx
+	inc cx
+	DrawHorizontalLine cx,dx,5,06h
+	
+	popa
+ENDM DrawLog
