@@ -131,48 +131,91 @@ MACRO DrawFrog startX, startY
       popa
 ENDM DrawFrog
 
+MACRO DrawSidesCar startX,startY
+	pusha
+	
+	mov cx, startX
+    mov dx, startY
+	
+	;first wheel
+	add cx,2
+	DrawHorizontalLine cx, dx, 6, 14D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 6, 14D
+	
+	;car body between the two wheels
+	mov cx,startX
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	;second wheel
+	inc dx
+	add cx,2
+	DrawHorizontalLine cx, dx, 6, 14D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 6, 14D
 
-MACRO DrawCar startX, startY
-      pusha 
-	  ;car head
-      mov cx,startX
-      mov dx,startY
-      add dx,2 ;car head starting y
-      add cx,3 ;car head starting x
-      mov ax,3 ;head is three pixels long
-      mov bl,110b ;head color
-      DrawHorizontalLine cx,dx,ax,bl
+	popa
+ENDM DrawSidesCar
 
-      ;car body
-      mov cx,startX
-      mov dx,startY
-      add dx,3
-      add cx,1
-      mov ax,7
+MACRO DrawMiddleCar startX,startY
+	pusha
+	
+	mov cx, startX
+    mov dx, startY
+	
+	add dx,2
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	mov dx,startY
+	
+	inc cx
+	add dx,3
+	DrawHorizontalLine cx, dx, 8, 11D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 8, 11D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 8, 11D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 8, 11D
 
-      mov bl,0
-
-      Y_loop:
-
-		DrawHorizontalLine cx,dx,ax,001b		
-		inc dx
-		inc bl
-		cmp bl,4
-
-      jne Y_loop
-
-	  ;car tail
-      mov cx,startX
-      mov dx,startY
-      add dx,8 ;car tail starting y
-      add cx,3 ;car tail starting x
-      mov ax,3 ;tail is three pixels long
-      mov bl,110b ;tail color
-      DrawHorizontalLine cx,dx,ax,bl
-      
-
-      popa
-ENDM DrawCar
+	popa
+ENDM DrawMiddleCar
 
 MACRO DrawBackLog startX,startY
 	pusha
