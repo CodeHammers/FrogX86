@@ -64,7 +64,7 @@ Shift MACRO base_addr,start,sflag,froggy
      jb Frog_outR
      sub cx,15
      cmp cx,froggy
-     ja Frog_outL
+     ja Frog_outR
      inc froggy
 
      add cx,15
