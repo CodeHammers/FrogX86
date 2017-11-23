@@ -86,9 +86,6 @@ GameLoop:
     mov cx,0
     mov xpos,0
     mov ypos,0
-    
-	mov ax,frogPos
-	mov oldPos,ax
 	
 	cmp delayLoops,0
 	jnz DelayedLoop
@@ -110,6 +107,8 @@ GameLoop:
 	DelayedLoop:
 	dec delayLoops
 	
+	mov ax,frogPos
+	mov oldPos,ax
 	
 	TakeInputGame frogPos, BoundsFlag
 	
