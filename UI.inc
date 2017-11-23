@@ -174,30 +174,99 @@ MACRO DrawCar startX, startY
       popa
 ENDM DrawCar
 
-MACRO DrawLog startX,startY
+MACRO DrawBackLog startX,startY
 	pusha
+	
 	mov cx, startX
     mov dx, startY
 	
-	add cx,2
+	add cx,3
 	add dx,2
-	DrawHorizontalLine cx,dx,5,06h
+	DrawHorizontalLine cx, dx, 5, 06h
 	
 	inc dx
 	dec cx
-	DrawHorizontalLine cx,dx,7,06h
+	DrawHorizontalLine cx, dx, 6, 06h
 	
 	inc dx
 	dec cx
+	DrawHorizontalLine cx, dx, 7, 06h
+	
+	inc dx
+	dec cx
+	DrawHorizontalLine cx, dx, 8, 06h
+	
+	inc dx
+	inc cx
+	DrawHorizontalLine cx, dx, 7, 06h
+	
+	inc dx
+	inc cx
+	DrawHorizontalLine cx, dx, 6, 06h
+	
+	inc dx
+	inc cx
+	DrawHorizontalLine cx, dx, 5, 06h
+	
+	popa
+ENDM DrawBackLog
+
+MACRO DrawMiddleLog startX,startY
+	pusha
+	
+	mov cx, startX
+    mov dx, startY
+	
+	add dx,2
 	DrawHorizontalLine cx,dx,9,06h
 	
 	inc dx
-	inc cx
-	DrawHorizontalLine cx,dx,7,06h
+	DrawHorizontalLine cx,dx,9,06h
 	
 	inc dx
-	inc cx
-	DrawHorizontalLine cx,dx,5,06h
+	DrawHorizontalLine cx,dx,9,06h
+	
+	inc dx
+	DrawHorizontalLine cx,dx,9,06h
+	
+	inc dx
+	DrawHorizontalLine cx,dx,9,06h
+	
+	inc dx
+	DrawHorizontalLine cx,dx,9,06h
+	
+	inc dx
+	DrawHorizontalLine cx,dx,9,06h
 	
 	popa
-ENDM DrawLog
+ENDM DrawMiddleLog
+
+MACRO DrawFrontLog startX,startY
+	pusha
+	
+	mov cx, startX
+    mov dx, startY
+	
+	add dx,2
+	DrawHorizontalLine cx, dx, 5, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 6, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 7, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 8, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 7, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 6, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 5, 06h
+	
+	popa
+ENDM DrawFrontLog
