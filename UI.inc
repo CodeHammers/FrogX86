@@ -48,6 +48,17 @@ MACRO DrawPixel x,y,color
       popa
 ENDM DrawPixel
 
+MACRO CleanCell startX, startY, color 
+      pusha
+      LOCAL Clean 
+      mov bx,10
+      Clean:
+            DrawVerticalLine startX,startY,10,color 
+            dec bx
+            jnz Clean 
+      popa
+ENDM CleanCell
+
 MACRO DrawFrog startX, startY
       pusha 
       ;Draw the frog's 4 legs
