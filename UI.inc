@@ -119,3 +119,46 @@ MACRO DrawFrog startX, startY
       DrawPixel cx,dx,100b
       popa
 ENDM DrawFrog
+
+
+MACRO DrawCar startX, startY
+      pusha 
+	  ;car head
+      mov cx,startX
+      mov dx,startY
+      add dx,2 ;car head starting y
+      add cx,3 ;car head starting x
+      mov ax,3 ;head is three pixels long
+      mov bl,110b ;head color
+      DrawHorizontalLine cx,dx,ax,bl
+
+      ;car body
+      mov cx,startX
+      mov dx,startY
+      add dx,3
+      add cx,1
+      mov ax,7
+
+      mov bl,0
+
+      Y_loop:
+
+		DrawHorizontalLine cx,dx,ax,001b		
+		inc dx
+		inc bl
+		cmp bl,4
+
+      jne Y_loop
+
+	  ;car tail
+      mov cx,startX
+      mov dx,startY
+      add dx,8 ;car tail starting y
+      add cx,3 ;car tail starting x
+      mov ax,3 ;tail is three pixels long
+      mov bl,110b ;tail color
+      DrawHorizontalLine cx,dx,ax,bl
+      
+
+      popa
+ENDM DrawFrog
