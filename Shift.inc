@@ -36,6 +36,10 @@ Shift MACRO base_addr,start,sflag,froggy
      cmp cx,froggy
      ja Frog_outL
      dec froggy
+     cmp cx,froggy
+     ja Frog_outL
+     add cx,15
+     mov froggy ,cx
      Frog_outL:
 	   mov bx,base_addr 
 		add bx, start 
@@ -61,6 +65,11 @@ Shift MACRO base_addr,start,sflag,froggy
      cmp cx,froggy
      ja Frog_outL
      inc froggy
+     add cx,15
+     cmp cx,froggy
+     jb Frog_outR
+     sub cx,15
+     mov froggy,cx
      Frog_outR:
        mov bx,base_addr 
 		add bx,start
