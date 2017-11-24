@@ -92,6 +92,8 @@ GameLoop:
     jnz logBeg:
     
     ;Draw log beg------------------------
+    push cx 
+    push dx 
     mov cx, xpos
     mov dx, ypos
 	
@@ -115,6 +117,9 @@ GameLoop:
 	
 	inc dx
 	DrawHorizontalLine cx, dx, 6, 06h
+
+    pop dx 
+    pop cx 
     ;------------------------------------
     jmp DoneDrawing
     logBeg:
@@ -123,6 +128,8 @@ GameLoop:
     jnz logEnd:
     
     ;Draw log End------------------------
+    push cx
+    push dx
     mov cx, xpos
     mov dx, ypos 
 	
@@ -153,6 +160,8 @@ GameLoop:
 	inc dx
 	inc cx
 	DrawHorizontalLine cx, dx, 6, 06h
+    pop dx
+    pop cx 
     ;------------------------------------
     
     jmp DoneDrawing
@@ -165,6 +174,8 @@ GameLoop:
     
     ;Draw Frog----------------------------
     ;Draw the frog's 4 legs
+      push cx 
+      push dx 
       mov cx, xpos 
       mov dx, ypos 
       inc cx 
@@ -231,6 +242,8 @@ GameLoop:
       DrawPixel cx,dx,100b
       add cx,3
       DrawPixel cx,dx,100b
+      pop dx 
+      pop cx 
       ;--------------------------------
     
     jmp DoneDrawing
@@ -240,6 +253,8 @@ GameLoop:
     jnz carBeg:
     
     ;Draw car Beg-----------------------
+    push cx 
+    push dx 
     mov cx, xpos
     mov dx, ypos
 	
@@ -277,6 +292,8 @@ GameLoop:
 	
 	inc dx
 	DrawHorizontalLine cx, dx, 6, 14D
+    pop dx 
+    pop cx 
     ;--------------------------------------
     
     jmp DoneDrawing
@@ -286,6 +303,8 @@ GameLoop:
     jnz carEnd:
     
     ;Draw car end--------------------------
+    push cx 
+    push dx 
     mov cx, xpos
     mov dx, ypos
 	
@@ -323,6 +342,8 @@ GameLoop:
 	
 	inc dx
 	DrawHorizontalLine cx, dx, 6, 14D
+    pop dx 
+    pop cx 
     ;--------------------------------------
     
     jmp DoneDrawing
@@ -332,6 +353,8 @@ GameLoop:
     jnz logMain:
     
     ;Draw logMain--------------------------
+    push cx 
+    push dx 
     mov cx, xpos
     mov dx, ypos
 	
@@ -355,6 +378,8 @@ GameLoop:
 	
 	inc dx
 	DrawHorizontalLine cx,dx,10,06h
+    pop dx 
+    pop cx 
     ;--------------------------------------
     
     jmp DoneDrawing
