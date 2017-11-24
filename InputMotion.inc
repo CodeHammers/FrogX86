@@ -10,10 +10,10 @@ TakeInputGame MACRO FrogPos, BoundsFlag
     LOCAL TouchedDown
     LOCAL TouchedLeft
     LOCAL TouchedRight
-    LOCAL AgainD
+    LOCAL AgainU
     LOCAL HopForwards
     LOCAL HopBackwards 
-    LOCAL AgainDHop
+    LOCAL AgainUHop
     LOCAL TouchedUpHop
     LOCAL TouchedDownHop
     pusha 
@@ -35,16 +35,22 @@ TakeInputGame MACRO FrogPos, BoundsFlag
         je Left
         cmp ah,4dh  ;right
         je Right 
-        cmp ah,77h  ;w (hop forward)
+        cmp ah,11h  ;w (hop forward)
         je HopForwards
-        cmp ah,73h ;s (hop backwards)
-        je HopBackwards 
+        cmp ah,1fh ;s (hop backwards)
+        je HopBackwards
+        jmp Finished ;otherkey 
 
     Up:     
-        sub FrogPos, 32    ;y--
-        cmp FrogPos,31     ;if(y>=0 && y<=31) then it's in the top row (pavement)
-        jbe TouchedUp
+        sub FrogPos,32     ;y--
+        cmp FrogPos,64     ;if(y>=64 && y<=95) then it's in the top row (pavement)
+        jb TouchedUp
+        jae AgainU
         jmp Finished
+        AgainU:
+            cmp FrogPos, 95
+            jbe TouchedUp
+            jmp Finished
         TouchedUp:
             mov BoundsFlag,1  ;Set flag top
             jmp Finished
@@ -52,19 +58,15 @@ TakeInputGame MACRO FrogPos, BoundsFlag
     Down:
         add FrogPos, 32  ;y++
         cmp FrogPos, 608  ;if(y>=608 && y<=639) then it's in the buttom row (pavement)
-        jae AgainD
+        jae TouchedDown
         jmp Finished
-        AgainD:
-            cmp FrogPos, 639
-            jbe TouchedDown
-            jmp Finished
         TouchedDown:
             mov BoundsFlag,2  ;Set flag buttom
             jmp Finished
 
     Right:
         inc FrogPos      ;x++
-        mov ax, FrogPos  ;if((x+1)%16==0) then it's on the right col
+        mov ax, FrogPos  ;if((x+1)%32==0) then it's on the right col
         inc ax
         mov bl,32
         div bl
@@ -77,7 +79,7 @@ TakeInputGame MACRO FrogPos, BoundsFlag
 
     Left:
         dec FrogPos
-        mov ax, FrogPos ;if(y%16==0) then it's on the left col
+        mov ax, FrogPos ;if(y%32==0) then it's on the left col
         mov bl,32
         div bl
         cmp ah,0
@@ -88,23 +90,24 @@ TakeInputGame MACRO FrogPos, BoundsFlag
             jmp Finished
 
     HopForwards:
-        sub FrogPos,64 ; y-=2
-        cmp FrogPos,31     ;if(y>=0 && y<=31) then it's in the top row (pavement)
-        jbe TouchedUpHop
+        sub FrogPos,64     ; y-=2
+        cmp FrogPos,64     ;if(y>=64 && y<=95) then it's in the top row (pavement)
+        jb TouchedUpHop
+        jae AgainUHop
         jmp Finished
+        AgainUHop:
+            cmp FrogPos,95
+            jbe TouchedUpHop
+            jmp Finished
         TouchedUpHop:
             mov BoundsFlag,1  ;Set flag top
             jmp Finished
 
     HopBackwards:
-        add FrogPos,64 ;y+=2
+        add FrogPos,64    ;y+=2
         cmp FrogPos, 608  ;if(y>=608 && y<=639) then it's in the buttom row (pavement)
-        jae AgainDHop
+        jae TouchedDownHop
         jmp Finished
-        AgainDHop:
-            cmp FrogPos, 639
-            jbe TouchedDownHop
-            jmp Finished
         TouchedDownHop:
             mov BoundsFlag,2  ;Set flag buttom
             jmp Finished
