@@ -192,20 +192,21 @@ cmp cx,640
 jnz StartSet
 
 ;Manualy creating endpoints
-mov tiles + 68,10
-mov tiles + 75,10
-mov tiles + 82,10
+mov tiles + 67,10
+mov tiles + 73,10
+mov tiles + 81,10
 mov tiles + 89,10
+mov tiles + 95,10
 
 ;Manualy creating Logs
-mov tiles + 140,6
+mov tiles + 140,7
 mov tiles + 141,2
 mov tiles + 142,2
 mov tiles + 143,2
 mov tiles + 144,2
 mov tiles + 145,2
 mov tiles + 146,2
-mov tiles + 147,7
+mov tiles + 147,6
 
 ;Manualy creating Cars
 mov tiles + 394,8
