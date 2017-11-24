@@ -135,7 +135,7 @@ MACRO DrawSidesCar startX,startY
 	pusha
 	
 	mov cx, startX
-    mov dx, startY
+      mov dx, startY
 	
 	;first wheel
 	add cx,2
@@ -179,7 +179,7 @@ MACRO DrawMiddleCar startX,startY
 	pusha
 	
 	mov cx, startX
-    mov dx, startY
+      mov dx, startY
 	
 	add dx,2
 	DrawHorizontalLine cx, dx, 10, 001b
@@ -221,7 +221,7 @@ MACRO DrawBackLog startX,startY
 	pusha
 	
 	mov cx, startX
-    mov dx, startY
+      mov dx, startY
 	
 	add cx,4
 	add dx,2
@@ -258,7 +258,7 @@ MACRO DrawMiddleLog startX,startY
 	pusha
 	
 	mov cx, startX
-    mov dx, startY
+      mov dx, startY
 	
 	add dx,2
 	DrawHorizontalLine cx,dx,10,06h
@@ -288,7 +288,7 @@ MACRO DrawFrontLog startX,startY
 	pusha
 	
 	mov cx, startX
-    mov dx, startY
+      mov dx, startY
 	
 	add dx,2
 	DrawHorizontalLine cx, dx, 6, 06h

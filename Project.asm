@@ -1,4 +1,5 @@
 include Drawing.inc
+include UI.inc 
 include InputMotion.inc
 include Shift.inc
 
@@ -90,15 +91,69 @@ GameLoop:
     cmp [bx],6
     jnz logBeg:
     
-    ;Draw log beg
-    
+    ;Draw log beg------------------------
+    mov cx, xpos
+    mov dx, ypos
+	
+	add dx,2
+	DrawHorizontalLine cx, dx, 6, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 7, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 8, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 9, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 8, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 7, 06h
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 6, 06h
+    ;------------------------------------
     jmp DoneDrawing
     logBeg:
     
     cmp [bx],7
     jnz logEnd:
     
-    ;Draw log End
+    ;Draw log End------------------------
+    mov cx, xpos
+    mov dx, ypos 
+	
+	add cx,4
+	add dx,2
+	DrawHorizontalLine cx, dx, 6, 06h
+	
+	inc dx
+	dec cx
+	DrawHorizontalLine cx, dx, 7, 06h
+	
+	inc dx
+	dec cx
+	DrawHorizontalLine cx, dx, 8, 06h
+	
+	inc dx
+	dec cx
+	DrawHorizontalLine cx, dx, 9, 06h
+	
+	inc dx
+	inc cx
+	DrawHorizontalLine cx, dx, 8, 06h
+	
+	inc dx
+	inc cx
+	DrawHorizontalLine cx, dx, 7, 06h
+	
+	inc dx
+	inc cx
+	DrawHorizontalLine cx, dx, 6, 06h
+    ;------------------------------------
     
     jmp DoneDrawing
     logEnd:
@@ -108,7 +163,75 @@ GameLoop:
     cmp [bx],1
     jnz Frog:
     
-    ;Draw Frog
+    ;Draw Frog----------------------------
+    ;Draw the frog's 4 legs
+      mov cx, xpos 
+      mov dx, ypos 
+      inc cx 
+      DrawVerticalLine cx,dx,4,010b
+      add dx,5
+      DrawVerticalLine cx,dx,4,010b
+      mov cx, xpos 
+      mov dx, ypos
+      add cx,8
+      DrawVerticalLine cx,dx,4,010b
+      add dx,5
+      DrawVerticalLine cx,dx,4,010b
+
+      ;Draw 4 feet
+      mov cx, xpos 
+      mov dx, ypos
+      inc dx
+      DrawPixel cx,dx,010b
+      add cx,9 
+      DrawPixel cx,dx,010b 
+      mov cx, xpos 
+      mov dx, ypos
+      add dx,7
+      DrawPixel cx,dx,010b
+      add cx,9
+      DrawPixel cx,dx,010b 
+
+      ;Draw the connections between legs and body
+      mov cx, xpos 
+      mov dx, ypos
+      add cx,2
+      add dx,3
+      DrawPixel cx,dx,010b 
+      add cx,5
+      DrawPixel cx,dx,010b
+      mov cx, xpos 
+      mov dx, ypos
+      add dx,5
+      add cx,2
+      DrawPixel cx,dx,010b 
+      add cx,5
+      DrawPixel cx,dx,010b 
+      
+      ;Draw the frog body
+      mov cx, xpos 
+      mov dx, ypos
+      add cx,3
+      add dx,2
+      DrawVerticalLine cx,dx,6,110b
+      add cx,3
+      DrawVerticalLine cx,dx,6,110b
+      mov cx, xpos 
+      mov dx, ypos
+      add cx,4
+      DrawVerticalLine cx,dx,9,110b
+      inc cx
+      DrawVerticalLine cx,dx,9,110b
+
+      ;Draw the frog's eyes
+      mov cx, xpos 
+      mov dx, ypos
+      add cx,3
+      inc dx
+      DrawPixel cx,dx,100b
+      add cx,3
+      DrawPixel cx,dx,100b
+      ;--------------------------------
     
     jmp DoneDrawing
     Frog:
@@ -116,7 +239,45 @@ GameLoop:
     cmp [bx],8
     jnz carBeg:
     
-    ;Draw car Beg
+    ;Draw car Beg-----------------------
+    mov cx, xpos
+    mov dx, ypos
+	
+	;first wheel
+	add cx,2
+	DrawHorizontalLine cx, dx, 6, 14D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 6, 14D
+	
+	;car body between the two wheels
+	mov cx,xpos 
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	;second wheel
+	inc dx
+	add cx,2
+	DrawHorizontalLine cx, dx, 6, 14D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 6, 14D
+    ;--------------------------------------
     
     jmp DoneDrawing
     carBeg:
@@ -124,7 +285,45 @@ GameLoop:
     cmp [bx],9
     jnz carEnd:
     
-    ;Draw car end
+    ;Draw car end--------------------------
+    mov cx, xpos
+    mov dx, ypos
+	
+	;first wheel
+	add cx,2
+	DrawHorizontalLine cx, dx, 6, 14D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 6, 14D
+	
+	;car body between the two wheels
+	mov cx,xpos 
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	
+	;second wheel
+	inc dx
+	add cx,2
+	DrawHorizontalLine cx, dx, 6, 14D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 6, 14D
+    ;--------------------------------------
     
     jmp DoneDrawing
     carEnd:    
@@ -132,7 +331,31 @@ GameLoop:
     cmp [bx],2
     jnz logMain:
     
-    ;Draw logMain
+    ;Draw logMain--------------------------
+    mov cx, xpos
+    mov dx, ypos
+	
+	add dx,2
+	DrawHorizontalLine cx,dx,10,06h
+	
+	inc dx
+	DrawHorizontalLine cx,dx,10,06h
+	
+	inc dx
+	DrawHorizontalLine cx,dx,10,06h
+	
+	inc dx
+	DrawHorizontalLine cx,dx,10,06h
+	
+	inc dx
+	DrawHorizontalLine cx,dx,10,06h
+	
+	inc dx
+	DrawHorizontalLine cx,dx,10,06h
+	
+	inc dx
+	DrawHorizontalLine cx,dx,10,06h
+    ;--------------------------------------
     
     jmp DoneDrawing
     logMain:
