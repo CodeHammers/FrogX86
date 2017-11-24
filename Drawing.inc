@@ -37,21 +37,27 @@ row:
 		int 10h
 		inc cx
 		inc bh
-		cmp bh,20
+		cmp bh,10
 	jnz column
 
 	inc dx
 	inc bl 
-	cmp bl,20  
+	cmp bl,10  
 jnz row      
 
 ENDM DrawTile
 ;---------------------------------
 DrawTileCode MACRO posX posY Code
+pushA
 LOCAL log
+LOCAL logFront
+LOCAL logRear
 LOCAL water
 LOCAL pavement
 LOCAL frog
+LOCAL road
+LOCAL CarFront
+LOCAL CarRear
 
 LOCAL row
 LOCAL column
@@ -63,6 +69,14 @@ cmp Code,02h
 jnz  log
 mov al,06h
 log:
+cmp Code,06h
+jnz  logFront
+mov al,06h
+logFront:
+cmp Code,07h
+jnz  logRear
+mov al,06h
+logRear:
 
 cmp Code,03h
 jnz  water
@@ -74,10 +88,29 @@ jnz  pavement
 mov al,07h
 pavement:
 
+cmp Code,05h
+jnz  road
+mov al,08h
+road:
+
 cmp Code,01h
 jnz  frog
 mov al,010b
 frog:
+
+cmp Code,10
+jnz  endPoint
+mov al,14
+endPoint:
+
+cmp Code,8
+jnz  CarFront
+mov al,15
+CarFront:
+cmp Code,9
+jnz  CarRear
+mov al,15
+CarRear:
 
 mov cx,posX      ;Column 
 mov dx,posY       ;Row
@@ -93,71 +126,93 @@ row:
 		int 10h
 		inc cx
 		inc bh
-		cmp bh,20
+		cmp bh,10
 	jnz column
 
 	inc dx
 	inc bl 
-	cmp bl,20  
+	cmp bl,10  
 jnz row 
 
+popA
 ENDM DrawTileCode
+;-----------------------------
 ;-----------------------------
 InitializeArena MACRO
 
 LOCAL PavementSet
 LOCAL Water1Set
 LOCAL RestSet
-LOCAL Water2Set
+LOCAL RoadSet
 LOCAL StartSet
+LOCAL STATUS
 
-mov cx,16
-PavementSet:
+pushA
+
+;Setting status codes in the tiles
+mov cx,0
 mov bx,offset tiles
-add bx,cx
-dec bx
-mov [bx],4
-loop PavementSet
+Status:
+inc cx
+mov [bx],0
+inc bx
+cmp cx,64
+jnz Status
 
-mov cx,16
+;Setting status codes in the tiles
 Water1Set:
 inc cx
-mov bx,offset tiles
-add bx,cx
-dec bx
 mov [bx],3
-cmp cx,80
+inc bx
+cmp cx,320
 jnz Water1Set
 
-mov cx,80
+;Setting rest codes in the tiles
 RestSet:
 inc cx
-mov bx,offset tiles
-add bx,cx
-dec bx
 mov [bx],4
-cmp cx,96
+inc bx
+cmp cx,352
 jnz RestSet
 
-mov cx,96
-Water2Set:
+;Setting road codes in the tiles
+RoadSet:
 inc cx
-mov bx,offset tiles
-add bx,cx
-dec bx
-mov [bx],3
-cmp cx,144
-jnz Water2Set
+mov [bx],5
+inc bx
+cmp cx,608
+jnz RoadSet
 
-mov cx,144
+;Setting pavement codes in the tiles
 StartSet:
 inc cx
-mov bx,offset tiles
-add bx,cx
-dec bx
 mov [bx],4
-cmp cx,160
+inc bx
+cmp cx,640
 jnz StartSet
+
+;Manualy creating endpoints
+mov tiles + 68,10
+mov tiles + 75,10
+mov tiles + 82,10
+mov tiles + 89,10
+
+;Manualy creating Logs
+mov tiles + 140,6
+mov tiles + 141,2
+mov tiles + 142,2
+mov tiles + 143,2
+mov tiles + 144,2
+mov tiles + 145,2
+mov tiles + 146,2
+mov tiles + 147,7
+
+;Manualy creating Cars
+mov tiles + 394,8
+mov tiles + 395,9
+
+
+pushA
 
 ENDM InitializeArena
 ;-----------------------------

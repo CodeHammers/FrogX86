@@ -8,9 +8,9 @@ include Shift.inc
 
 .data
 
-tiles db 160 dup(3)    ;Code byte for the content of each tile 1:Frog | 2:Log | 3:Water | 4:Pavement | 
+tiles db 640 dup(3)    ;Code byte for the content of each tile 0:Status | 1:Frog | 2:Log main | 3:Water | 4:Pavement | 5:Road | 6: log beg. | 7: log end | 8: Car rear | 9: Car front | 10: endPoint
 
-frogPos dw 2
+frogPos dw 610
 BoundsFlag db ?
 
 oldCode db 4
@@ -32,55 +32,9 @@ mov ah,0
 mov al,13h
 int 10h
 
-    pushA
-    InitializeArena
-    popA
     
-    mov tiles+16,2
-    mov tiles+17,2
-    mov tiles+26,2
-    mov tiles+27,2
-    mov tiles+28,2
+    InitializeArena    
     
-    mov tiles+38,2
-    mov tiles+39,2
-    mov tiles+40,2
-    
-    mov tiles+49,2
-    mov tiles+50,2
-    mov tiles+51,2
-    mov tiles+59,2
-    mov tiles+60,2
-    mov tiles+61,2
-    
-    mov tiles+67,2
-    mov tiles+68,2
-    mov tiles+69,2
-    mov tiles+70,2
-    mov tiles+71,2
-    mov tiles+72,2
-    
-    mov tiles+77,2
-    mov tiles+78,2
-    mov tiles+79,2 
-    
-    
-    mov tiles+96,2
-    mov tiles+97,2
-    mov tiles+106,2
-    mov tiles+107,2
-    mov tiles+108,2
-    
-    mov tiles+118,2
-    mov tiles+119,2
-    mov tiles+120,2
-    
-    mov tiles+129,2
-    mov tiles+130,2
-    mov tiles+131,2
-    mov tiles+139,2
-    mov tiles+140,2
-    mov tiles+141,2
     
 GameLoop:
     mov cx,0
@@ -93,14 +47,14 @@ GameLoop:
 	mov bh,0
 	mov bl,tiles
 	
-	Shift bx 16 1 frogPos	
-	Shift bx 32 0 frogPos	
-	Shift bx 48 1 frogPos
-	Shift bx 64 0 frogPos
+	;Shift bx 16 1 frogPos	
+	;Shift bx 32 0 frogPos	
+	;Shift bx 48 1 frogPos
+	;Shift bx 64 0 frogPos
 	
-	Shift bx 96 1 frogPos	
-	Shift bx 112 0 frogPos	
-	Shift bx 128 1 frogPos
+	;Shift bx 96 1 frogPos	
+	;Shift bx 112 0 frogPos	
+	;Shift bx 128 1 frogPos
 	
 	
 	mov delayLoops,4
@@ -126,27 +80,80 @@ GameLoop:
     add bx,frogPos
     mov [bx],01h
 	
-	
-	
-    drawCubes:   
-    
+		
+    drawCubes:       
     mov bx, offset tiles
     add bx,cx
     
-    pushA
-    DrawTileCode xpos ypos [bx]
-    popA
+    mov dl,[bx]
     
-    add xpos, 20
+    cmp [bx],6
+    jnz logBeg:
+    
+    ;Draw log beg
+    
+    jmp DoneDrawing
+    logBeg:
+    
+    cmp [bx],7
+    jnz logEnd:
+    
+    ;Draw log End
+    
+    jmp DoneDrawing
+    logEnd:
+    
+    
+    ; \/
+    ;Uncomment this and glitch in the frog movement start to appear
+    
+    ;cmp [bx],1
+    ;jnz Frog:
+    
+    ;Draw Frog
+    
+    ;jmp DoneDrawing
+    ;Frog:
+    
+    cmp [bx],8
+    jnz carBeg:
+    
+    ;Draw car Beg
+    
+    jmp DoneDrawing
+    carBeg:
+    
+    cmp [bx],9
+    jnz carEnd:
+    
+    ;Draw car end
+    
+    jmp DoneDrawing
+    carEnd:    
+        
+    cmp [bx],2
+    jnz logMain:
+    
+    ;Draw logMain
+    
+    jmp DoneDrawing
+    logMain:
+    
+    
+    DrawTileCode xpos ypos [bx]
+    
+    DoneDrawing:
+    
+    
+    add xpos, 10
     cmp xpos, 320
     jnz rowCompleted
     mov xpos,0
-    add ypos,20
-    rowCompleted:
-    
+    add ypos,10
+    rowCompleted:    
     
     inc cx
-    cmp cx,160
+    cmp cx,640
     jnz drawCubes 
 jmp GameLoop 
  
