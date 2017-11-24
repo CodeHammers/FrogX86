@@ -11,7 +11,11 @@ TakeInputGame MACRO FrogPos, BoundsFlag
     LOCAL TouchedLeft
     LOCAL TouchedRight
     LOCAL AgainD
-
+    LOCAL HopForwards
+    LOCAL HopBackwards 
+    LOCAL AgainDHop
+    LOCAL TouchedUpHop
+    LOCAL TouchedDownHop
     pusha 
 
     ;Get key pressed
@@ -31,10 +35,14 @@ TakeInputGame MACRO FrogPos, BoundsFlag
         je Left
         cmp ah,4dh  ;right
         je Right 
-    
+        cmp ah,77h  ;w (hop forward)
+        je HopForwards
+        cmp ah,73h ;s (hop backwards)
+        je HopBackwards 
+
     Up:     
-        sub FrogPos, 16    ;y--
-        cmp FrogPos,15     ;if(y>=0 && y<=15) then it's in the top row (pavement)
+        sub FrogPos, 32    ;y--
+        cmp FrogPos,31     ;if(y>=0 && y<=31) then it's in the top row (pavement)
         jbe TouchedUp
         jmp Finished
         TouchedUp:
@@ -42,12 +50,12 @@ TakeInputGame MACRO FrogPos, BoundsFlag
             jmp Finished
     
     Down:
-        add FrogPos, 16  ;y++
-        cmp FrogPos, 144  ;if(y>=144 && y<=159) then it's in the buttom row (pavement)
+        add FrogPos, 32  ;y++
+        cmp FrogPos, 608  ;if(y>=608 && y<=639) then it's in the buttom row (pavement)
         jae AgainD
         jmp Finished
         AgainD:
-            cmp FrogPos, 159
+            cmp FrogPos, 639
             jbe TouchedDown
             jmp Finished
         TouchedDown:
@@ -58,7 +66,7 @@ TakeInputGame MACRO FrogPos, BoundsFlag
         inc FrogPos      ;x++
         mov ax, FrogPos  ;if((x+1)%16==0) then it's on the right col
         inc ax
-        mov bl,16
+        mov bl,32
         div bl
         cmp ah,0
         je TouchedRight
@@ -70,7 +78,7 @@ TakeInputGame MACRO FrogPos, BoundsFlag
     Left:
         dec FrogPos
         mov ax, FrogPos ;if(y%16==0) then it's on the left col
-        mov bl,16
+        mov bl,32
         div bl
         cmp ah,0
         je TouchedLeft
@@ -79,6 +87,28 @@ TakeInputGame MACRO FrogPos, BoundsFlag
             mov BoundsFlag,4  ;set left
             jmp Finished
 
+    HopForwards:
+        sub FrogPos,64 ; y-=2
+        cmp FrogPos,31     ;if(y>=0 && y<=31) then it's in the top row (pavement)
+        jbe TouchedUpHop
+        jmp Finished
+        TouchedUpHop:
+            mov BoundsFlag,1  ;Set flag top
+            jmp Finished
+
+    HopBackwards:
+        add FrogPos,64 ;y+=2
+        cmp FrogPos, 608  ;if(y>=608 && y<=639) then it's in the buttom row (pavement)
+        jae AgainDHop
+        jmp Finished
+        AgainDHop:
+            cmp FrogPos, 639
+            jbe TouchedDownHop
+            jmp Finished
+        TouchedDownHop:
+            mov BoundsFlag,2  ;Set flag buttom
+            jmp Finished
+    
     Finished:
         popa
 
