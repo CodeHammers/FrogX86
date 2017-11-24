@@ -138,6 +138,33 @@ GameLoop:
 	
 	inc dx
 	DrawHorizontalLine cx, dx, 6, 06h
+	
+	;water filling
+	mov dx,ypos
+	DrawHorizontalLine cx, dx, 10, 001b
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	inc dx
+	add cx,6
+	DrawHorizontalLine cx, dx, 4, 001b
+	inc dx
+	inc cx
+	DrawHorizontalLine cx, dx, 3, 001b
+	inc dx
+	inc cx
+	DrawHorizontalLine cx, dx, 2, 001b
+	inc dx
+	inc cx
+	DrawHorizontalLine cx, dx, 1, 001b
+	inc dx
+	dec cx
+	DrawHorizontalLine cx, dx, 2, 001b
+	inc dx
+	dec cx
+	DrawHorizontalLine cx, dx, 3, 001b
+	inc dx
+	dec cx
+	DrawHorizontalLine cx, dx, 4, 001b
 
     pop dx 
     pop cx 
@@ -181,6 +208,27 @@ GameLoop:
 	inc dx
 	inc cx
 	DrawHorizontalLine cx, dx, 6, 06h
+	;water filling
+	mov cx,xpos
+	mov dx,ypos
+	DrawHorizontalLine cx, dx, 10, 001b
+	inc dx
+	DrawHorizontalLine cx, dx, 10, 001b
+	inc dx
+	DrawHorizontalLine cx, dx, 4, 001b
+	inc dx
+	DrawHorizontalLine cx, dx, 3, 001b
+	inc dx
+	DrawHorizontalLine cx, dx, 2, 001b
+	inc dx
+	DrawHorizontalLine cx, dx, 1, 001b
+	inc dx
+	DrawHorizontalLine cx, dx, 2, 001b
+	inc dx
+	DrawHorizontalLine cx, dx, 3, 001b
+	inc dx
+	DrawHorizontalLine cx, dx, 4, 001b
+	
     pop dx
     pop cx 
     ;------------------------------------
@@ -399,6 +447,12 @@ GameLoop:
 	
 	inc dx
 	DrawHorizontalLine cx,dx,10,06h
+	;water filling
+	mov dx,ypos
+	DrawHorizontalLine cx,dx,10,001b
+	inc dx
+	DrawHorizontalLine cx,dx,10,001b
+	
     pop dx 
     pop cx 
     ;--------------------------------------
