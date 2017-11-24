@@ -104,16 +104,14 @@ GameLoop:
     logEnd:
     
     
-    ; \/
-    ;Uncomment this and glitch in the frog movement start to appear
     
-    ;cmp [bx],1
-    ;jnz Frog:
+    cmp [bx],1
+    jnz Frog:
     
     ;Draw Frog
     
-    ;jmp DoneDrawing
-    ;Frog:
+    jmp DoneDrawing
+    Frog:
     
     cmp [bx],8
     jnz carBeg:
