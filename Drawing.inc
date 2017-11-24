@@ -58,6 +58,7 @@ LOCAL frog
 LOCAL road
 LOCAL CarFront
 LOCAL CarRear
+LOCAL endPoint
 
 LOCAL row
 LOCAL column
@@ -191,6 +192,13 @@ inc bx
 cmp cx,640
 jnz StartSet
 
+pushA
+
+ENDM InitializeArena
+;-----------------------------
+
+InitializeBlocks MACRO
+
 ;Manualy creating endpoints
 mov tiles + 68,10
 mov tiles + 72,10
@@ -212,8 +220,4 @@ mov tiles + 147,6
 mov tiles + 394,8
 mov tiles + 395,9
 
-
-pushA
-
-ENDM InitializeArena
-;-----------------------------
+ENDM InitializeBlocks

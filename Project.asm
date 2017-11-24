@@ -36,6 +36,27 @@ int 10h
     
     InitializeArena    
     
+    ;Drawing Background Once
+    mov cx,0
+    mov xpos,0
+    mov ypos,0
+    drawBackGround:       
+        mov bx, offset tiles
+        add bx,cx
+        DrawTileCode xpos ypos [bx]    
+        
+        add xpos, 10
+        cmp xpos, 320
+        jnz BGrowCompleted
+        mov xpos,0
+        add ypos,10
+        BGrowCompleted:    
+    
+    inc cx
+    cmp cx,640
+    jnz drawBackGround
+    
+    InitializeBlocks    
     
 GameLoop:
     mov cx,0
