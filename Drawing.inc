@@ -216,8 +216,62 @@ mov tiles + 145,2
 mov tiles + 146,2
 mov tiles + 147,6
 
+mov tiles + 160,7
+mov tiles + 161,2
+mov tiles + 162,2
+mov tiles + 163,2
+mov tiles + 164,2
+mov tiles + 165,2
+mov tiles + 166,2
+mov tiles + 167,6
+mov tiles + 177,7
+mov tiles + 178,2
+mov tiles + 179,2
+mov tiles + 180,2
+mov tiles + 181,2
+mov tiles + 182,2
+mov tiles + 183,2
+mov tiles + 184,6
+
+mov tiles + 200,7
+mov tiles + 201,2
+mov tiles + 202,2
+mov tiles + 203,2
+mov tiles + 204,2
+mov tiles + 205,2
+mov tiles + 206,2
+mov tiles + 207,6
+
+mov tiles + 225,7
+mov tiles + 226,2
+mov tiles + 227,2
+mov tiles + 228,2
+mov tiles + 229,2
+mov tiles + 230,2
+mov tiles + 231,2
+mov tiles + 232,6
+
+mov tiles + 280,7
+mov tiles + 281,2
+mov tiles + 282,2
+mov tiles + 283,2
+mov tiles + 284,2
+mov tiles + 285,2
+mov tiles + 286,2
+mov tiles + 287,6
+
+mov tiles + 298,7
+mov tiles + 299,2
+mov tiles + 300,2
+mov tiles + 301,2
+mov tiles + 302,2
+mov tiles + 303,2
+mov tiles + 304,2
+mov tiles + 305,6
+
 ;Manualy creating Cars
-mov tiles + 394,8
-mov tiles + 395,9
+mov tiles + 394,9
+mov tiles + 395,8
+mov tiles + 396,9
 
 ENDM InitializeBlocks
