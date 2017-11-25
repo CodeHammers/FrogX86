@@ -19,7 +19,7 @@ Shift MACRO base_addr,start,sflag,froggy
      mov cx,0
      mov dx,0
 
-     mov cx,15
+     mov cx,31
      add cx,base_addr
      add cx,start
 
@@ -32,26 +32,26 @@ Shift MACRO base_addr,start,sflag,froggy
      ShiftLeft:
      cmp cx,froggy
      jb Frog_outL
-     sub cx,15
+     sub cx,31
      cmp cx,froggy
      ja Frog_outL
      dec froggy
      cmp cx,froggy
      jbe Frog_outL
 
-     add cx,15
+     add cx,31
      mov froggy ,cx
      Frog_outL:
 	   mov bx,base_addr 
 		add bx, start 
-       mov cx,15
+       mov cx,31
 
        mov dh,[bx]
        shift_loopL:
          mov dl,[bx+1]
          mov [bx],dl
          inc bx
-         ;cmp bx,15
+         ;cmp bx,31
          ;jne Shift_loopL 
 		 loop shift_LoopL
 
@@ -62,23 +62,23 @@ Shift MACRO base_addr,start,sflag,froggy
      ShiftRight:
      cmp cx,froggy
      jb Frog_outR
-     sub cx,15
+     sub cx,31
      cmp cx,froggy
      ja Frog_outR
      inc froggy
 
-     add cx,15
+     add cx,31
      cmp cx,froggy
      jae Frog_outR
-     sub cx,15
+     sub cx,31
      mov froggy,cx
 
      Frog_outR:
        mov bx,base_addr 
 		add bx,start
-       add bx,15
+       add bx,31
        mov dh,[bx]
-	   mov cx,15
+	   mov cx,31
        shift_loopR:
          mov dl,[bx-1]
          mov [bx],dl

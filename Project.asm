@@ -73,7 +73,16 @@ GameLoop:
 	;Shift bx 32 0 frogPos	
 	;Shift bx 48 1 frogPos
 	;Shift bx 64 0 frogPos
-	
+	Shift bx 96 0 frogPos
+    Shift bx 128 1 frogPos
+	Shift bx 160 0 frogPos
+	Shift bx 192 1 frogPos
+    Shift bx 224 0 frogPos
+	Shift bx 256 1 frogPos
+	Shift bx 288 0 frogPos
+    Shift bx 352 1 frogPos
+    Shift bx 384 0 frogPos
+    Shift bx 416 1 frogPos
 	;Shift bx 96 1 frogPos	
 	;Shift bx 112 0 frogPos	
 	;Shift bx 128 1 frogPos

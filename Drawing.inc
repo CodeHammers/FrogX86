@@ -207,6 +207,17 @@ mov tiles + 87,10
 mov tiles + 91,10
 
 ;Manualy creating Logs
+mov tiles + 100,7
+mov tiles + 101,2
+mov tiles + 102,2
+mov tiles + 103,2
+mov tiles + 104,2
+mov tiles + 105,2
+mov tiles + 106,2
+mov tiles + 107,6
+
+
+
 mov tiles + 140,7
 mov tiles + 141,2
 mov tiles + 142,2
@@ -273,5 +284,9 @@ mov tiles + 305,6
 mov tiles + 394,9
 mov tiles + 395,8
 mov tiles + 396,9
+
+mov tiles + 422,9
+mov tiles + 423,8
+mov tiles + 424,9
 
 ENDM InitializeBlocks
