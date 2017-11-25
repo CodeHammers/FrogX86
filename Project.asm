@@ -14,8 +14,8 @@ tiles db 640 dup(3)    ;Code byte for the content of each tile 0:Status | 1:Frog
 frogPos dw 610
 BoundsFlag db ?
 
-oldCode db 4
-oldPos dw 2
+;oldCode db 4
+;oldPos dw 2
 
 xpos dw 0
 ypos dw 0
@@ -92,24 +92,24 @@ GameLoop:
 	DelayedLoop:
 	dec delayLoops
 	
-	mov ax,frogPos
-	mov oldPos,ax
+	;mov ax,frogPos
+	;mov oldPos,ax
 	
 	TakeInputGame frogPos, BoundsFlag
 	
-	lea bx,tiles
-    add bx,oldPos
-    mov al,oldCode
-    mov [bx],al
+	;lea bx,tiles
+    ;add bx,oldPos
+    ;mov al,oldCode
+    ;mov [bx],al
 	
-	lea bx,tiles
-	add bx,frogPos
-	mov al,[bx]
-	mov oldCode,al 
+	;lea bx,tiles
+	;add bx,frogPos
+	;mov al,[bx]
+	;mov oldCode,al 
 	
-    lea bx,tiles
-    add bx,frogPos
-    mov [bx],01h
+    ;lea bx,tiles
+    ;add bx,frogPos
+    ;mov [bx],01h
 	
 		
     drawCubes:       
@@ -247,7 +247,7 @@ GameLoop:
     
     
     
-    cmp [bx],1
+    cmp cx,frogPos
     jnz Frog:
     
     ;Draw Frog----------------------------
