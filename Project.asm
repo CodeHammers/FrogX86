@@ -15,6 +15,12 @@ frogPos dw 610
 fakePos dw 610
 BoundsFlag db ?
 
+PlayerName1 db 'Sayed$'
+PlayerName2 db 'Kareem$'
+PlayerScore1 db '0$'
+PlayerScore2 db '0$'
+sep db '*******$'
+
 ;oldCode db 4
 ;oldPos dw 2
 
@@ -57,7 +63,10 @@ int 10h
     cmp cx,640
     jnz drawBackGround
     
-    InitializeBlocks    
+    InitializeBlocks  
+
+    ;Status bar
+    ;ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep   
     
 GameLoop:
     mov cx,0

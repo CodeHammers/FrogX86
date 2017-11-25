@@ -313,3 +313,33 @@ MACRO DrawFrontLog startX,startY
 	
 	popa
 ENDM DrawFrontLog
+
+PrintMessage MACRO MyMessage
+      pusha 
+      mov ah,9h
+      mov dx,offset MyMessage
+      int 21h
+      popa 
+ENDM PrintMessage      
+
+ScoreBar MACRO PlayerName1, PlayerScore1, PlayerName2, PlayerScore2, sep 
+      pusha
+        PrintMessage PlayerName1
+        mov ah,2
+        mov dx,0006
+        int 10h
+        PrintMessage PlayerScore1
+        mov ah,2
+        mov dx,0015
+        int 10h
+        PrintMessage sep
+        mov ah,2
+        mov dx,0032
+        int 10h   
+        PrintMessage PlayerScore2
+        mov ah,2
+        mov dx,0034
+        int 10h
+        PrintMessage PlayerName2
+      popa 
+ENDM ScoreBar
