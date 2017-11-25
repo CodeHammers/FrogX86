@@ -87,13 +87,6 @@ GameLoop:
 	;Shift bx 96 1 frogPos	
 	;Shift bx 112 0 frogPos	
 	;Shift bx 128 1 frogPos
-	mov bl, tiles
-	add bx , frogPos
-	mov al,tiles[bx]
-    cmp al , 8
-    jb Not_Dead
-    mov frogPos,610
-    Not_Dead:
 	
 	mov delayLoops,4
 	DelayedLoop:
@@ -104,6 +97,22 @@ GameLoop:
 	
 	TakeInputGame frogPos, BoundsFlag
 	
+    mov bl, tiles
+	add bx , frogPos
+	mov al,tiles[bx]
+    cmp al,3  ;water     
+    je Dead 
+    cmp al,8  ;Car front 
+    je Dead 
+    cmp al,9  ;Car end
+    je Dead 
+    jmp Alive 
+
+    Dead:
+        mov frogPos,610
+    
+    Alive:
+
 	;lea bx,tiles
     ;add bx,oldPos
     ;mov al,oldCode
