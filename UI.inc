@@ -324,21 +324,29 @@ ENDM PrintMessage
 
 ScoreBar MACRO PlayerName1, PlayerScore1, PlayerName2, PlayerScore2, sep 
       pusha
-        PrintMessage PlayerName1
         mov ah,2
+		mov bh,0
+        mov dx,0000
+        int 10h
+		PrintMessage PlayerName1
+        mov ah,2
+		mov bh,0
         mov dx,0006
         int 10h
         PrintMessage PlayerScore1
         mov ah,2
-        mov dx,0015
+        mov bh,0
+		mov dx,0015
         int 10h
         PrintMessage sep
         mov ah,2
-        mov dx,0032
+        mov bh,0
+		mov dx,0032
         int 10h   
         PrintMessage PlayerScore2
         mov ah,2
-        mov dx,0034
+        mov bh,0
+		mov dx,0034
         int 10h
         PrintMessage PlayerName2
       popa 

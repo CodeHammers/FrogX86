@@ -59,12 +59,16 @@ LOCAL road
 LOCAL CarFront
 LOCAL CarRear
 LOCAL endPoint
+LOCAL NoDraw
 
 LOCAL row
 LOCAL column
 LOCAL ColorChange
 
 mov al,0h
+
+cmp code,0h
+jz NoDraw
 
 cmp Code,02h
 jnz  log
@@ -134,6 +138,8 @@ row:
 	inc bl 
 	cmp bl,10  
 jnz row 
+
+NoDraw:
 
 popA
 ENDM DrawTileCode

@@ -69,6 +69,9 @@ int 10h
     ;ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep   
     
 GameLoop:
+
+    ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep
+
     mov cx,0
     mov xpos,0
     mov ypos,0
@@ -100,6 +103,13 @@ GameLoop:
 	mov delayLoops,4
 	DelayedLoop:
 	dec delayLoops
+	
+	;Testing the score
+	push dx
+	mov dl,delayLoops
+	mov playerScore1,dl
+	add playerScore1,'0'
+	pop dx
 	
 	;mov ax,frogPos
 	;mov oldPos,ax
@@ -507,7 +517,10 @@ GameLoop:
     
     inc cx
     cmp cx,640
-    jnz drawCubes 
+    jnz drawCubes
+    
+    ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep
+     
 jmp GameLoop 
  
 
