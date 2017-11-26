@@ -75,7 +75,7 @@ GameLoop:
     mov cx,0
     mov xpos,0
     mov ypos,0
-	
+    ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep  
 	cmp delayLoops,0
 	jnz DelayedLoop
 	;Shifting the rows
@@ -116,7 +116,7 @@ GameLoop:
 	
 	TakeInputGame frogPos, BoundsFlag
 	
-    mov bl, tiles
+    lea bx,tiles
 	add bx , frogPos
 	mov al,tiles[bx]
     cmp al,3  ;water     
@@ -287,19 +287,10 @@ GameLoop:
     ;Draw car Beg-----------------------
     push cx 
     push dx 
-    mov cx, xpos
+ 	mov cx, xpos
     mov dx, ypos
 	
-	;first wheel
-	add cx,2
-	DrawHorizontalLine cx, dx, 6, 14D
-	
-	inc dx
-	DrawHorizontalLine cx, dx, 6, 14D
-	
-	;car body between the two wheels
-	mov cx,xpos 
-	inc dx
+		add dx,2
 	DrawHorizontalLine cx, dx, 10, 001b
 	
 	inc dx
@@ -317,14 +308,21 @@ GameLoop:
 	inc dx
 	DrawHorizontalLine cx, dx, 10, 001b
 	
-	;second wheel
-	inc dx
-	add cx,2
-	DrawHorizontalLine cx, dx, 6, 14D
+	mov dx,ypos
+	
+	inc cx
+	add dx,3
+	DrawHorizontalLine cx, dx, 8, 11D
 	
 	inc dx
-	DrawHorizontalLine cx, dx, 6, 14D
-    pop dx 
+	DrawHorizontalLine cx, dx, 8, 11D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 8, 11D
+	
+	inc dx
+	DrawHorizontalLine cx, dx, 8, 11D
+   pop dx 
     pop cx 
     ;--------------------------------------
     
