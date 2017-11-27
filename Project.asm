@@ -12,7 +12,7 @@ include Shift.inc
 tiles db 640 dup(3)    ;Code byte for the content of each tile 0:Status | 1:Frog | 2:Log main | 3:Water | 4:Pavement | 5:Road | 6: log beg. | 7: log end | 8: Car rear | 9: Car front | 10: endPoint
 
 frogPos dw 610
-frogPos2 dw 638
+frogPos2 dw 637
 fakePos dw 610
 BoundsFlag db ? 
 BoundsFlag2 db ?
@@ -124,11 +124,11 @@ GameLoop:
 	dec delayLoops
 	
 	;Testing the score
-	push dx
-	mov dl,delayLoops
-	mov playerScore1,dl
-	add playerScore1,'0'
-	pop dx
+	;push dx
+	;mov dl,delayLoops
+	;mov playerScore1,dl
+	;add playerScore1,'0'
+	;pop dx
 	
 	;mov ax,frogPos
 	;mov oldPos,ax
@@ -150,7 +150,16 @@ GameLoop:
         mov frogPos,610
     
     Alive:
-
+	lea bx,tiles
+	add bx,frogPos
+	mov al,[bx]
+	cmp al,10
+	jne Frog2test
+	mov [bx],3
+	mov frogPos,610
+	inc playerScore1
+	
+	Frog2test:
     lea bx,tiles
 	add bx , frogPos2
 	mov al,tiles[bx]
@@ -163,11 +172,19 @@ GameLoop:
     jmp Alive2
 
     Dead2:
-        mov frogPos2,638
+        mov frogPos2,637
     
     Alive2: 
+	lea bx,tiles
+	add bx,frogPos2
+	mov al,[bx]
+	cmp al,10
+	jne passed
+	mov [bx],3
+	mov frogPos2,637
+	inc playerScore2
 
-
+	passed:
 	;lea bx,tiles
     ;add bx,oldPos
     ;mov al,oldCode
