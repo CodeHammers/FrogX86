@@ -12,6 +12,7 @@ include Shift.inc
 tiles db 640 dup(3)    ;Code byte for the content of each tile 0:Status | 1:Frog | 2:Log main | 3:Water | 4:Pavement | 5:Road | 6: log beg. | 7: log end | 8: Car rear | 9: Car front | 10: endPoint
 
 frogPos dw 610
+frogPos2 dw 620
 fakePos dw 610
 BoundsFlag db ?
 
@@ -104,24 +105,18 @@ GameLoop:
 	;Shifting the rows
 	mov bh,0
 	mov bl,tiles
-	
-	;Shift bx 16 1 frogPos	
-	;Shift bx 32 0 frogPos	
-	;Shift bx 48 1 frogPos
-	;Shift bx 64 0 frogPos
-	Shift bx 96 0 frogPos
-    Shift bx 128 1 frogPos
-	Shift bx 160 0 frogPos
-	Shift bx 192 1 frogPos
-    Shift bx 224 0 frogPos
-	Shift bx 256 1 frogPos
-	Shift bx 288 0 frogPos
-    Shift bx 352 1 fakePos
-    Shift bx 384 0 fakePos
-    Shift bx 416 1 fakePos
-	;Shift bx 96 1 frogPos	
-	;Shift bx 112 0 frogPos	
-	;Shift bx 128 1 frogPos
+    
+	Shift bx 96 0 frogPos,frogPos2
+    Shift bx 128 1 frogPos,frogPos2
+	Shift bx 160 0 frogPos,frogPos2
+	Shift bx 192 1 frogPos,frogPos2
+    Shift bx 224 0 frogPos,frogPos2
+	Shift bx 256 1 frogPos,frogPos2
+	Shift bx 288 0 frogPos,frogPos2
+    Shift bx 352 1 fakePos,fakePos
+    Shift bx 384 0 fakePos,fakePos
+    Shift bx 416 1 fakePos,fakePos
+
 	
 	mov delayLoops,4
 	DelayedLoop:

@@ -1,0 +1,1041 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+Project.exe -- emu8086 assembler version: 4.08  
+ 
+[ 11/27/2017  --  5:10:14 PM ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       include Drawing.inc
+[   2]        :                                       include UI.inc
+[   3]        :                                       include InputMotion.inc
+[   4]        :                                       include Shift.inc
+[   5]        :                                       
+[   6]        :                                       .model small
+[   7]        :                                       
+[   8]        :                                       .stack 64
+[   9]        :                                       
+[  10]        :                                       .data
+[  11]        :                                       
+[  12]    0040: 03 03 03 03 03 03 03 03 03 03 03 03   tiles db 640 dup(3)    ;Code byte for the content of each tile 0:Status | 1:Frog | 2:Log main | 3:Water | 4:Pavement | 5:Road | 6: log beg. | 7: log end | 8: Car rear | 9: Car front | 10: endPoint
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03 03 03 03 03 03 03 03 03 
+                03 03 03 03                         
+[  13]        :                                       
+[  14]    02C0: 62 02                                 frogPos dw 610
+[  15]    02C2: 6C 02                                 frogPos2 dw 620
+[  16]    02C4: 62 02                                 fakePos dw 610
+[  17]    02C6: 00                                    BoundsFlag db ?
+[  18]        :                                       
+[  19]        :                                       ;------MainMenu\IntroScreen\StatusBar----------------
+[  20]    02C7: 2A 54 6F 20 73 74 61 72 74 20 46 72   mes1 db '*To start Frogx86 press ENTER','$'
+                6F 67 78 38 36 20 70 72 65 73 73 20 
+                45 4E 54 45 52 24                   
+[  21]    02E5: 2A 54 6F 20 65 6E 64 20 74 68 65 20   mes2 db '*To end the program press ESC','$'
+                70 72 6F 67 72 61 6D 20 70 72 65 73 
+                73 20 45 53 43 24                   
+[  22]    0303: 50 6C 65 61 73 65 20 65 6E 74 65 72   mes3 db 'Please enter player1 name:',10,13 ,'$'
+                20 70 6C 61 79 65 72 31 20 6E 61 6D 
+                65 3A 0A 0D 24                      
+[  23]    0320: 50 72 65 73 73 20 45 6E 74 65 72 20   mes4 db 'Press Enter key to continue','$'
+                6B 65 79 20 74 6F 20 63 6F 6E 74 69 
+                6E 75 65 24                         
+[  24]    033C: 45 6E 74 65 72 20 61 20 76 61 6C 69   mes5 db 'Enter a valid name','$'
+                64 20 6E 61 6D 65 24                
+[  25]    034F: 50 6C 65 61 73 65 20 65 6E 74 65 72   mes6 db 'Please enter player2 name:',10,13 ,'$'
+                20 70 6C 61 79 65 72 32 20 6E 61 6D 
+                65 3A 0A 0D 24                      
+[  26]    036C:                                       MyBuffer1 LABEL BYTE
+[  27]    036C: 0F                                    	    BufferSize1 DB 15
+[  28]    036D: 00                                    	    ActualSize1 DB ?
+[  29]    036E: 24 24 24 24 24 24 24 24 24 24 24 24   	    PlayerName1 DB 15 DUP ('$')
+                24 24 24                            
+[  30]    037D:                                       	MyBuffer2 LABEL BYTE
+[  31]    037D: 0F                                    	    BufferSize2 DB 15
+[  32]    037E: 00                                    	    ActualSize2 DB ?
+[  33]    037F: 24 24 24 24 24 24 24 24 24 24 24 24   	    PlayerName2 DB 15 DUP ('$')
+                24 24 24                            
+[  34]    038E: 30 24                                 PlayerScore1 db '0$'
+[  35]    0390: 30 24                                 PlayerScore2 db '0$'
+[  36]    0392: 2A 2A 2A 2A 2A 2A 2A 24               sep db '*******$'
+[  37]        :                                       ;-----------------------------------------------------
+[  38]        :                                       ;oldCode db 4
+[  39]        :                                       ;oldPos dw 2
+[  40]        :                                       
+[  41]    039A: 00 00                                 xpos dw 0
+[  42]    039C: 00 00                                 ypos dw 0
+[  43]        :                                       
+[  44]    039E: 00                                    color db 0
+[  45]        :                                       
+[  46]    039F: 04                                    delayLoops db 4
+[  47]        :                                       
+[  48]        :                                       .code
+[  49]        :                                       
+[  50]    03A0: B8 04 00                              mov ax,@data
+[  51]    03A3: 8E D8                                 mov ds,ax
+[  52]        :                                       
+[  53]    03A5: B4 00                                 mov ah,0
+[  54]    03A7: B0 13                                 mov al,13h
+[  55]    03A9: CD 10                                 int 10h
+[  56]        :                                       ;MainMenu\IntroScreen------------
+[  57]    03AB: 60 B4 02 B7 00 B6 0A B2 0A CD 10 60   MainMenu mes1,mes2
+                B4 09 BA 87 02 CD 21 61 B4 02 B7 00 
+                B6 0C B2 0A CD 10 60 B4 09 BA A5 02 
+                CD 21 61 B4 01 B9 07 26 CD 10 B4 00 
+                CD 16 3C 1B 75 1D B8 00 06 B7 00 B9 
+                00 00 B2 50 B6 19 CD 10 BB 00 00 B4 
+                02 BA 00 00 CD 10 B4 4C CD 21 F4 3C 
+                0D 75 D7 61                         
+[  58]    0403: B8 00 06                              MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
+[  59]    0406: B7 00                                 MOV BH,00H
+[  60]    0408: B9 00 00                              MOV CX,0000H    ;STARTING COORDINATES
+[  61]    040B: BA 4F 18                              MOV DX,184FH    ;ENDING COORDINATES
+[  62]    040E: CD 10                                 INT 10H
+[  63]    0410: 60 B4 02 B7 00 B6 0A B2 0A CD 10 60   IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
+                B4 09 BA C3 02 CD 21 61 B4 02 B7 00 
+                B6 0B B2 0A CD 10 B4 0A BA 2C 03 CD 
+                21 BE 2E 03 8A 0E 2D 03 B5 00 80 3C 
+                7A 7F 0F 80 3C 61 7D 55 80 3C 5A 7F 
+                05 80 3C 41 7D 4B B4 02 B7 00 B6 0C 
+                B2 0A CD 10 60 B4 09 BA FC 02 CD 21 
+                61 60 B4 2C CD 21 8A DE 80 C3 02 80 
+                FB 3C 7C 03 80 EB 3C CD 21 3A F3 75 
+                FA 61 BF 2E 03 8A 0E 2D 03 B5 00 C6 
+                05 24 47 E2 FA B8 00 06 B7 00 B9 00 
+                00 BA 4F 18 CD 10 E9 74 FF 46 E2 9E 
+                B4 02 B7 00 B6 0C B2 0A CD 10 60 B4 
+                09 BA E0 02 CD 21 61 B4 01 B9 07 26 
+                CD 10 B4 00 CD 16 3C 0D 75 F8 61    
+[  64]    04C3: B8 00 06                              MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
+[  65]    04C6: B7 00                                 MOV BH,00H
+[  66]    04C8: B9 00 00                              MOV CX,0000H    ;STARTING COORDINATES
+[  67]    04CB: BA 4F 18                              MOV DX,184FH    ;ENDING COORDINATES
+[  68]    04CE: CD 10                                 INT 10H
+[  69]    04D0: 60 B4 02 B7 00 B6 0A B2 0A CD 10 60   IntroScreen mes6,mes4,mes5,MyBuffer2,PlayerName2,ActualSize2
+                B4 09 BA 0F 03 CD 21 61 B4 02 B7 00 
+                B6 0B B2 0A CD 10 B4 0A BA 3D 03 CD 
+                21 BE 3F 03 8A 0E 3E 03 B5 00 80 3C 
+                7A 7F 0F 80 3C 61 7D 55 80 3C 5A 7F 
+                05 80 3C 41 7D 4B B4 02 B7 00 B6 0C 
+                B2 0A CD 10 60 B4 09 BA FC 02 CD 21 
+                61 60 B4 2C CD 21 8A DE 80 C3 02 80 
+                FB 3C 7C 03 80 EB 3C CD 21 3A F3 75 
+                FA 61 BF 3F 03 8A 0E 3E 03 B5 00 C6 
+                05 24 47 E2 FA B8 00 06 B7 00 B9 00 
+                00 BA 4F 18 CD 10 E9 74 FF 46 E2 9E 
+                B4 02 B7 00 B6 0C B2 0A CD 10 60 B4 
+                09 BA E0 02 CD 21 61 B4 01 B9 07 26 
+                CD 10 B4 00 CD 16 3C 0D 75 F8 61    
+[  70]        :                                       ;--------------------------------------------------------------
+[  71]    0583: 60 B9 00 00 BB 00 00 41 C6 07 00 43   InitializeArena
+                83 F9 40 75 F6 41 C6 07 03 43 81 F9 
+                40 01 75 F5 41 C6 07 04 43 81 F9 60 
+                01 75 F5 41 C6 07 05 43 81 F9 60 02 
+                75 F5 41 C6 07 04 43 81 F9 80 02 75 
+                F5 60                               
+[  72]        :                                       
+[  73]        :                                       ;Drawing Background Once
+[  74]    05C1: B9 00 00                              mov cx,0
+[  75]    05C4: C7 06 5A 03 00 00                     mov xpos,0
+[  76]    05CA: C7 06 5C 03 00 00                     mov ypos,0
+[  77]    05D0:                                       drawBackGround:
+[  78]    05D0: BB 00 00                              mov bx, offset tiles
+[  79]    05D3: 03 D9                                 add bx,cx
+[  80]    05D5: 60 B0 00 80 3F 00 74 6A 80 3F 02 75   DrawTileCode xpos ypos [bx]
+                02 B0 06 80 3F 06 75 02 B0 06 80 3F 
+                07 75 02 B0 06 80 3F 03 75 02 B0 01 
+                80 3F 04 75 02 B0 07 80 3F 05 75 02 
+                B0 08 80 3F 01 75 02 B0 02 80 3F 0A 
+                75 02 B0 0E 80 3F 08 75 02 B0 0F 80 
+                3F 09 75 02 B0 0F 8B 0E 5A 03 8B 16 
+                5C 03 B4 0C B3 00 8B 0E 5A 03 B7 00 
+                CD 10 41 FE C7 80 FF 0A 75 F6 42 FE 
+                C3 80 FB 0A 75 E8 61                
+[  81]        :                                       
+[  82]    0648: 83 06 5A 03 0A                        add xpos, 10
+[  83]    064D: 81 3E 5A 03 40 01                     cmp xpos, 320
+[  84]    0653: 75 0B                                 jnz BGrowCompleted
+[  85]    0655: C7 06 5A 03 00 00                     mov xpos,0
+[  86]    065B: 83 06 5C 03 0A                        add ypos,10
+[  87]    0660:                                       BGrowCompleted:
+[  88]        :                                       
+[  89]    0660: 41                                    inc cx
+[  90]    0661: 81 F9 80 02                           cmp cx,640
+[  91]    0665: 74 03 E9 66 FF                        jnz drawBackGround
+[  92]        :                                       
+[  93]    066A: C6 06 44 00 0A C6 06 48 00 0A C6 06   InitializeBlocks
+                4F 00 0A C6 06 57 00 0A C6 06 5B 00 
+                0A C6 06 64 00 07 C6 06 65 00 02 C6 
+                06 66 00 02 C6 06 67 00 02 C6 06 68 
+                00 02 C6 06 69 00 02 C6 06 6A 00 02 
+                C6 06 6B 00 06 C6 06 8C 00 07 C6 06 
+                8D 00 02 C6 06 8E 00 02 C6 06 8F 00 
+                02 C6 06 90 00 02 C6 06 91 00 02 C6 
+                06 92 00 02 C6 06 93 00 06 C6 06 A0 
+                00 07 C6 06 A1 00 02 C6 06 A2 00 02 
+                C6 06 A3 00 02 C6 06 A4 00 02 C6 06 
+                A5 00 02 C6 06 A6 00 02 C6 06 A7 00 
+                06 C6 06 B1 00 07 C6 06 B2 00 02 C6 
+                06 B3 00 02 C6 06 B4 00 02 C6 06 B5 
+                00 02 C6 06 B6 00 02 C6 06 B7 00 02 
+                C6 06 B8 00 06 C6 06 C8 00 07 C6 06 
+                C9 00 02 C6 06 CA 00 02 C6 06 CB 00 
+                02 C6 06 CC 00 02 C6 06 CD 00 02 C6 
+                06 CE 00 02 C6 06 CF 00 06 C6 06 E1 
+                00 07 C6 06 E2 00 02 C6 06 E3 00 02 
+                C6 06 E4 00 02 C6 06 E5 00 02 C6 06 
+                E6 00 02 C6 06 E7 00 02 C6 06 E8 00 
+                06 C6 06 18 01 07 C6 06 19 01 02 C6 
+                06 1A 01 02 C6 06 1B 01 02 C6 06 1C 
+                01 02 C6 06 1D 01 02 C6 06 1E 01 02 
+                C6 06 1F 01 06 C6 06 2A 01 07 C6 06 
+                2B 01 02 C6 06 2C 01 02 C6 06 2D 01 
+                02 C6 06 2E 01 02 C6 06 2F 01 02 C6 
+                06 30 01 02 C6 06 31 01 06 C6 06 8A 
+                01 09 C6 06 8B 01 08 C6 06 8C 01 09 
+                C6 06 A6 01 09 C6 06 A7 01 08 C6 06 
+                A8 01 09                            
+[  94]        :                                       
+[  95]    07E1:                                       GameLoop:
+[  96]        :                                       
+[  97]    07E1: 60 B4 02 B7 00 BA 00 00 CD 10 60 B4   ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep
+                09 BA 2E 03 CD 21 61 B4 02 B7 00 BA 
+                06 00 CD 10 60 B4 09 BA 4E 03 CD 21 
+                61 B4 02 B7 00 BA 0F 00 CD 10 60 B4 
+                09 BA 52 03 CD 21 61 B4 02 B7 00 BA 
+                20 00 CD 10 60 B4 09 BA 50 03 CD 21 
+                61 B4 02 B7 00 BA 22 00 CD 10 60 B4 
+                09 BA 3F 03 CD 21 61 61             
+[  98]        :                                       
+[  99]    083D: B9 00 00                              mov cx,0
+[ 100]    0840: C7 06 5A 03 00 00                     mov xpos,0
+[ 101]    0846: C7 06 5C 03 00 00                     mov ypos,0
+[ 102]    084C: 60 B4 02 B7 00 BA 00 00 CD 10 60 B4   ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep
+                09 BA 2E 03 CD 21 61 B4 02 B7 00 BA 
+                06 00 CD 10 60 B4 09 BA 4E 03 CD 21 
+                61 B4 02 B7 00 BA 0F 00 CD 10 60 B4 
+                09 BA 52 03 CD 21 61 B4 02 B7 00 BA 
+                20 00 CD 10 60 B4 09 BA 50 03 CD 21 
+                61 B4 02 B7 00 BA 22 00 CD 10 60 B4 
+                09 BA 3F 03 CD 21 61 61             
+[ 103]    08A8: 80 3E 5F 03 00                        	cmp delayLoops,0
+[ 104]    08AD: 74 03 E9 64 08                        	jnz DelayedLoop
+[ 105]        :                                       	;Shifting the rows
+[ 106]    08B2: B7 00                                 	mov bh,0
+[ 107]    08B4: 8A 1E 00 00                           	mov bl,tiles
+[ 108]        :                                       
+[ 109]    08B8: 60 B8 00 00 BB 00 00 B9 00 00 BA 00   	Shift bx 96 0 frogPos,frogPos2
+                00 B9 1F 00 03 CB 83 C1 60 B0 00 3C 
+                01 75 58 51 3B 0E 80 02 72 1A 83 E9 
+                1F 3B 0E 80 02 77 11 FF 0E 80 02 3B 
+                0E 80 02 76 07 83 C1 1F 89 0E 80 02 
+                59 3B 0E 82 02 72 1A 83 E9 1F 3B 0E 
+                82 02 77 11 FF 0E 82 02 3B 0E 82 02 
+                76 07 83 C1 1F 89 0E 82 02 8B DB 83 
+                C3 60 B9 1F 00 8A 37 8A 57 01 88 17 
+                43 E2 F8 88 37 EB 5F 51 3B 0E 80 02 
+                72 1D 83 E9 1F 3B 0E 80 02 77 14 FF 
+                06 80 02 83 C1 1F 3B 0E 80 02 73 07 
+                83 E9 1F 89 0E 80 02 59 3B 0E 82 02 
+                72 1D 83 E9 1F 3B 0E 82 02 77 14 FF 
+                06 82 02 83 C1 1F 3B 0E 82 02 73 07 
+                83 E9 1F 89 0E 82 02 8B DB 83 C3 60 
+                83 C3 1F 8A 37 B9 1F 00 8A 57 FF 88 
+                17 4B E2 F8 88 37 61                
+[ 110]    098B: 60 B8 00 00 BB 00 00 B9 00 00 BA 00   Shift bx 128 1 frogPos,frogPos2
+                00 B9 1F 00 03 CB 81 C1 80 00 B0 01 
+                3C 01 75 59 51 3B 0E 80 02 72 1A 83 
+                E9 1F 3B 0E 80 02 77 11 FF 0E 80 02 
+                3B 0E 80 02 76 07 83 C1 1F 89 0E 80 
+                02 59 3B 0E 82 02 72 1A 83 E9 1F 3B 
+                0E 82 02 77 11 FF 0E 82 02 3B 0E 82 
+                02 76 07 83 C1 1F 89 0E 82 02 8B DB 
+                81 C3 80 00 B9 1F 00 8A 37 8A 57 01 
+                88 17 43 E2 F8 88 37 EB 60 51 3B 0E 
+                80 02 72 1D 83 E9 1F 3B 0E 80 02 77 
+                14 FF 06 80 02 83 C1 1F 3B 0E 80 02 
+                73 07 83 E9 1F 89 0E 80 02 59 3B 0E 
+                82 02 72 1D 83 E9 1F 3B 0E 82 02 77 
+                14 FF 06 82 02 83 C1 1F 3B 0E 82 02 
+                73 07 83 E9 1F 89 0E 82 02 8B DB 81 
+                C3 80 00 83 C3 1F 8A 37 B9 1F 00 8A 
+                57 FF 88 17 4B E2 F8 88 37 61       
+[ 111]    0A61: 60 B8 00 00 BB 00 00 B9 00 00 BA 00   	Shift bx 160 0 frogPos,frogPos2
+                00 B9 1F 00 03 CB 81 C1 A0 00 B0 00 
+                3C 01 75 59 51 3B 0E 80 02 72 1A 83 
+                E9 1F 3B 0E 80 02 77 11 FF 0E 80 02 
+                3B 0E 80 02 76 07 83 C1 1F 89 0E 80 
+                02 59 3B 0E 82 02 72 1A 83 E9 1F 3B 
+                0E 82 02 77 11 FF 0E 82 02 3B 0E 82 
+                02 76 07 83 C1 1F 89 0E 82 02 8B DB 
+                81 C3 A0 00 B9 1F 00 8A 37 8A 57 01 
+                88 17 43 E2 F8 88 37 EB 60 51 3B 0E 
+                80 02 72 1D 83 E9 1F 3B 0E 80 02 77 
+                14 FF 06 80 02 83 C1 1F 3B 0E 80 02 
+                73 07 83 E9 1F 89 0E 80 02 59 3B 0E 
+                82 02 72 1D 83 E9 1F 3B 0E 82 02 77 
+                14 FF 06 82 02 83 C1 1F 3B 0E 82 02 
+                73 07 83 E9 1F 89 0E 82 02 8B DB 81 
+                C3 A0 00 83 C3 1F 8A 37 B9 1F 00 8A 
+                57 FF 88 17 4B E2 F8 88 37 61       
+[ 112]    0B37: 60 B8 00 00 BB 00 00 B9 00 00 BA 00   	Shift bx 192 1 frogPos,frogPos2
+                00 B9 1F 00 03 CB 81 C1 C0 00 B0 01 
+                3C 01 75 59 51 3B 0E 80 02 72 1A 83 
+                E9 1F 3B 0E 80 02 77 11 FF 0E 80 02 
+                3B 0E 80 02 76 07 83 C1 1F 89 0E 80 
+                02 59 3B 0E 82 02 72 1A 83 E9 1F 3B 
+                0E 82 02 77 11 FF 0E 82 02 3B 0E 82 
+                02 76 07 83 C1 1F 89 0E 82 02 8B DB 
+                81 C3 C0 00 B9 1F 00 8A 37 8A 57 01 
+                88 17 43 E2 F8 88 37 EB 60 51 3B 0E 
+                80 02 72 1D 83 E9 1F 3B 0E 80 02 77 
+                14 FF 06 80 02 83 C1 1F 3B 0E 80 02 
+                73 07 83 E9 1F 89 0E 80 02 59 3B 0E 
+                82 02 72 1D 83 E9 1F 3B 0E 82 02 77 
+                14 FF 06 82 02 83 C1 1F 3B 0E 82 02 
+                73 07 83 E9 1F 89 0E 82 02 8B DB 81 
+                C3 C0 00 83 C3 1F 8A 37 B9 1F 00 8A 
+                57 FF 88 17 4B E2 F8 88 37 61       
+[ 113]    0C0D: 60 B8 00 00 BB 00 00 B9 00 00 BA 00   Shift bx 224 0 frogPos,frogPos2
+                00 B9 1F 00 03 CB 81 C1 E0 00 B0 00 
+                3C 01 75 59 51 3B 0E 80 02 72 1A 83 
+                E9 1F 3B 0E 80 02 77 11 FF 0E 80 02 
+                3B 0E 80 02 76 07 83 C1 1F 89 0E 80 
+                02 59 3B 0E 82 02 72 1A 83 E9 1F 3B 
+                0E 82 02 77 11 FF 0E 82 02 3B 0E 82 
+                02 76 07 83 C1 1F 89 0E 82 02 8B DB 
+                81 C3 E0 00 B9 1F 00 8A 37 8A 57 01 
+                88 17 43 E2 F8 88 37 EB 60 51 3B 0E 
+                80 02 72 1D 83 E9 1F 3B 0E 80 02 77 
+                14 FF 06 80 02 83 C1 1F 3B 0E 80 02 
+                73 07 83 E9 1F 89 0E 80 02 59 3B 0E 
+                82 02 72 1D 83 E9 1F 3B 0E 82 02 77 
+                14 FF 06 82 02 83 C1 1F 3B 0E 82 02 
+                73 07 83 E9 1F 89 0E 82 02 8B DB 81 
+                C3 E0 00 83 C3 1F 8A 37 B9 1F 00 8A 
+                57 FF 88 17 4B E2 F8 88 37 61       
+[ 114]    0CE3: 60 B8 00 00 BB 00 00 B9 00 00 BA 00   	Shift bx 256 1 frogPos,frogPos2
+                00 B9 1F 00 03 CB 81 C1 00 01 B0 01 
+                3C 01 75 59 51 3B 0E 80 02 72 1A 83 
+                E9 1F 3B 0E 80 02 77 11 FF 0E 80 02 
+                3B 0E 80 02 76 07 83 C1 1F 89 0E 80 
+                02 59 3B 0E 82 02 72 1A 83 E9 1F 3B 
+                0E 82 02 77 11 FF 0E 82 02 3B 0E 82 
+                02 76 07 83 C1 1F 89 0E 82 02 8B DB 
+                81 C3 00 01 B9 1F 00 8A 37 8A 57 01 
+                88 17 43 E2 F8 88 37 EB 60 51 3B 0E 
+                80 02 72 1D 83 E9 1F 3B 0E 80 02 77 
+                14 FF 06 80 02 83 C1 1F 3B 0E 80 02 
+                73 07 83 E9 1F 89 0E 80 02 59 3B 0E 
+                82 02 72 1D 83 E9 1F 3B 0E 82 02 77 
+                14 FF 06 82 02 83 C1 1F 3B 0E 82 02 
+                73 07 83 E9 1F 89 0E 82 02 8B DB 81 
+                C3 00 01 83 C3 1F 8A 37 B9 1F 00 8A 
+                57 FF 88 17 4B E2 F8 88 37 61       
+[ 115]    0DB9: 60 B8 00 00 BB 00 00 B9 00 00 BA 00   	Shift bx 288 0 frogPos,frogPos2
+                00 B9 1F 00 03 CB 81 C1 20 01 B0 00 
+                3C 01 75 59 51 3B 0E 80 02 72 1A 83 
+                E9 1F 3B 0E 80 02 77 11 FF 0E 80 02 
+                3B 0E 80 02 76 07 83 C1 1F 89 0E 80 
+                02 59 3B 0E 82 02 72 1A 83 E9 1F 3B 
+                0E 82 02 77 11 FF 0E 82 02 3B 0E 82 
+                02 76 07 83 C1 1F 89 0E 82 02 8B DB 
+                81 C3 20 01 B9 1F 00 8A 37 8A 57 01 
+                88 17 43 E2 F8 88 37 EB 60 51 3B 0E 
+                80 02 72 1D 83 E9 1F 3B 0E 80 02 77 
+                14 FF 06 80 02 83 C1 1F 3B 0E 80 02 
+                73 07 83 E9 1F 89 0E 80 02 59 3B 0E 
+                82 02 72 1D 83 E9 1F 3B 0E 82 02 77 
+                14 FF 06 82 02 83 C1 1F 3B 0E 82 02 
+                73 07 83 E9 1F 89 0E 82 02 8B DB 81 
+                C3 20 01 83 C3 1F 8A 37 B9 1F 00 8A 
+                57 FF 88 17 4B E2 F8 88 37 61       
+[ 116]    0E8F: 60 B8 00 00 BB 00 00 B9 00 00 BA 00   Shift bx 352 1 fakePos,fakePos
+                00 B9 1F 00 03 CB 81 C1 60 01 B0 01 
+                3C 01 75 59 51 3B 0E 84 02 72 1A 83 
+                E9 1F 3B 0E 84 02 77 11 FF 0E 84 02 
+                3B 0E 84 02 76 07 83 C1 1F 89 0E 84 
+                02 59 3B 0E 84 02 72 1A 83 E9 1F 3B 
+                0E 84 02 77 11 FF 0E 84 02 3B 0E 84 
+                02 76 07 83 C1 1F 89 0E 84 02 8B DB 
+                81 C3 60 01 B9 1F 00 8A 37 8A 57 01 
+                88 17 43 E2 F8 88 37 EB 60 51 3B 0E 
+                84 02 72 1D 83 E9 1F 3B 0E 84 02 77 
+                14 FF 06 84 02 83 C1 1F 3B 0E 84 02 
+                73 07 83 E9 1F 89 0E 84 02 59 3B 0E 
+                84 02 72 1D 83 E9 1F 3B 0E 84 02 77 
+                14 FF 06 84 02 83 C1 1F 3B 0E 84 02 
+                73 07 83 E9 1F 89 0E 84 02 8B DB 81 
+                C3 60 01 83 C3 1F 8A 37 B9 1F 00 8A 
+                57 FF 88 17 4B E2 F8 88 37 61       
+[ 117]    0F65: 60 B8 00 00 BB 00 00 B9 00 00 BA 00   Shift bx 384 0 fakePos,fakePos
+                00 B9 1F 00 03 CB 81 C1 80 01 B0 00 
+                3C 01 75 59 51 3B 0E 84 02 72 1A 83 
+                E9 1F 3B 0E 84 02 77 11 FF 0E 84 02 
+                3B 0E 84 02 76 07 83 C1 1F 89 0E 84 
+                02 59 3B 0E 84 02 72 1A 83 E9 1F 3B 
+                0E 84 02 77 11 FF 0E 84 02 3B 0E 84 
+                02 76 07 83 C1 1F 89 0E 84 02 8B DB 
+                81 C3 80 01 B9 1F 00 8A 37 8A 57 01 
+                88 17 43 E2 F8 88 37 EB 60 51 3B 0E 
+                84 02 72 1D 83 E9 1F 3B 0E 84 02 77 
+                14 FF 06 84 02 83 C1 1F 3B 0E 84 02 
+                73 07 83 E9 1F 89 0E 84 02 59 3B 0E 
+                84 02 72 1D 83 E9 1F 3B 0E 84 02 77 
+                14 FF 06 84 02 83 C1 1F 3B 0E 84 02 
+                73 07 83 E9 1F 89 0E 84 02 8B DB 81 
+                C3 80 01 83 C3 1F 8A 37 B9 1F 00 8A 
+                57 FF 88 17 4B E2 F8 88 37 61       
+[ 118]    103B: 60 B8 00 00 BB 00 00 B9 00 00 BA 00   Shift bx 416 1 fakePos,fakePos
+                00 B9 1F 00 03 CB 81 C1 A0 01 B0 01 
+                3C 01 75 59 51 3B 0E 84 02 72 1A 83 
+                E9 1F 3B 0E 84 02 77 11 FF 0E 84 02 
+                3B 0E 84 02 76 07 83 C1 1F 89 0E 84 
+                02 59 3B 0E 84 02 72 1A 83 E9 1F 3B 
+                0E 84 02 77 11 FF 0E 84 02 3B 0E 84 
+                02 76 07 83 C1 1F 89 0E 84 02 8B DB 
+                81 C3 A0 01 B9 1F 00 8A 37 8A 57 01 
+                88 17 43 E2 F8 88 37 EB 60 51 3B 0E 
+                84 02 72 1D 83 E9 1F 3B 0E 84 02 77 
+                14 FF 06 84 02 83 C1 1F 3B 0E 84 02 
+                73 07 83 E9 1F 89 0E 84 02 59 3B 0E 
+                84 02 72 1D 83 E9 1F 3B 0E 84 02 77 
+                14 FF 06 84 02 83 C1 1F 3B 0E 84 02 
+                73 07 83 E9 1F 89 0E 84 02 8B DB 81 
+                C3 A0 01 83 C3 1F 8A 37 B9 1F 00 8A 
+                57 FF 88 17 4B E2 F8 88 37 61       
+[ 119]        :                                       
+[ 120]        :                                       	
+[ 121]    1111: C6 06 5F 03 04                        	mov delayLoops,4
+[ 122]    1116:                                       	DelayedLoop:
+[ 123]    1116: FE 0E 5F 03                           	dec delayLoops
+[ 124]        :                                       	
+[ 125]        :                                       	;Testing the score
+[ 126]    111A: 52                                    	push dx
+[ 127]    111B: 8A 16 5F 03                           	mov dl,delayLoops
+[ 128]    111F: 88 16 4E 03                           	mov playerScore1,dl
+[ 129]    1123: 80 06 4E 03 30                        	add playerScore1,'0'
+[ 130]    1128: 5A                                    	pop dx
+[ 131]        :                                       	
+[ 132]        :                                       	;mov ax,frogPos
+[ 133]        :                                       	;mov oldPos,ax
+[ 134]        :                                       	
+[ 135]    1129: 60 B4 01 CD 16 75 03 E9 CA 00 B4 00   	TakeInputGame frogPos, BoundsFlag
+                CD 16 80 FC 48 74 1F 80 FC 50 74 3D 
+                80 FC 4B 74 68 80 FC 4D 74 49 80 FC 
+                11 74 77 80 FC 1F 75 03 E9 8F 00 E9 
+                A2 00 83 2E 80 02 20 83 3E 80 02 40 
+                72 0F 73 03 E9 91 00 83 3E 80 02 5F 
+                76 03 E9 87 00 C6 06 86 02 01 E9 7F 
+                00 83 06 80 02 20 81 3E 80 02 60 02 
+                73 02 EB 70 C6 06 86 02 02 EB 69 FF 
+                06 80 02 A1 80 02 40 B3 20 F6 F3 80 
+                FC 00 74 02 EB 56 C6 06 86 02 03 EB 
+                4F FF 0E 80 02 A1 80 02 B3 20 F6 F3 
+                80 FC 00 74 02 EB 3D C6 06 86 02 04 
+                EB 36 83 2E 80 02 40 83 3E 80 02 40 
+                72 0D 73 02 EB 26 83 3E 80 02 5F 76 
+                02 EB 1D C6 06 86 02 01 EB 16 83 06 
+                80 02 40 81 3E 80 02 60 02 73 02 EB 
+                07 C6 06 86 02 02 EB 00 61          
+[ 136]        :                                       	
+[ 137]    11FE: BB 00 00                              lea bx,tiles
+[ 138]    1201: 03 1E 80 02                           	add bx , frogPos
+[ 139]    1205: 8A 07                                 	mov al,tiles[bx]
+[ 140]    1207: 3C 03                                 cmp al,3  ;water
+[ 141]    1209: 74 0A                                 je Dead
+[ 142]    120B: 3C 08                                 cmp al,8  ;Car front
+[ 143]    120D: 74 06                                 je Dead
+[ 144]    120F: 3C 09                                 cmp al,9  ;Car end
+[ 145]    1211: 74 02                                 je Dead
+[ 146]    1213: EB 06                                 jmp Alive
+[ 147]        :                                       
+[ 148]    1215:                                       Dead:
+[ 149]    1215: C7 06 80 02 62 02                     mov frogPos,610
+[ 150]        :                                       
+[ 151]    121B:                                       Alive:
+[ 152]        :                                       
+[ 153]        :                                       	;lea bx,tiles
+[ 154]        :                                       ;add bx,oldPos
+[ 155]        :                                       ;mov al,oldCode
+[ 156]        :                                       ;mov [bx],al
+[ 157]        :                                       	
+[ 158]        :                                       	;lea bx,tiles
+[ 159]        :                                       	;add bx,frogPos
+[ 160]        :                                       	;mov al,[bx]
+[ 161]        :                                       	;mov oldCode,al
+[ 162]        :                                       	
+[ 163]        :                                       ;lea bx,tiles
+[ 164]        :                                       ;add bx,frogPos
+[ 165]        :                                       ;mov [bx],01h
+[ 166]        :                                       	
+[ 167]        :                                       		
+[ 168]    121B:                                       drawCubes:
+[ 169]    121B: BB 00 00                              mov bx, offset tiles
+[ 170]    121E: 03 D9                                 add bx,cx
+[ 171]        :                                       
+[ 172]    1220: 8A 17                                 mov dl,[bx]
+[ 173]        :                                       
+[ 174]    1222: 80 3F 06                              cmp [bx],6
+[ 175]    1225: 74 03 E9 8D 01                        jnz logBeg:
+[ 176]        :                                       
+[ 177]        :                                       ;Draw log beg------------------------
+[ 178]    122A: 51                                    push cx
+[ 179]    122B: 52                                    push dx
+[ 180]    122C: 8B 0E 5A 03                           mov cx, xpos
+[ 181]    1230: 8B 16 5C 03                           mov dx, ypos
+[ 182]        :                                       	
+[ 183]    1234: 83 C2 02                              	add dx,2
+[ 184]    1237: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 6, 06h
+                C3 06 CD 10 41 3B CB 75 F9 61       
+[ 185]        :                                       	
+[ 186]    124D: 42                                    	inc dx
+[ 187]    124E: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 7, 06h
+                C3 07 CD 10 41 3B CB 75 F9 61       
+[ 188]        :                                       	
+[ 189]    1264: 42                                    	inc dx
+[ 190]    1265: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 8, 06h
+                C3 08 CD 10 41 3B CB 75 F9 61       
+[ 191]        :                                       	
+[ 192]    127B: 42                                    	inc dx
+[ 193]    127C: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 9, 06h
+                C3 09 CD 10 41 3B CB 75 F9 61       
+[ 194]        :                                       	
+[ 195]    1292: 42                                    	inc dx
+[ 196]    1293: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 8, 06h
+                C3 08 CD 10 41 3B CB 75 F9 61       
+[ 197]        :                                       	
+[ 198]    12A9: 42                                    	inc dx
+[ 199]    12AA: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 7, 06h
+                C3 07 CD 10 41 3B CB 75 F9 61       
+[ 200]        :                                       	
+[ 201]    12C0: 42                                    	inc dx
+[ 202]    12C1: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 6, 06h
+                C3 06 CD 10 41 3B CB 75 F9 61       
+[ 203]        :                                       	
+[ 204]        :                                       	;water filling
+[ 205]    12D7: 8B 16 5C 03                           	mov dx,ypos
+[ 206]    12DB: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 207]    12F1: 42                                    	inc dx
+[ 208]    12F2: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 209]    1308: 42                                    	inc dx
+[ 210]    1309: 83 C1 06                              	add cx,6
+[ 211]    130C: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 4, 001b
+                C3 04 CD 10 41 3B CB 75 F9 61       
+[ 212]    1322: 42                                    	inc dx
+[ 213]    1323: 41                                    	inc cx
+[ 214]    1324: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 3, 001b
+                C3 03 CD 10 41 3B CB 75 F9 61       
+[ 215]    133A: 42                                    	inc dx
+[ 216]    133B: 41                                    	inc cx
+[ 217]    133C: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 2, 001b
+                C3 02 CD 10 41 3B CB 75 F9 61       
+[ 218]    1352: 42                                    	inc dx
+[ 219]    1353: 41                                    	inc cx
+[ 220]    1354: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 1, 001b
+                C3 01 CD 10 41 3B CB 75 F9 61       
+[ 221]    136A: 42                                    	inc dx
+[ 222]    136B: 49                                    	dec cx
+[ 223]    136C: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 2, 001b
+                C3 02 CD 10 41 3B CB 75 F9 61       
+[ 224]    1382: 42                                    	inc dx
+[ 225]    1383: 49                                    	dec cx
+[ 226]    1384: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 3, 001b
+                C3 03 CD 10 41 3B CB 75 F9 61       
+[ 227]    139A: 42                                    	inc dx
+[ 228]    139B: 49                                    	dec cx
+[ 229]    139C: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 4, 001b
+                C3 04 CD 10 41 3B CB 75 F9 61       
+[ 230]        :                                       
+[ 231]    13B2: 5A                                    pop dx
+[ 232]    13B3: 59                                    pop cx
+[ 233]        :                                       ;------------------------------------
+[ 234]    13B4: E9 02 05                              jmp DoneDrawing
+[ 235]    13B7:                                       logBeg:
+[ 236]        :                                       
+[ 237]    13B7: 80 3F 07                              cmp [bx],7
+[ 238]    13BA: 74 03 E9 91 01                        jnz logEnd:
+[ 239]        :                                       
+[ 240]        :                                       ;Draw log End------------------------
+[ 241]    13BF: 51                                    push cx
+[ 242]    13C0: 52                                    push dx
+[ 243]    13C1: 8B 0E 5A 03                           mov cx, xpos
+[ 244]    13C5: 8B 16 5C 03                           mov dx, ypos
+[ 245]        :                                       	
+[ 246]    13C9: 83 C1 04                              	add cx,4
+[ 247]    13CC: 83 C2 02                              	add dx,2
+[ 248]    13CF: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 6, 06h
+                C3 06 CD 10 41 3B CB 75 F9 61       
+[ 249]        :                                       	
+[ 250]    13E5: 42                                    	inc dx
+[ 251]    13E6: 49                                    	dec cx
+[ 252]    13E7: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 7, 06h
+                C3 07 CD 10 41 3B CB 75 F9 61       
+[ 253]        :                                       	
+[ 254]    13FD: 42                                    	inc dx
+[ 255]    13FE: 49                                    	dec cx
+[ 256]    13FF: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 8, 06h
+                C3 08 CD 10 41 3B CB 75 F9 61       
+[ 257]        :                                       	
+[ 258]    1415: 42                                    	inc dx
+[ 259]    1416: 49                                    	dec cx
+[ 260]    1417: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 9, 06h
+                C3 09 CD 10 41 3B CB 75 F9 61       
+[ 261]        :                                       	
+[ 262]    142D: 42                                    	inc dx
+[ 263]    142E: 41                                    	inc cx
+[ 264]    142F: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 8, 06h
+                C3 08 CD 10 41 3B CB 75 F9 61       
+[ 265]        :                                       	
+[ 266]    1445: 42                                    	inc dx
+[ 267]    1446: 41                                    	inc cx
+[ 268]    1447: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 7, 06h
+                C3 07 CD 10 41 3B CB 75 F9 61       
+[ 269]        :                                       	
+[ 270]    145D: 42                                    	inc dx
+[ 271]    145E: 41                                    	inc cx
+[ 272]    145F: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 6, 06h
+                C3 06 CD 10 41 3B CB 75 F9 61       
+[ 273]        :                                       	;water filling
+[ 274]    1475: 8B 0E 5A 03                           	mov cx,xpos
+[ 275]    1479: 8B 16 5C 03                           	mov dx,ypos
+[ 276]    147D: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 277]    1493: 42                                    	inc dx
+[ 278]    1494: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 279]    14AA: 42                                    	inc dx
+[ 280]    14AB: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 4, 001b
+                C3 04 CD 10 41 3B CB 75 F9 61       
+[ 281]    14C1: 42                                    	inc dx
+[ 282]    14C2: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 3, 001b
+                C3 03 CD 10 41 3B CB 75 F9 61       
+[ 283]    14D8: 42                                    	inc dx
+[ 284]    14D9: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 2, 001b
+                C3 02 CD 10 41 3B CB 75 F9 61       
+[ 285]    14EF: 42                                    	inc dx
+[ 286]    14F0: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 1, 001b
+                C3 01 CD 10 41 3B CB 75 F9 61       
+[ 287]    1506: 42                                    	inc dx
+[ 288]    1507: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 2, 001b
+                C3 02 CD 10 41 3B CB 75 F9 61       
+[ 289]    151D: 42                                    	inc dx
+[ 290]    151E: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 3, 001b
+                C3 03 CD 10 41 3B CB 75 F9 61       
+[ 291]    1534: 42                                    	inc dx
+[ 292]    1535: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 4, 001b
+                C3 04 CD 10 41 3B CB 75 F9 61       
+[ 293]        :                                       	
+[ 294]    154B: 5A                                    pop dx
+[ 295]    154C: 59                                    pop cx
+[ 296]        :                                       ;------------------------------------
+[ 297]        :                                       
+[ 298]    154D: E9 69 03                              jmp DoneDrawing
+[ 299]    1550:                                       logEnd:
+[ 300]        :                                       
+[ 301]        :                                       
+[ 302]    1550: 80 3F 08                              cmp [bx],8
+[ 303]    1553: 74 03 E9 FE 00                        jnz carBeg:
+[ 304]        :                                       
+[ 305]        :                                       ;Draw car Beg-----------------------
+[ 306]    1558: 51                                    push cx
+[ 307]    1559: 52                                    push dx
+[ 308]    155A: 8B 0E 5A 03                           	mov cx, xpos
+[ 309]    155E: 8B 16 5C 03                           mov dx, ypos
+[ 310]        :                                       	
+[ 311]    1562: 83 C2 02                              		add dx,2
+[ 312]    1565: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 313]        :                                       	
+[ 314]    157B: 42                                    	inc dx
+[ 315]    157C: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 316]        :                                       	
+[ 317]    1592: 42                                    	inc dx
+[ 318]    1593: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 319]        :                                       	
+[ 320]    15A9: 42                                    	inc dx
+[ 321]    15AA: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 322]        :                                       	
+[ 323]    15C0: 42                                    	inc dx
+[ 324]    15C1: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 325]        :                                       	
+[ 326]    15D7: 42                                    	inc dx
+[ 327]    15D8: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 328]        :                                       	
+[ 329]    15EE: 8B 16 5C 03                           	mov dx,ypos
+[ 330]        :                                       	
+[ 331]    15F2: 41                                    	inc cx
+[ 332]    15F3: 83 C2 03                              	add dx,3
+[ 333]    15F6: 60 8B C9 8B D2 B0 0B B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 8, 11D
+                C3 08 CD 10 41 3B CB 75 F9 61       
+[ 334]        :                                       	
+[ 335]    160C: 42                                    	inc dx
+[ 336]    160D: 60 8B C9 8B D2 B0 0B B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 8, 11D
+                C3 08 CD 10 41 3B CB 75 F9 61       
+[ 337]        :                                       	
+[ 338]    1623: 42                                    	inc dx
+[ 339]    1624: 60 8B C9 8B D2 B0 0B B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 8, 11D
+                C3 08 CD 10 41 3B CB 75 F9 61       
+[ 340]        :                                       	
+[ 341]    163A: 42                                    	inc dx
+[ 342]    163B: 60 8B C9 8B D2 B0 0B B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 8, 11D
+                C3 08 CD 10 41 3B CB 75 F9 61       
+[ 343]    1651: 5A                                    pop dx
+[ 344]    1652: 59                                    pop cx
+[ 345]        :                                       ;--------------------------------------
+[ 346]        :                                       
+[ 347]    1653: E9 63 02                              jmp DoneDrawing
+[ 348]    1656:                                       carBeg:
+[ 349]        :                                       
+[ 350]    1656: 80 3F 09                              cmp [bx],9
+[ 351]    1659: 74 03 E9 FE 00                        jnz carEnd:
+[ 352]        :                                       
+[ 353]        :                                       ;Draw car end--------------------------
+[ 354]    165E: 51                                    push cx
+[ 355]    165F: 52                                    push dx
+[ 356]    1660: 8B 0E 5A 03                           mov cx, xpos
+[ 357]    1664: 8B 16 5C 03                           mov dx, ypos
+[ 358]        :                                       	
+[ 359]        :                                       	;first wheel
+[ 360]    1668: 83 C1 02                              	add cx,2
+[ 361]    166B: 60 8B C9 8B D2 B0 0E B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 6, 14D
+                C3 06 CD 10 41 3B CB 75 F9 61       
+[ 362]        :                                       	
+[ 363]    1681: 42                                    	inc dx
+[ 364]    1682: 60 8B C9 8B D2 B0 0E B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 6, 14D
+                C3 06 CD 10 41 3B CB 75 F9 61       
+[ 365]        :                                       	
+[ 366]        :                                       	;car body between the two wheels
+[ 367]    1698: 8B 0E 5A 03                           	mov cx,xpos
+[ 368]    169C: 42                                    	inc dx
+[ 369]    169D: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 370]        :                                       	
+[ 371]    16B3: 42                                    	inc dx
+[ 372]    16B4: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 373]        :                                       	
+[ 374]    16CA: 42                                    	inc dx
+[ 375]    16CB: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 376]        :                                       	
+[ 377]    16E1: 42                                    	inc dx
+[ 378]    16E2: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 379]        :                                       	
+[ 380]    16F8: 42                                    	inc dx
+[ 381]    16F9: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 382]        :                                       	
+[ 383]    170F: 42                                    	inc dx
+[ 384]    1710: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 10, 001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 385]        :                                       	
+[ 386]        :                                       	;second wheel
+[ 387]    1726: 42                                    	inc dx
+[ 388]    1727: 83 C1 02                              	add cx,2
+[ 389]    172A: 60 8B C9 8B D2 B0 0E B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 6, 14D
+                C3 06 CD 10 41 3B CB 75 F9 61       
+[ 390]        :                                       	
+[ 391]    1740: 42                                    	inc dx
+[ 392]    1741: 60 8B C9 8B D2 B0 0E B4 0C 8B D9 83   	DrawHorizontalLine cx, dx, 6, 14D
+                C3 06 CD 10 41 3B CB 75 F9 61       
+[ 393]    1757: 5A                                    pop dx
+[ 394]    1758: 59                                    pop cx
+[ 395]        :                                       ;--------------------------------------
+[ 396]        :                                       
+[ 397]    1759: E9 5D 01                              jmp DoneDrawing
+[ 398]    175C:                                       carEnd:
+[ 399]        :                                       
+[ 400]    175C: 80 3F 02                              cmp [bx],2
+[ 401]    175F: 74 03 E9 E2 00                        jnz logMain:
+[ 402]        :                                       
+[ 403]        :                                       ;Draw logMain--------------------------
+[ 404]    1764: 51                                    push cx
+[ 405]    1765: 52                                    push dx
+[ 406]    1766: 8B 0E 5A 03                           mov cx, xpos
+[ 407]    176A: 8B 16 5C 03                           mov dx, ypos
+[ 408]        :                                       	
+[ 409]    176E: 83 C2 02                              	add dx,2
+[ 410]    1771: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx,dx,10,06h
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 411]        :                                       	
+[ 412]    1787: 42                                    	inc dx
+[ 413]    1788: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx,dx,10,06h
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 414]        :                                       	
+[ 415]    179E: 42                                    	inc dx
+[ 416]    179F: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx,dx,10,06h
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 417]        :                                       	
+[ 418]    17B5: 42                                    	inc dx
+[ 419]    17B6: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx,dx,10,06h
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 420]        :                                       	
+[ 421]    17CC: 42                                    	inc dx
+[ 422]    17CD: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx,dx,10,06h
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 423]        :                                       	
+[ 424]    17E3: 42                                    	inc dx
+[ 425]    17E4: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx,dx,10,06h
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 426]        :                                       	
+[ 427]    17FA: 42                                    	inc dx
+[ 428]    17FB: 60 8B C9 8B D2 B0 06 B4 0C 8B D9 83   	DrawHorizontalLine cx,dx,10,06h
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 429]        :                                       	;water filling
+[ 430]    1811: 8B 16 5C 03                           	mov dx,ypos
+[ 431]    1815: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx,dx,10,001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 432]    182B: 42                                    	inc dx
+[ 433]    182C: 60 8B C9 8B D2 B0 01 B4 0C 8B D9 83   	DrawHorizontalLine cx,dx,10,001b
+                C3 0A CD 10 41 3B CB 75 F9 61       
+[ 434]        :                                       	
+[ 435]    1842: 5A                                    pop dx
+[ 436]    1843: 59                                    pop cx
+[ 437]        :                                       ;--------------------------------------
+[ 438]        :                                       
+[ 439]    1844: EB 73                                 jmp DoneDrawing
+[ 440]    1846:                                       logMain:
+[ 441]        :                                       
+[ 442]        :                                       
+[ 443]    1846: 60 B0 00 80 3F 00 74 6A 80 3F 02 75   DrawTileCode xpos ypos [bx]
+                02 B0 06 80 3F 06 75 02 B0 06 80 3F 
+                07 75 02 B0 06 80 3F 03 75 02 B0 01 
+                80 3F 04 75 02 B0 07 80 3F 05 75 02 
+                B0 08 80 3F 01 75 02 B0 02 80 3F 0A 
+                75 02 B0 0E 80 3F 08 75 02 B0 0F 80 
+                3F 09 75 02 B0 0F 8B 0E 5A 03 8B 16 
+                5C 03 B4 0C B3 00 8B 0E 5A 03 B7 00 
+                CD 10 41 FE C7 80 FF 0A 75 F6 42 FE 
+                C3 80 FB 0A 75 E8 61                
+[ 444]        :                                       
+[ 445]    18B9:                                       DoneDrawing:
+[ 446]        :                                       
+[ 447]    18B9: 3B 0E 80 02                           cmp cx,frogPos
+[ 448]    18BD: 74 03 E9 AE 01                        jnz Frog:
+[ 449]        :                                       
+[ 450]        :                                       ;Draw Frog----------------------------
+[ 451]        :                                       ;Draw the frog's 4 legs
+[ 452]    18C2: 51                                    push cx
+[ 453]    18C3: 52                                    push dx
+[ 454]    18C4: 8B 0E 5A 03                           mov cx, xpos
+[ 455]    18C8: 8B 16 5C 03                           mov dx, ypos
+[ 456]    18CC: 41                                    inc cx
+[ 457]    18CD: 60 8B C9 8B D2 B0 02 B4 0C 8B DA 83   DrawVerticalLine cx,dx,4,010b
+                C3 04 CD 10 42 3B D3 75 F9 61       
+[ 458]    18E3: 83 C2 05                              add dx,5
+[ 459]    18E6: 60 8B C9 8B D2 B0 02 B4 0C 8B DA 83   DrawVerticalLine cx,dx,4,010b
+                C3 04 CD 10 42 3B D3 75 F9 61       
+[ 460]    18FC: 8B 0E 5A 03                           mov cx, xpos
+[ 461]    1900: 8B 16 5C 03                           mov dx, ypos
+[ 462]    1904: 83 C1 08                              add cx,8
+[ 463]    1907: 60 8B C9 8B D2 B0 02 B4 0C 8B DA 83   DrawVerticalLine cx,dx,4,010b
+                C3 04 CD 10 42 3B D3 75 F9 61       
+[ 464]    191D: 83 C2 05                              add dx,5
+[ 465]    1920: 60 8B C9 8B D2 B0 02 B4 0C 8B DA 83   DrawVerticalLine cx,dx,4,010b
+                C3 04 CD 10 42 3B D3 75 F9 61       
+[ 466]        :                                       
+[ 467]        :                                       ;Draw 4 feet
+[ 468]    1936: 8B 0E 5A 03                           mov cx, xpos
+[ 469]    193A: 8B 16 5C 03                           mov dx, ypos
+[ 470]    193E: 42                                    inc dx
+[ 471]    193F: 60 8B C9 8B D2 B0 02 B4 0C CD 10 61   DrawPixel cx,dx,010b
+                                                    
+[ 472]    194B: 83 C1 09                              add cx,9
+[ 473]    194E: 60 8B C9 8B D2 B0 02 B4 0C CD 10 61   DrawPixel cx,dx,010b
+                                                    
+[ 474]    195A: 8B 0E 5A 03                           mov cx, xpos
+[ 475]    195E: 8B 16 5C 03                           mov dx, ypos
+[ 476]    1962: 83 C2 07                              add dx,7
+[ 477]    1965: 60 8B C9 8B D2 B0 02 B4 0C CD 10 61   DrawPixel cx,dx,010b
+                                                    
+[ 478]    1971: 83 C1 09                              add cx,9
+[ 479]    1974: 60 8B C9 8B D2 B0 02 B4 0C CD 10 61   DrawPixel cx,dx,010b
+                                                    
+[ 480]        :                                       
+[ 481]        :                                       ;Draw the connections between legs and body
+[ 482]    1980: 8B 0E 5A 03                           mov cx, xpos
+[ 483]    1984: 8B 16 5C 03                           mov dx, ypos
+[ 484]    1988: 83 C1 02                              add cx,2
+[ 485]    198B: 83 C2 03                              add dx,3
+[ 486]    198E: 60 8B C9 8B D2 B0 02 B4 0C CD 10 61   DrawPixel cx,dx,010b
+                                                    
+[ 487]    199A: 83 C1 05                              add cx,5
+[ 488]    199D: 60 8B C9 8B D2 B0 02 B4 0C CD 10 61   DrawPixel cx,dx,010b
+                                                    
+[ 489]    19A9: 8B 0E 5A 03                           mov cx, xpos
+[ 490]    19AD: 8B 16 5C 03                           mov dx, ypos
+[ 491]    19B1: 83 C2 05                              add dx,5
+[ 492]    19B4: 83 C1 02                              add cx,2
+[ 493]    19B7: 60 8B C9 8B D2 B0 02 B4 0C CD 10 61   DrawPixel cx,dx,010b
+                                                    
+[ 494]    19C3: 83 C1 05                              add cx,5
+[ 495]    19C6: 60 8B C9 8B D2 B0 02 B4 0C CD 10 61   DrawPixel cx,dx,010b
+                                                    
+[ 496]        :                                       
+[ 497]        :                                       ;Draw the frog body
+[ 498]    19D2: 8B 0E 5A 03                           mov cx, xpos
+[ 499]    19D6: 8B 16 5C 03                           mov dx, ypos
+[ 500]    19DA: 83 C1 03                              add cx,3
+[ 501]    19DD: 83 C2 02                              add dx,2
+[ 502]    19E0: 60 8B C9 8B D2 B0 06 B4 0C 8B DA 83   DrawVerticalLine cx,dx,6,110b
+                C3 06 CD 10 42 3B D3 75 F9 61       
+[ 503]    19F6: 83 C1 03                              add cx,3
+[ 504]    19F9: 60 8B C9 8B D2 B0 06 B4 0C 8B DA 83   DrawVerticalLine cx,dx,6,110b
+                C3 06 CD 10 42 3B D3 75 F9 61       
+[ 505]    1A0F: 8B 0E 5A 03                           mov cx, xpos
+[ 506]    1A13: 8B 16 5C 03                           mov dx, ypos
+[ 507]    1A17: 83 C1 04                              add cx,4
+[ 508]    1A1A: 60 8B C9 8B D2 B0 06 B4 0C 8B DA 83   DrawVerticalLine cx,dx,9,110b
+                C3 09 CD 10 42 3B D3 75 F9 61       
+[ 509]    1A30: 41                                    inc cx
+[ 510]    1A31: 60 8B C9 8B D2 B0 06 B4 0C 8B DA 83   DrawVerticalLine cx,dx,9,110b
+                C3 09 CD 10 42 3B D3 75 F9 61       
+[ 511]        :                                       
+[ 512]        :                                       ;Draw the frog's eyes
+[ 513]    1A47: 8B 0E 5A 03                           mov cx, xpos
+[ 514]    1A4B: 8B 16 5C 03                           mov dx, ypos
+[ 515]    1A4F: 83 C1 03                              add cx,3
+[ 516]    1A52: 42                                    inc dx
+[ 517]    1A53: 60 8B C9 8B D2 B0 04 B4 0C CD 10 61   DrawPixel cx,dx,100b
+                                                    
+[ 518]    1A5F: 83 C1 03                              add cx,3
+[ 519]    1A62: 60 8B C9 8B D2 B0 04 B4 0C CD 10 61   DrawPixel cx,dx,100b
+                                                    
+[ 520]    1A6E: 5A                                    pop dx
+[ 521]    1A6F: 59                                    pop cx
+[ 522]        :                                       ;--------------------------------
+[ 523]        :                                       
+[ 524]        :                                       ;jmp DoneDrawing
+[ 525]    1A70:                                       Frog:
+[ 526]        :                                       
+[ 527]    1A70: 83 06 5A 03 0A                        add xpos, 10
+[ 528]    1A75: 81 3E 5A 03 40 01                     cmp xpos, 320
+[ 529]    1A7B: 75 0B                                 jnz rowCompleted
+[ 530]    1A7D: C7 06 5A 03 00 00                     mov xpos,0
+[ 531]    1A83: 83 06 5C 03 0A                        add ypos,10
+[ 532]    1A88:                                       rowCompleted:
+[ 533]        :                                       
+[ 534]    1A88: 41                                    inc cx
+[ 535]    1A89: 81 F9 80 02                           cmp cx,640
+[ 536]    1A8D: 74 03 E9 89 F7                        jnz drawCubes
+[ 537]        :                                       
+[ 538]    1A92: 60 B4 02 B7 00 BA 00 00 CD 10 60 B4   ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep
+                09 BA 2E 03 CD 21 61 B4 02 B7 00 BA 
+                06 00 CD 10 60 B4 09 BA 4E 03 CD 21 
+                61 B4 02 B7 00 BA 0F 00 CD 10 60 B4 
+                09 BA 52 03 CD 21 61 B4 02 B7 00 BA 
+                20 00 CD 10 60 B4 09 BA 50 03 CD 21 
+                61 B4 02 B7 00 BA 22 00 CD 10 60 B4 
+                09 BA 3F 03 CD 21 61 61             
+[ 539]        :                                       
+[ 540]    1AEE: E9 F0 EC                              jmp GameLoop
+[ 541]        :                                       
+[ 542]        :                                       
+[ 543]    1AF1: F4                                    hlt
+[ 544]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: F2      -   bytes on last page (l.byte)
+0003: 00      -   bytes on last page (h.byte)
+0004: 0F      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 40      -   SP - stack pointer (l.byte)
+0011: 00      -   SP - stack pointer (h.byte)
+0012: C9      -   check sum (l.byte)
+0013: 59      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 3A      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 3A      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================
