@@ -14,7 +14,8 @@ tiles db 640 dup(3)    ;Code byte for the content of each tile 0:Status | 1:Frog
 frogPos dw 610
 frogPos2 dw 620
 fakePos dw 610
-BoundsFlag db ?
+BoundsFlag db ? 
+BoundsFlag2 db ?
 
 ;------MainMenu\IntroScreen\StatusBar----------------
 mes1 db '*To start Frogx86 press ENTER','$'
@@ -132,7 +133,7 @@ GameLoop:
 	;mov ax,frogPos
 	;mov oldPos,ax
 	
-	TakeInputGame frogPos, BoundsFlag
+	TakeGameInput frogPos,frogPos2,BoundsFlag,BoundsFlag2
 	
     lea bx,tiles
 	add bx , frogPos
@@ -521,8 +522,86 @@ GameLoop:
       pop cx 
       ;--------------------------------
     
-    ;jmp DoneDrawing
     Frog:
+	
+	cmp cx,frogPos2
+    jnz Frog2:
+    
+    ;Draw Frog----------------------------
+    ;Draw the frog's 4 legs
+      push cx 
+      push dx 
+      mov cx, xpos 
+      mov dx, ypos 
+      inc cx 
+      DrawVerticalLine cx,dx,4,010b
+      add dx,5
+      DrawVerticalLine cx,dx,4,010b
+      mov cx, xpos 
+      mov dx, ypos
+      add cx,8
+      DrawVerticalLine cx,dx,4,010b
+      add dx,5
+      DrawVerticalLine cx,dx,4,010b
+
+      ;Draw 4 feet
+      mov cx, xpos 
+      mov dx, ypos
+      inc dx
+      DrawPixel cx,dx,010b
+      add cx,9 
+      DrawPixel cx,dx,010b 
+      mov cx, xpos 
+      mov dx, ypos
+      add dx,7
+      DrawPixel cx,dx,010b
+      add cx,9
+      DrawPixel cx,dx,010b 
+
+      ;Draw the connections between legs and body
+      mov cx, xpos 
+      mov dx, ypos
+      add cx,2
+      add dx,3
+      DrawPixel cx,dx,010b 
+      add cx,5
+      DrawPixel cx,dx,010b
+      mov cx, xpos 
+      mov dx, ypos
+      add dx,5
+      add cx,2
+      DrawPixel cx,dx,010b 
+      add cx,5
+      DrawPixel cx,dx,010b 
+      
+      ;Draw the frog body
+      mov cx, xpos 
+      mov dx, ypos
+      add cx,3
+      add dx,2
+      DrawVerticalLine cx,dx,6,110b
+      add cx,3
+      DrawVerticalLine cx,dx,6,110b
+      mov cx, xpos 
+      mov dx, ypos
+      add cx,4
+      DrawVerticalLine cx,dx,9,110b
+      inc cx
+      DrawVerticalLine cx,dx,9,110b
+
+      ;Draw the frog's eyes
+      mov cx, xpos 
+      mov dx, ypos
+      add cx,3
+      inc dx
+      DrawPixel cx,dx,100b
+      add cx,3
+      DrawPixel cx,dx,100b
+      pop dx 
+      pop cx 
+      ;--------------------------------
+    
+    Frog2:
     
     add xpos, 10
     cmp xpos, 320
