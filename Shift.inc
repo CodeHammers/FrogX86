@@ -3,7 +3,7 @@
 ;sflag => 0 => shift left , 1=> shift right
 
 
-Shift MACRO base_addr,start,sflag,froggy
+Shift MACRO base_addr,start,sflag,froggy,froggy2
     
     LOCAL ShiftRight
     LOCAL ShiftLeft
@@ -12,7 +12,8 @@ Shift MACRO base_addr,start,sflag,froggy
     LOCAL Done
     LOCAL Frog_outL
     LOCAL Frog_outR
-
+    LOCAL Frog_outL2
+    LOCAL Frog_outR2
     pusha   
      mov ax,0
      mov bx,0
@@ -30,6 +31,7 @@ Shift MACRO base_addr,start,sflag,froggy
      
      
      ShiftLeft:
+     push cx
      cmp cx,froggy
      jb Frog_outL
      sub cx,31
@@ -38,10 +40,26 @@ Shift MACRO base_addr,start,sflag,froggy
      dec froggy
      cmp cx,froggy
      jbe Frog_outL
-
      add cx,31
      mov froggy ,cx
-     Frog_outL:
+
+    Frog_outL:
+     pop cx
+     cmp cx,froggy2
+     jb Frog_outL2
+     sub cx,31
+     cmp cx,froggy2
+     ja Frog_outL2
+     dec froggy2
+     cmp cx,froggy2
+     jbe Frog_outL2
+     add cx,31
+     mov froggy2 ,cx
+
+
+
+
+     Frog_outL2:
 	   mov bx,base_addr 
 		add bx, start 
        mov cx,31
@@ -60,13 +78,13 @@ Shift MACRO base_addr,start,sflag,froggy
      jmp Done
      
      ShiftRight:
+     push cx
      cmp cx,froggy
      jb Frog_outR
      sub cx,31
      cmp cx,froggy
      ja Frog_outR
      inc froggy
-
      add cx,31
      cmp cx,froggy
      jae Frog_outR
@@ -74,6 +92,20 @@ Shift MACRO base_addr,start,sflag,froggy
      mov froggy,cx
 
      Frog_outR:
+     pop cx
+     cmp cx,froggy2
+     jb Frog_outR2
+     sub cx,31
+     cmp cx,froggy2
+     ja Frog_outR2
+     inc froggy2
+     add cx,31
+     cmp cx,froggy2
+     jae Frog_outR2
+     sub cx,31
+     mov froggy2,cx
+
+     Frog_outR2:
        mov bx,base_addr 
 		add bx,start
        add bx,31
