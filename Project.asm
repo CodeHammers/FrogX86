@@ -12,7 +12,7 @@ include Shift.inc
 tiles db 640 dup(3)    ;Code byte for the content of each tile 0:Status | 1:Frog | 2:Log main | 3:Water | 4:Pavement | 5:Road | 6: log beg. | 7: log end | 8: Car rear | 9: Car front | 10: endPoint
 
 frogPos dw 610
-frogPos2 dw 620
+frogPos2 dw 638
 fakePos dw 610
 BoundsFlag db ? 
 BoundsFlag2 db ?
@@ -100,7 +100,7 @@ GameLoop:
     mov cx,0
     mov xpos,0
     mov ypos,0
-    ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep  
+   
 	cmp delayLoops,0
 	jnz DelayedLoop
 	;Shifting the rows
@@ -163,7 +163,7 @@ GameLoop:
     jmp Alive2
 
     Dead2:
-        mov frogPos2,611
+        mov frogPos2,638
     
     Alive2: 
 
@@ -630,8 +630,6 @@ GameLoop:
     inc cx
     cmp cx,640
     jnz drawCubes
-    
-    ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep
      
 jmp GameLoop 
  
