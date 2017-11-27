@@ -15,12 +15,25 @@ frogPos dw 610
 fakePos dw 610
 BoundsFlag db ?
 
-PlayerName1 db 'Sayed$'
-PlayerName2 db 'Kareem$'
+;------MainMenu\IntroScreen\StatusBar----------------
+mes1 db '*To start Frogx86 press ENTER','$'
+mes2 db '*To end the program press ESC','$'
+mes3 db 'Please enter player1 name:',10,13 ,'$'
+mes4 db 'Press Enter key to continue','$'
+mes5 db 'Enter a valid name','$'
+mes6 db 'Please enter player2 name:',10,13 ,'$'
+    MyBuffer1 LABEL BYTE
+	    BufferSize1 DB 15
+	    ActualSize1 DB ?
+	    PlayerName1 DB 15 DUP ('$')
+	MyBuffer2 LABEL BYTE
+	    BufferSize2 DB 15
+	    ActualSize2 DB ?
+	    PlayerName2 DB 15 DUP ('$')
 PlayerScore1 db '0$'
 PlayerScore2 db '0$'
 sep db '*******$'
-
+;-----------------------------------------------------
 ;oldCode db 4
 ;oldPos dw 2
 
@@ -39,8 +52,21 @@ mov ds,ax
 mov ah,0
 mov al,13h
 int 10h
-
-    
+;MainMenu\IntroScreen------------
+MainMenu mes1,mes2
+        MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
+        MOV BH,00H      
+        MOV CX,0000H    ;STARTING COORDINATES
+        MOV DX,184FH    ;ENDING COORDINATES
+        INT 10H
+IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
+        MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
+        MOV BH,00H     
+        MOV CX,0000H    ;STARTING COORDINATES
+        MOV DX,184FH    ;ENDING COORDINATES
+        INT 10H
+IntroScreen mes6,mes4,mes5,MyBuffer2,PlayerName2,ActualSize2
+;--------------------------------------------------------------   
     InitializeArena    
     
     ;Drawing Background Once
@@ -63,10 +89,7 @@ int 10h
     cmp cx,640
     jnz drawBackGround
     
-    InitializeBlocks  
-
-    ;Status bar
-    ;ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep   
+    InitializeBlocks    
     
 GameLoop:
 

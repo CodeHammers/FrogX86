@@ -320,7 +320,181 @@ PrintMessage MACRO MyMessage
       mov dx,offset MyMessage
       int 21h
       popa 
-ENDM PrintMessage      
+ENDM PrintMessage
+;delay for number of secs
+delay macro sec
+	pusha
+    LOCAL Again
+	mov ah,2ch 
+	int 21h
+	mov bl,dh
+	add bl,sec
+	cmp bl,60
+    jl Again    
+    sub bl,60
+	Again:
+	  int 21h
+	  cmp dh,bl
+	  jne Again
+	  popa
+ENDM delay
+
+MainMenu MACRO mes1,mes2
+	pusha
+	LOCAL check
+	LOCAL input
+	
+	mov ah,2
+	mov bh,0
+    mov dh,10
+	mov dl,10
+    int 10h
+	
+	PrintMessage mes1
+
+	mov ah,2
+	mov bh,0
+    mov dh,12
+	mov dl,10
+    int 10h
+	
+	PrintMessage mes2
+	
+	mov ah,01h
+	mov cx,2607h
+	int 10h
+	
+	input:
+	mov ah,0
+    int 16h     ;AL:ASCII
+	
+	cmp al, 27
+	jne check
+	
+	;ESC Pressed
+	;clear screen
+	mov ax, 0600h 
+	mov bh, 00h
+	mov cx, 0
+	mov dl, 80
+	mov dh, 25
+	int 10h
+
+	mov bx, 0
+
+	;Set cursor to 0,0
+	mov ah, 2
+	mov dx, 0;X=0, Y=0
+	int 10h
+	
+	mov ah, 4ch
+	int 21h
+	hlt
+	
+	check:
+	cmp al,0dh ;Enter pressed
+    jne input
+	
+	popa
+ENDM MainMenu
+
+IntroScreen MACRO Mes1,Mes2,Mes3,MyBuffer,Username,ActualSize
+	pusha
+	LOCAL First
+	LOCAL Checking
+	LOCAL Invalid
+	LOCAL ClearString
+	LOCAL ClearScreen
+	LOCAL DONE
+	LOCAL WaitForENTER
+	
+	First:  
+	mov ah,2
+	mov bh,0
+    mov dh,10
+	mov dl,10
+    int 10h
+    
+	PrintMessage Mes1
+    	
+    mov ah,2
+	mov bh,0
+    mov dh,11
+	mov dl,10
+    int 10h
+    	
+    	MOV AH,0AH        
+        MOV DX,OFFSET MyBuffer                  
+        INT 21h  
+        
+        MOV SI,OFFSET Username
+        MOV CL,ActualSize
+        MOV CH,0       
+               
+Checking: 
+        CMP [SI],'z'
+        JG Invalid
+        
+        CMP [SI],'a'
+        JGE DONE
+        
+	    CMP [SI],'Z' 
+        JG Invalid 
+		
+        CMP [SI],'A'
+        JGE DONE
+     
+Invalid:
+	mov ah,2
+	mov bh,0
+    mov dh,12
+	mov dl,10
+    int 10h
+    
+	PrintMessage Mes3
+    delay 2
+	
+    	LEA DI,Username
+        MOV CL,ActualSize
+        MOV CH,0       
+ClearString:
+        MOV [DI],'$'
+        INC DI
+        LOOP ClearString 
+        
+ClearScreen:        
+        MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
+        MOV BH,00H      
+        MOV CX,0000H    ;STARTING COORDINATES
+        MOV DX,184FH    ;ENDING COORDINATES
+        INT 10H
+                 
+        JMP First    	        
+               
+DONE:   INC SI
+        LOOP Checking    
+        
+    mov ah,2
+	mov bh,0
+    mov dh,12
+	mov dl,10
+    int 10h
+    
+	PrintMessage Mes2
+    	
+    mov ah,01h
+	mov cx,2607h
+	int 10h
+    	  
+WaitForENTER:
+        MOV AH,0
+        INT 16H     ;AL:ASCII
+        
+        CMP AL,0DH
+        JNE WaitForENTER
+	
+	popa
+ENDM IntroScreen
 
 ScoreBar MACRO PlayerName1, PlayerScore1, PlayerName2, PlayerScore2, sep 
       pusha
