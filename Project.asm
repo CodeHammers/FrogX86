@@ -151,6 +151,23 @@ GameLoop:
     
     Alive:
 
+    lea bx,tiles
+	add bx , frogPos2
+	mov al,tiles[bx]
+    cmp al,3  ;water     
+    je Dead2 
+    cmp al,8  ;Car front 
+    je Dead2 
+    cmp al,9  ;Car end
+    je Dead2 
+    jmp Alive2
+
+    Dead2:
+        mov frogPos2,611
+    
+    Alive2: 
+
+
 	;lea bx,tiles
     ;add bx,oldPos
     ;mov al,oldCode
@@ -534,60 +551,60 @@ GameLoop:
       mov cx, xpos 
       mov dx, ypos 
       inc cx 
-      DrawVerticalLine cx,dx,4,010b
+      DrawVerticalLine cx,dx,4,1100b
       add dx,5
-      DrawVerticalLine cx,dx,4,010b
+      DrawVerticalLine cx,dx,4,1100b
       mov cx, xpos 
       mov dx, ypos
       add cx,8
-      DrawVerticalLine cx,dx,4,010b
+      DrawVerticalLine cx,dx,4,1100b
       add dx,5
-      DrawVerticalLine cx,dx,4,010b
+      DrawVerticalLine cx,dx,4,1100b
 
       ;Draw 4 feet
       mov cx, xpos 
       mov dx, ypos
       inc dx
-      DrawPixel cx,dx,010b
+      DrawPixel cx,dx,1100b
       add cx,9 
-      DrawPixel cx,dx,010b 
+      DrawPixel cx,dx,1100b 
       mov cx, xpos 
       mov dx, ypos
       add dx,7
-      DrawPixel cx,dx,010b
+      DrawPixel cx,dx,1100b
       add cx,9
-      DrawPixel cx,dx,010b 
+      DrawPixel cx,dx,1100b 
 
       ;Draw the connections between legs and body
       mov cx, xpos 
       mov dx, ypos
       add cx,2
       add dx,3
-      DrawPixel cx,dx,010b 
+      DrawPixel cx,dx,1100b 
       add cx,5
-      DrawPixel cx,dx,010b
+      DrawPixel cx,dx,1100b
       mov cx, xpos 
       mov dx, ypos
       add dx,5
       add cx,2
-      DrawPixel cx,dx,010b 
+      DrawPixel cx,dx,1100b 
       add cx,5
-      DrawPixel cx,dx,010b 
+      DrawPixel cx,dx,1100b 
       
       ;Draw the frog body
       mov cx, xpos 
       mov dx, ypos
       add cx,3
       add dx,2
-      DrawVerticalLine cx,dx,6,110b
+      DrawVerticalLine cx,dx,6,1010b
       add cx,3
-      DrawVerticalLine cx,dx,6,110b
+      DrawVerticalLine cx,dx,6,1010b
       mov cx, xpos 
       mov dx, ypos
       add cx,4
-      DrawVerticalLine cx,dx,9,110b
+      DrawVerticalLine cx,dx,9,1010b
       inc cx
-      DrawVerticalLine cx,dx,9,110b
+      DrawVerticalLine cx,dx,9,1010b
 
       ;Draw the frog's eyes
       mov cx, xpos 
