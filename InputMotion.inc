@@ -27,18 +27,22 @@ TakeInputGame MACRO FrogPos, BoundsFlag
     KeyPressed:
         mov ah,00   ;consume buffer
         int 16h     ;Ah holds the key status
-        cmp ah,48h  ;up
+        cmp ah,48h  ;(first player up)
         je Up 
-        cmp ah,50h  ;down
+        cmp ah,50h  ;(first player down)
         je Down  
-        cmp ah,4bh  ;left
+        cmp ah,4bh  ;(first player left)
         je Left
-        cmp ah,4dh  ;right
+        cmp ah,4dh  ;(first player right)
         je Right 
-        cmp ah,11h  ;w (hop forward)
-        je HopForwards
-        cmp ah,1fh ;s (hop backwards)
-        je HopBackwards
+        cmp ah,11h  ;w (second player up)
+        je Up
+        cmp ah,1fh  ;s (second player down)
+        je Down
+        cmp ah,20h  ;d (second player right)
+        je Right
+        cmp ah,1Eh  ;a (second player left)
+        je Left
         jmp Finished ;otherkey 
 
     Up:     
