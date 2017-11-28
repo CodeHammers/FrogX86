@@ -25,8 +25,6 @@ mes4 db 'Press Enter key to continue','$'
 mes5 db 'Enter a valid name','$'
 mes6 db 'Please enter player2 name:',10,13 ,'$'
 mes7 db ' won','$'
-;mes7 db 'Player1 won','$'
-;mes8 db 'Playe2 won','$'
     MyBuffer1 LABEL BYTE
 	    BufferSize1 DB 15
 	    ActualSize1 DB ?
@@ -74,6 +72,7 @@ IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
         INT 10H
 IntroScreen mes6,mes4,mes5,MyBuffer2,PlayerName2,ActualSize2
 ;--------------------------------------------------------------   
+
     InitializeArena    
     
     ;Drawing Background Once
@@ -122,21 +121,10 @@ GameLoop:
     Shift bx 352 1 fakePos,fakePos
     Shift bx 384 0 fakePos,fakePos
     Shift bx 416 1 fakePos,fakePos
-
 	
 	mov delayLoops,4
 	DelayedLoop:
 	dec delayLoops
-	
-	;Testing the score
-	;push dx
-	;mov dl,delayLoops
-	;mov playerScore1,dl
-	;add playerScore1,'0'
-	;pop dx
-	
-	;mov ax,frogPos
-	;mov oldPos,ax
 	
 	TakeGameInput frogPos,frogPos2,BoundsFlag,BoundsFlag2
 	
@@ -207,6 +195,11 @@ GameLoop:
 	mov dl,10
     int 10h
 	PrintMessage PlayerName2
+	mov ah,2
+	mov bh,0
+    mov dh,10
+	add dl,ActualSize2
+    int 10h
 	PrintMessage mes7
 	mov ah, 4ch
 	int 21h
@@ -219,6 +212,11 @@ GameLoop:
 	mov dl,10
     int 10h
 	PrintMessage PlayerName1
+	mov ah,2
+	mov bh,0
+    mov dh,10
+	add dl,ActualSize1
+    int 10h
 	PrintMessage mes7
 	mov ah, 4ch
 	int 21h
