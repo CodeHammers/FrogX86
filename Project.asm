@@ -24,6 +24,9 @@ mes3 db 'Please enter player1 name:',10,13 ,'$'
 mes4 db 'Press Enter key to continue','$'
 mes5 db 'Enter a valid name','$'
 mes6 db 'Please enter player2 name:',10,13 ,'$'
+mes7 db ' won','$'
+;mes7 db 'Player1 won','$'
+;mes8 db 'Playe2 won','$'
     MyBuffer1 LABEL BYTE
 	    BufferSize1 DB 15
 	    ActualSize1 DB ?
@@ -34,6 +37,8 @@ mes6 db 'Please enter player2 name:',10,13 ,'$'
 	    PlayerName2 DB 15 DUP ('$')
 PlayerScore1 db '0$'
 PlayerScore2 db '0$'
+PlayerScore1Num db 0
+PlayerScore2Num db 0
 sep db '*******$'
 ;-----------------------------------------------------
 ;oldCode db 4
@@ -158,6 +163,7 @@ GameLoop:
 	mov [bx],3
 	mov frogPos,610
 	inc playerScore1
+	inc PlayerScore1Num
 	
 	Frog2test:
     lea bx,tiles
@@ -179,12 +185,46 @@ GameLoop:
 	add bx,frogPos2
 	mov al,[bx]
 	cmp al,10
-	jne passed
+	jne CheckWon
 	mov [bx],3
 	mov frogPos2,637
 	inc playerScore2
+	inc PlayerScore2Num
 
-	passed:
+	CheckWon:
+	mov al,PlayerScore1Num
+	mov ah,PlayerScore2Num
+	
+	cmp al,3d
+	jge Player1Won
+	cmp ah,3d
+	jl Continue
+	
+	Playes2Won:
+	mov ah,2
+	mov bh,0
+    mov dh,10
+	mov dl,10
+    int 10h
+	PrintMessage PlayerName2
+	PrintMessage mes7
+	mov ah, 4ch
+	int 21h
+	hlt
+	
+	Player1Won:
+	mov ah,2
+	mov bh,0
+    mov dh,10
+	mov dl,10
+    int 10h
+	PrintMessage PlayerName1
+	PrintMessage mes7
+	mov ah, 4ch
+	int 21h
+	hlt
+	
+	Continue:
 	;lea bx,tiles
     ;add bx,oldPos
     ;mov al,oldCode
