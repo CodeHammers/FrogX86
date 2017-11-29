@@ -295,4 +295,24 @@ mov tiles + 422,9
 mov tiles + 423,8
 mov tiles + 424,9
 
+
+mov tiles + 458,9
+mov tiles + 459,8
+mov tiles + 460,9
+
+
+mov tiles + 496,9
+mov tiles + 497,8
+mov tiles + 498,9
+
+mov tiles + 535,9
+mov tiles + 536,8
+mov tiles + 537,9
+
+
+mov tiles + 571,9
+mov tiles + 572,8
+mov tiles + 573,9
+
+
 ENDM InitializeBlocks

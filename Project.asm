@@ -121,6 +121,12 @@ GameLoop:
     Shift bx 352 1 fakePos,fakePos
     Shift bx 384 0 fakePos,fakePos
     Shift bx 416 1 fakePos,fakePos
+    Shift bx 448 0 fakePos,fakePos
+    Shift bx 480 1 fakePos,fakePos
+    Shift bx 512 0 fakePos,fakePos
+    Shift bx 544 1 fakePos,fakePos
+
+
 	
 	mov delayLoops,4
 	DelayedLoop:
