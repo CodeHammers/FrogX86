@@ -166,7 +166,7 @@ inc bx
 cmp cx,64
 jnz Status
 
-;Setting status codes in the tiles
+;Setting Water codes in the tiles
 Water1Set:
 inc cx
 mov [bx],3
@@ -198,7 +198,7 @@ inc bx
 cmp cx,640
 jnz StartSet
 
-pushA
+popA
 
 ENDM InitializeArena
 ;-----------------------------

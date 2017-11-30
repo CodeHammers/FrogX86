@@ -72,8 +72,8 @@ IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
         INT 10H
 IntroScreen mes6,mes4,mes5,MyBuffer2,PlayerName2,ActualSize2
 ;--------------------------------------------------------------   
-
-    InitializeArena    
+    
+    InitializeArena ;Gives every tile in grid main code with no logs or car then draw    
     
     ;Drawing Background Once
     mov cx,0
@@ -95,11 +95,11 @@ IntroScreen mes6,mes4,mes5,MyBuffer2,PlayerName2,ActualSize2
     cmp cx,640
     jnz drawBackGround
     
-    InitializeBlocks    
+    InitializeBlocks ;Puts the logs and car codes in places   
     
-GameLoop:
+GameLoop:  ;This loop gets Called every loop till player wins
 
-    ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep
+    ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep  ;Writing the score of each player
 
     mov cx,0
     mov xpos,0
@@ -111,7 +111,7 @@ GameLoop:
 	mov bh,0
 	mov bl,tiles
     
-	Shift bx 96 0 frogPos,frogPos2
+	Shift bx 96 0 frogPos,frogPos2    ;---------This block shifts the rows of water and cars
     Shift bx 128 1 frogPos,frogPos2
 	Shift bx 160 0 frogPos,frogPos2
 	Shift bx 192 1 frogPos,frogPos2
@@ -128,13 +128,13 @@ GameLoop:
 
 
 	
-	mov delayLoops,4
+	mov delayLoops,4    ;------This block makes sure that shifting doens't happen every frame so the game is easier
 	DelayedLoop:
 	dec delayLoops
 	
-	TakeGameInput frogPos,frogPos2,BoundsFlag,BoundsFlag2
+	TakeGameInput frogPos,frogPos2,BoundsFlag,BoundsFlag2  ;Take the input from users
 	
-    lea bx,tiles
+    lea bx,tiles        ;Check foreach Frog new Position and check if dead
 	add bx , frogPos
 	mov al,tiles[bx]
     cmp al,3  ;water     
@@ -185,7 +185,7 @@ GameLoop:
 	inc playerScore2
 	inc PlayerScore2Num
 
-	CheckWon:
+	CheckWon:               ;--Check the winner
 	mov al,PlayerScore1Num
 	mov ah,PlayerScore2Num
 	
@@ -244,7 +244,7 @@ GameLoop:
     ;mov [bx],01h
 	
 		
-    drawCubes:       
+    drawCubes:          ;-----All the following is responsible for drawing the whole current frame       
     mov bx, offset tiles
     add bx,cx
     
@@ -523,7 +523,7 @@ GameLoop:
     
     DoneDrawing:
     
-    cmp cx,frogPos
+    cmp cx,frogPos                          ;---Drawing the frogs comes at last so it gets drawn after all other objects
     jnz Frog:
     
     ;Draw Frog----------------------------
