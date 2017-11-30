@@ -533,60 +533,60 @@ GameLoop:  ;This loop gets Called every loop till player wins
       mov cx, xpos 
       mov dx, ypos 
       inc cx 
-      DrawVerticalLine cx,dx,4,010b
+      DrawVerticalLine cx,dx,4,1110b
       add dx,5
-      DrawVerticalLine cx,dx,4,010b
+      DrawVerticalLine cx,dx,4,1110b
       mov cx, xpos 
       mov dx, ypos
       add cx,8
-      DrawVerticalLine cx,dx,4,010b
+      DrawVerticalLine cx,dx,4,1110b
       add dx,5
-      DrawVerticalLine cx,dx,4,010b
+      DrawVerticalLine cx,dx,4,1110b
 
       ;Draw 4 feet
       mov cx, xpos 
       mov dx, ypos
       inc dx
-      DrawPixel cx,dx,010b
+      DrawPixel cx,dx,1110b
       add cx,9 
-      DrawPixel cx,dx,010b 
+      DrawPixel cx,dx,1110b 
       mov cx, xpos 
       mov dx, ypos
       add dx,7
-      DrawPixel cx,dx,010b
+      DrawPixel cx,dx,1110b
       add cx,9
-      DrawPixel cx,dx,010b 
+      DrawPixel cx,dx,1110b 
 
       ;Draw the connections between legs and body
       mov cx, xpos 
       mov dx, ypos
       add cx,2
       add dx,3
-      DrawPixel cx,dx,010b 
+      DrawPixel cx,dx,1110b 
       add cx,5
-      DrawPixel cx,dx,010b
+      DrawPixel cx,dx,1110b
       mov cx, xpos 
       mov dx, ypos
       add dx,5
       add cx,2
-      DrawPixel cx,dx,010b 
+      DrawPixel cx,dx,1110b 
       add cx,5
-      DrawPixel cx,dx,010b 
+      DrawPixel cx,dx,1110b 
       
       ;Draw the frog body
       mov cx, xpos 
       mov dx, ypos
       add cx,3
       add dx,2
-      DrawVerticalLine cx,dx,6,110b
+      DrawVerticalLine cx,dx,6,0100b
       add cx,3
-      DrawVerticalLine cx,dx,6,110b
+      DrawVerticalLine cx,dx,6,0100b
       mov cx, xpos 
       mov dx, ypos
       add cx,4
-      DrawVerticalLine cx,dx,9,110b
+      DrawVerticalLine cx,dx,9,0100b
       inc cx
-      DrawVerticalLine cx,dx,9,110b
+      DrawVerticalLine cx,dx,9,0100b
 
       ;Draw the frog's eyes
       mov cx, xpos 
