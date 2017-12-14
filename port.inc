@@ -43,28 +43,33 @@ AGAIN:
 
 ;If empty put the VALUE in Transmit data register
   	mov dx,3F8H		; Transmit data register
-  	mov  al,value
+  	mov al,value
   	out dx,al 
 
 	popa
 ENDM send
 
 ;recieve a value
-recieve MACRO value
-	LOCAL CHK
+receive MACRO value, flag 
+	LOCAL read 
+    LOCAL finish
 	pusha
 	
-;Check that Data Ready
-mov dx,3FDH		; Line Status Register
-CHK:
-	in al,dx 
-	AND al,1
-	JZ CHK
+  ;Check that Data Ready
+  mov dx,3FDH		; Line Status Register
+  in al,dx 
+  AND al,1
+  jnz read 
+  mov flag,0
+  jmp finish
 
-;If Ready read the VALUE in Receive data register
+  read:
+  ;If Ready read the VALUE in Receive data register
+    mov flag,1
 	mov dx,03F8H
 	in al,dx 
 	mov value,al
 
-	popa
-ENDM recieve
+  finish:
+  	popa
+ENDM receive

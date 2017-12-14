@@ -2,6 +2,7 @@ include Drawing.inc
 include UI.inc 
 include InputMotion.inc
 include Shift.inc
+include port.inc
 
 .model small
 
@@ -16,6 +17,8 @@ frogPos2 dw 637
 fakePos dw 610
 BoundsFlag db ? 
 BoundsFlag2 db ?
+direction db ?
+chatFlag db ?
 
 ;------MainMenu\IntroScreen\StatusBar----------------
 mes1 db '*To start Frogx86 press ENTER','$'
@@ -95,7 +98,8 @@ IntroScreen mes6,mes4,mes5,MyBuffer2,PlayerName2,ActualSize2
     cmp cx,640
     jnz drawBackGround
     
-    InitializeBlocks ;Puts the logs and car codes in places   
+    InitializeBlocks ;Puts the logs and car codes in places  
+    portinitialization 
     
 GameLoop:  ;This loop gets Called every loop till player wins
 
@@ -132,8 +136,46 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	DelayedLoop:
 	dec delayLoops
 	
-	TakeGameInput frogPos,frogPos2,BoundsFlag,BoundsFlag2  ;Take the input from users
-	
+	TakeGameInput frogPos,BoundsFlag  ;Take the input from users
+
+    send BoundsFlag
+    receive direction, chatFlag  
+
+    cmp direction,1
+    je up 
+    cmp direction,2
+    je down 
+    cmp direction,3
+    je right 
+    cmp direction,4
+    je left 
+    cmp direction,5
+    je mafshoo5
+    jmp beed 
+
+    up:
+        sub frogPos2,32
+        jmp beed 
+    
+    down:
+        add frogPos2,32
+        jmp beed 
+    
+    right:
+        inc frogPos2
+        jmp beed 
+
+    left:
+        dec frogPos2
+        jmp beed 
+
+    mafshoo5:
+        mov frogPos2,610 
+        jmp beed 
+
+    beed:    
+        mov BoundsFlag,0
+
     lea bx,tiles        ;Check foreach Frog new Position and check if dead
 	add bx , frogPos
 	mov al,tiles[bx]
@@ -153,38 +195,12 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	add bx,frogPos
 	mov al,[bx]
 	cmp al,10
-	jne Frog2test
+	jne Continue
 	mov [bx],3
 	mov frogPos,610
 	inc playerScore1
 	inc PlayerScore1Num
 	
-	Frog2test:
-    lea bx,tiles
-	add bx , frogPos2
-	mov al,tiles[bx]
-    cmp al,3  ;water     
-    je Dead2 
-    cmp al,8  ;Car front 
-    je Dead2 
-    cmp al,9  ;Car end
-    je Dead2 
-    jmp Alive2
-
-    Dead2:
-        mov frogPos2,637
-    
-    Alive2: 
-	lea bx,tiles
-	add bx,frogPos2
-	mov al,[bx]
-	cmp al,10
-	jne CheckWon
-	mov [bx],3
-	mov frogPos2,637
-	inc playerScore2
-	inc PlayerScore2Num
-
 	CheckWon:               ;--Check the winner
 	mov al,PlayerScore1Num
 	mov ah,PlayerScore2Num
