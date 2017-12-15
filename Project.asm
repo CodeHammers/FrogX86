@@ -12,8 +12,8 @@ include port.inc
 
 tiles db 640 dup(3)    ;Code byte for the content of each tile 0:Status | 1:Frog | 2:Log main | 3:Water | 4:Pavement | 5:Road | 6: log beg. | 7: log end | 8: Car rear | 9: Car front | 10: endPoint
 
-frogPos dw 610
-frogPos2 dw 637
+frogPos dw 620
+frogPos2 dw 620
 fakePos dw 610
 BoundsFlag db ? 
 BoundsFlag2 db ?
@@ -112,8 +112,8 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	cmp delayLoops,0
 	jnz DelayedLoop
 	;Shifting the rows
-	mov bh,0
-	mov bl,tiles
+	 mov bh,0
+	 mov bl,tiles
     
 	Shift bx 96 0 frogPos,frogPos2    ;---------This block shifts the rows of water and cars
     Shift bx 128 1 frogPos,frogPos2
@@ -170,7 +170,7 @@ GameLoop:  ;This loop gets Called every loop till player wins
         jmp beed 
 
     mafshoo5:
-        mov frogPos2,610 
+        mov frogPos2,620 
         jmp beed 
 
     beed:    
@@ -188,18 +188,30 @@ GameLoop:  ;This loop gets Called every loop till player wins
     jmp Alive 
 
     Dead:
-        mov frogPos,610
+        mov frogPos,620
+		mov BoundsFlag,5
     
     Alive:
 	lea bx,tiles
 	add bx,frogPos
 	mov al,[bx]
 	cmp al,10
-	jne Continue
+	jne Alive2
 	mov [bx],3
-	mov frogPos,610
+	mov frogPos,620
 	inc playerScore1
 	inc PlayerScore1Num
+	
+	Alive2: 
+	lea bx,tiles
+	add bx,frogPos2
+	mov al,[bx]
+	cmp al,10
+	jne CheckWon
+	mov [bx],3
+	mov frogPos2,620
+	inc playerScore2
+	inc PlayerScore2Num
 	
 	CheckWon:               ;--Check the winner
 	mov al,PlayerScore1Num
@@ -244,21 +256,7 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	int 21h
 	hlt
 	
-	Continue:
-	;lea bx,tiles
-    ;add bx,oldPos
-    ;mov al,oldCode
-    ;mov [bx],al
-	
-	;lea bx,tiles
-	;add bx,frogPos
-	;mov al,[bx]
-	;mov oldCode,al 
-	
-    ;lea bx,tiles
-    ;add bx,frogPos
-    ;mov [bx],01h
-	
+	Continue:	
 		
     drawCubes:          ;-----All the following is responsible for drawing the whole current frame       
     mov bx, offset tiles
