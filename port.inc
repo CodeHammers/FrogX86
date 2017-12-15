@@ -73,3 +73,22 @@ receive MACRO value, flag
   finish:
   	popa
 ENDM receive
+
+receive3ady MACRO value
+	LOCAL CHK
+	pusha
+	
+	mov dx , 3FDH		; Line Status Register
+	
+	CHK:
+	in al , dx 
+  	AND al , 1
+  	JZ CHK
+
+ ;If Ready read the VALUE in Receive data register
+  	mov dx , 03F8H
+  	in al , dx 
+  	mov VALUE , al
+	
+	popa
+ENDM receive3ady

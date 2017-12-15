@@ -19,7 +19,8 @@ BoundsFlag db ?
 BoundsFlag2 db ?
 direction db ?
 chatFlag db ?
-
+readyflag db 0
+readyflag2 db 0
 ;------MainMenu\IntroScreen\StatusBar----------------
 mes1 db '*To start Frogx86 press ENTER','$'
 mes2 db '*To end the program press ESC','$'
@@ -74,6 +75,9 @@ IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
         MOV DX,184FH    ;ENDING COORDINATES
         INT 10H
 IntroScreen mes6,mes4,mes5,MyBuffer2,PlayerName2,ActualSize2
+
+send readyflag
+receive3ady readyflag2
 ;--------------------------------------------------------------   
     
     InitializeArena ;Gives every tile in grid main code with no logs or car then draw    
@@ -109,8 +113,8 @@ GameLoop:  ;This loop gets Called every loop till player wins
     mov xpos,0
     mov ypos,0
    
-	cmp delayLoops,0
-	jnz DelayedLoop
+	;cmp delayLoops,0
+	;jnz DelayedLoop
 	;Shifting the rows
 	 mov bh,0
 	 mov bl,tiles
@@ -132,9 +136,9 @@ GameLoop:  ;This loop gets Called every loop till player wins
 
 
 	
-	mov delayLoops,4    ;------This block makes sure that shifting doens't happen every frame so the game is easier
-	DelayedLoop:
-	dec delayLoops
+	; mov delayLoops,4    ;------This block makes sure that shifting doens't happen every frame so the game is easier
+	; DelayedLoop:
+	; dec delayLoops
 	
 	TakeGameInput frogPos,BoundsFlag  ;Take the input from users
 
