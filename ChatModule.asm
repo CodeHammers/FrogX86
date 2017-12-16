@@ -19,6 +19,7 @@ include mymacros.inc
         from2 dw 0D00h 
         to2 dw 184Fh 
         ApplyNewLine db 0Dh  
+        GoodByeMessage db 'Goodbye, we wish that you have enjoyed your time!$'
 
         .code
 MAIN    PROC FAR               
@@ -48,6 +49,9 @@ MAIN    PROC FAR
 
                 cmp ah,1ch
                 je enter
+
+                cmp al,27
+                je escape
                  
                 mov ToBeSent,al
                 
@@ -138,6 +142,11 @@ MAIN    PROC FAR
             mov row1,11
             jmp BackRow1Enter
             
-        
+          escape:
+            CLEAR_SCREEN_UP
+            MOVECURSOR 0,0
+            ShowMessage GoodByeMessage
+            hlt
+
 MAIN    ENDP
         END MAIN
