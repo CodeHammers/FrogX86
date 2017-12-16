@@ -14,7 +14,7 @@ tiles db 640 dup(3)    ;Code byte for the content of each tile 0:Status | 1:Frog
 
 frogPos dw 620
 frogPos2 dw 620
-fakePos dw 610
+fakePos dw 620
 BoundsFlag db ? 
 BoundsFlag2 db ?
 direction db ?
@@ -29,6 +29,8 @@ mes4 db 'Press Enter key to continue','$'
 mes5 db 'Enter a valid name','$'
 mes6 db 'Please enter player2 name:',10,13 ,'$'
 mes7 db ' won','$'
+mes8 db '*To enter chat press SPACE','$'
+mes9 db '*To exit chat press ESC','$'
     MyBuffer1 LABEL BYTE
 	    BufferSize1 DB 15
 	    ActualSize1 DB ?
@@ -44,8 +46,6 @@ PlayerScore2Num db 0
 fakevalue db ? ,'$'
 sep db 'Press Esc to exit$'
 ;-----------------------------------------------------
-;oldCode db 4
-;oldPos dw 2
 
 xpos dw 0
 ypos dw 0
@@ -87,6 +87,12 @@ NameLoop:
 	inc si
 	inc di
 	loop NameLoop
+
+	cmp chatFlag,1
+	jne gamebegin 
+	
+	;CALL CHAT MACROــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ
+gamebegin:	
 
 send readyflag
 receive3ady readyflag2

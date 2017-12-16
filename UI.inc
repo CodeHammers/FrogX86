@@ -339,10 +339,12 @@ delay macro sec
 	  popa
 ENDM delay
 
-MainMenu MACRO mes1,mes2
+MainMenu MACRO mes1,mes2,mes3,mes4,chatFlag
 	pusha
 	LOCAL check
 	LOCAL input
+	LOCAL check2
+	LOCAL EnterPressed
 	
 	mov ah,2
 	mov bh,0
@@ -359,6 +361,22 @@ MainMenu MACRO mes1,mes2
     int 10h
 	
 	PrintMessage mes2
+	
+	mov ah,2
+	mov bh,0
+    mov dh,14
+	mov dl,10
+    int 10h
+	
+	PrintMessage mes3
+	
+	mov ah,2
+	mov bh,0
+    mov dh,16
+	mov dl,10
+    int 10h
+	
+	PrintMessage mes4
 	
 	mov ah,01h
 	mov cx,2607h
@@ -393,7 +411,15 @@ MainMenu MACRO mes1,mes2
 	
 	check:
 	cmp al,0dh ;Enter pressed
-    jne input
+    je EnterPressed
+	
+	check2:
+	cmp al,20h
+	jne input
+	
+	mov chatFlag,1
+	
+	EnterPressed:
 	
 	popa
 ENDM MainMenu
