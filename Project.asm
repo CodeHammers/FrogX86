@@ -24,7 +24,7 @@ readyflag2 db 0
 ;------MainMenu\IntroScreen\StatusBar----------------
 mes1 db '*To start Frogx86 press ENTER','$'
 mes2 db '*To end the program press ESC','$'
-mes3 db 'Please enter player1 name:',10,13 ,'$'
+mes3 db 'Please enter your name:',10,13 ,'$'
 mes4 db 'Press Enter key to continue','$'
 mes5 db 'Enter a valid name','$'
 mes6 db 'Please enter player2 name:',10,13 ,'$'
@@ -40,7 +40,8 @@ mes7 db ' won','$'
 PlayerScore1 db '0$'
 PlayerScore2 db '0$'
 PlayerScore1Num db 0
-PlayerScore2Num db 0
+PlayerScore2Num db 0 
+fakevalue db ? ,'$'
 sep db '*******$'
 ;-----------------------------------------------------
 ;oldCode db 4
@@ -74,7 +75,18 @@ IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
         MOV CX,0000H    ;STARTING COORDINATES
         MOV DX,184FH    ;ENDING COORDINATES
         INT 10H
-IntroScreen mes6,mes4,mes5,MyBuffer2,PlayerName2,ActualSize2
+	lea si,playerName1
+	lea di,playerName2 
+	mov cl,ActualSize1
+	mov ch,0
+NameLoop:
+	send [si] 
+	receive3ady fakevalue
+	mov al,fakevalue
+	mov [di],al
+	inc si
+	inc di
+	loop NameLoop
 
 send readyflag
 receive3ady readyflag2
