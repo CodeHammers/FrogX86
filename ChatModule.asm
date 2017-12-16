@@ -56,6 +56,7 @@ MAIN    PROC FAR
                 cmp col1,80
                 je ResetCol1
                 BackCol1:
+                jmp Re 
              
              enter:
                 mov col1,0
