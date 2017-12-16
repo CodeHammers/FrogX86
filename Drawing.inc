@@ -308,3 +308,28 @@ mov tiles + 606,8
 mov tiles + 607,9
 
 ENDM InitializeBlocks
+
+CLEAR_SCREEN_UP MACRO 
+      mov ax,0600h      ;Scroll Screen AH=06 (Scroll),AL=0 Entire Page
+      mov bh,07         ;Normal attributes
+      mov cx,0          ;from 0,0
+      mov dx,184FH      ;To 18h,4fh
+      int 10h   
+ENDM CLEAR_SCREEN_UP
+
+MOVECURSOR MACRO ROW,COL
+      mov bh,00 
+      MOV DH,ROW
+      MOV DL,COL
+      MOV AH,2
+      INT 10H
+ENDM MOVECURSOR
+
+scroll MACRO from, to  
+      mov ah,06h      ;Scroll Screen AH=06 (Scroll)
+      mov al,01h
+      mov bh,07         ;Normal attributes
+      mov cx, from          ;from 0,0
+      mov dx, to      ;To 18h,4fh
+      int 10h     
+ENDM scroll 

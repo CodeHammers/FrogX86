@@ -92,3 +92,26 @@ receive3ady MACRO value
 	
 	popa
 ENDM receive3ady
+
+;recieve a value
+receiveChat MACRO value
+	LOCAL read 
+  LOCAL finish
+	pusha
+	
+  ;Check that Data Ready
+  mov dx,3FDH		; Line Status Register
+  in al,dx 
+  AND al,1
+  jnz read 
+  jmp finish
+
+  read:
+  ;If Ready read the VALUE in Receive data register
+	mov dx,03F8H
+	in al,dx 
+	mov value,al
+
+  finish:
+  	popa
+ENDM receiveChat
