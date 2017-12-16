@@ -31,9 +31,12 @@ MAIN    PROC FAR
         
         MOVECURSOR 12,0
         ShowMessage Divider
+
+        MOVECURSOR 0,0
         
         chat:
             mov ToBeReceived,'$'
+
             mov ah,1
             int 16h
             jnz Se 
@@ -65,6 +68,7 @@ MAIN    PROC FAR
                 cmp row1,12
                 je ResetRow1Enter
                 BackRow1Enter:
+                MOVECURSOR row1,col1
                 send ApplyNewLine 
                 
              Re:
@@ -88,9 +92,10 @@ MAIN    PROC FAR
           Enter2:
             mov col2,0
             inc row2 
-            cmp row2,23
+            cmp row2,24
             je ResetEnter2
-            BackEnter2: 
+            BackEnter2:
+            MOVECURSOR row2,col2 
             jmp chat 
 
           ResetEnter2:
