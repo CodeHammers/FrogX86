@@ -63,7 +63,7 @@ mov ah,0
 mov al,13h
 int 10h
 ;MainMenu\IntroScreen------------
-MainMenu mes1,mes2
+MainMenu mes1,mes2,mes8,mes9,chatFlag
         MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
         MOV BH,00H      
         MOV CX,0000H    ;STARTING COORDINATES
