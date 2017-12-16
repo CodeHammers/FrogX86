@@ -18,7 +18,8 @@ include mymacros.inc
         to1 dw 0B4fh
         from2 dw 0D00h 
         to2 dw 184Fh 
-        
+        ApplyNewLine db 0Dh  
+
         .code
 MAIN    PROC FAR               
         MOV AX,@DATA
@@ -64,18 +65,17 @@ MAIN    PROC FAR
                 cmp row1,12
                 je ResetRow1Enter
                 BackRow1Enter:
-                mov col2,0
-                inc row2
-                cmp row2,24
-                je ResetRow2Enter
-                BackRow2Enter: 
+                send ApplyNewLine 
                 
              Re:
                 receive ToBeReceived
                  
                 cmp ToBeReceived,'$'
-                je chat
-                
+                je chat 
+
+                cmp ToBeReceived, 0Dh 
+                je Enter2
+
                 MOVECURSOR row2,col2
                 ShowMessage ToBeReceived
                 inc col2
@@ -85,6 +85,21 @@ MAIN    PROC FAR
         
           jmp chat
           
+          Enter2:
+            mov col2,0
+            inc row2 
+            cmp row2,23
+            je ResetEnter2
+            BackEnter2: 
+            jmp chat 
+
+          ResetEnter2:
+            scroll from2,to2 
+            MOVECURSOR 12,0
+            ShowMessage Divider
+            mov row2,23
+            jmp BackEnter2
+
           ResetCol1:
             mov col1,0
             inc row1
@@ -118,13 +133,6 @@ MAIN    PROC FAR
             mov row1,11
             jmp BackRow1Enter
             
-          ResetRow2Enter:
-            scroll from2,to2 
-            MOVECURSOR 12,0
-            ShowMessage Divider
-            mov row2,23
-            jmp BackRow2Enter
-              
         
 MAIN    ENDP
         END MAIN
