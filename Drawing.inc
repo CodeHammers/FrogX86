@@ -163,7 +163,7 @@ Status:
 inc cx
 mov [bx],0
 inc bx
-cmp cx,64
+cmp cx,96
 jnz Status
 
 ;Setting Water codes in the tiles
@@ -171,7 +171,7 @@ Water1Set:
 inc cx
 mov [bx],3
 inc bx
-cmp cx,320
+cmp cx,288
 jnz Water1Set
 
 ;Setting rest codes in the tiles
@@ -179,7 +179,7 @@ RestSet:
 inc cx
 mov [bx],4
 inc bx
-cmp cx,352
+cmp cx,320
 jnz RestSet
 
 ;Setting road codes in the tiles
@@ -206,23 +206,13 @@ ENDM InitializeArena
 InitializeBlocks MACRO
 
 ;Manualy creating endpoints
-mov tiles + 68,10
-mov tiles + 72,10
-mov tiles + 79,10
-mov tiles + 87,10
-mov tiles + 91,10
+mov tiles + 100,10
+mov tiles + 104,10
+mov tiles + 111,10
+mov tiles + 119,10
+mov tiles + 123,10
 
 ;Manualy creating Logs
-mov tiles + 100,7
-mov tiles + 101,2
-mov tiles + 102,2
-mov tiles + 103,2
-mov tiles + 104,2
-mov tiles + 105,2
-mov tiles + 106,2
-mov tiles + 107,6
-
-
 
 mov tiles + 140,7
 mov tiles + 141,2
@@ -277,16 +267,15 @@ mov tiles + 285,2
 mov tiles + 286,2
 mov tiles + 287,6
 
-mov tiles + 298,7
-mov tiles + 299,2
-mov tiles + 300,2
-mov tiles + 301,2
-mov tiles + 302,2
-mov tiles + 303,2
-mov tiles + 304,2
-mov tiles + 305,6
-
 ;Manualy creating Cars
+mov tiles + 324,9
+mov tiles + 325,8
+mov tiles + 326,9
+
+mov tiles + 359,9
+mov tiles + 360,8
+mov tiles + 361,9
+
 mov tiles + 394,9
 mov tiles + 395,8
 mov tiles + 396,9
@@ -314,5 +303,8 @@ mov tiles + 571,9
 mov tiles + 572,8
 mov tiles + 573,9
 
+mov tiles + 605,9
+mov tiles + 606,8
+mov tiles + 607,9
 
 ENDM InitializeBlocks

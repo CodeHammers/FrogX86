@@ -510,7 +510,7 @@ ScoreBar MACRO PlayerName1, PlayerScore1, PlayerName2, PlayerScore2, sep
         PrintMessage PlayerScore1
         mov ah,2
         mov bh,0
-		mov dx,0015
+		mov dx,0011
         int 10h
         PrintMessage sep
         mov ah,2

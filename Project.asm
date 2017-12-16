@@ -42,7 +42,7 @@ PlayerScore2 db '0$'
 PlayerScore1Num db 0
 PlayerScore2Num db 0 
 fakevalue db ? ,'$'
-sep db '*******$'
+sep db 'Press Esc to exit$'
 ;-----------------------------------------------------
 ;oldCode db 4
 ;oldPos dw 2
@@ -131,13 +131,14 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	 mov bh,0
 	 mov bl,tiles
     
-	Shift bx 96 0 frogPos,frogPos2    ;---------This block shifts the rows of water and cars
-    Shift bx 128 1 frogPos,frogPos2
+	;Shift bx 96 0 frogPos,frogPos2    
+    Shift bx 128 1 frogPos,frogPos2     ;---------This block shifts the rows of water and cars
 	Shift bx 160 0 frogPos,frogPos2
 	Shift bx 192 1 frogPos,frogPos2
     Shift bx 224 0 frogPos,frogPos2
 	Shift bx 256 1 frogPos,frogPos2
-	Shift bx 288 0 frogPos,frogPos2
+	;Shift bx 288 0 frogPos,frogPos2
+	Shift bx 320 0 fakePos,fakePos
     Shift bx 352 1 fakePos,fakePos
     Shift bx 384 0 fakePos,fakePos
     Shift bx 416 1 fakePos,fakePos
@@ -145,7 +146,7 @@ GameLoop:  ;This loop gets Called every loop till player wins
     Shift bx 480 1 fakePos,fakePos
     Shift bx 512 0 fakePos,fakePos
     Shift bx 544 1 fakePos,fakePos
-
+    Shift bx 576 0 fakePos,fakePos
 
 	
 	; mov delayLoops,4    ;------This block makes sure that shifting doens't happen every frame so the game is easier
