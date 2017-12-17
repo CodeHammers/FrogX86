@@ -460,7 +460,7 @@ LevelMenu MACRO mes1,mes2,levelflag
 	jmp finish
 	
 	check2:
-	cmp al,32
+	cmp al,32h
 	jne input
 	
 	mov levelflag,2
