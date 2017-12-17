@@ -424,6 +424,51 @@ MainMenu MACRO mes1,mes2,mes3,mes4,chatFlag
 	popa
 ENDM MainMenu
 
+LevelMenu MACRO mes1,mes2,levelflag
+	pusha
+	LOCAL input
+	LOCAL check2
+	LOCAL finish
+	
+	mov ah,2
+	mov bh,0
+    mov dh,10
+	mov dl,10
+    int 10h
+	
+	PrintMessage mes1
+
+	mov ah,2
+	mov bh,0
+    mov dh,12
+	mov dl,10
+    int 10h
+	
+	PrintMessage mes2
+	
+	mov ah,01h
+	mov cx,2607h
+	int 10h
+	
+	input:
+	mov ah,0
+    int 16h     ;AL:ASCII
+	
+	cmp al,31h
+	jne check2
+	mov levelflag,1
+	jmp finish
+	
+	check2:
+	cmp al,32
+	jne input
+	
+	mov levelflag,2
+	
+	finish:
+	popa
+ENDM LevelMenu
+
 IntroScreen MACRO Mes1,Mes2,Mes3,MyBuffer,Username,ActualSize
 	pusha
 	LOCAL First

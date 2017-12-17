@@ -21,7 +21,7 @@ direction db ?
 chatFlag db ?
 readyflag db 0
 readyflag2 db 0
-
+levelflag db ?
 ;---------------------------------------------------------------
         ToBeSent db ?,'$'
         ToBeReceived db '$','$'
@@ -48,6 +48,8 @@ mes6 db 'Please enter player2 name:',10,13 ,'$'
 mes7 db ' won','$'
 mes8 db '*To enter chat press SPACE','$'
 mes9 db '*To exit chat press ESC','$'
+mes10 db 'To Play level 1 press 1','$'
+mes11 db 'To Play level 2 press 2','$'
     MyBuffer1 LABEL BYTE
 	    BufferSize1 DB 15
 	    ActualSize1 DB ?
@@ -83,6 +85,14 @@ int 10h
 MainMenu mes1,mes2,mes8,mes9,chatFlag
         MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
         MOV BH,00H      
+        MOV CX,0000H    ;STARTING COORDINATES
+        MOV DX,184FH    ;ENDING COORDINATES
+        INT 10H
+;-----Level-------------------------
+LevelMenu mes10,mes11,levelflag
+;-----------------------------------
+		MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
+        MOV BH,00H     
         MOV CX,0000H    ;STARTING COORDINATES
         MOV DX,184FH    ;ENDING COORDINATES
         INT 10H
