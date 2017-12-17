@@ -78,6 +78,8 @@ delayLoops db 4
 mov ax,@data
 mov ds,ax
 
+portinitialization
+
 mov ah,0
 mov al,13h
 int 10h
@@ -123,8 +125,8 @@ NameLoop:
 
 gamebegin:	
 
-send readyflag
-receive3ady readyflag2
+;send readyflag
+;receive3ady readyflag2
 ;--------------------------------------------------------------   
     
     InitializeArena ;Gives every tile in grid main code with no logs or car then draw    
@@ -150,8 +152,8 @@ receive3ady readyflag2
     jnz drawBackGround
     
     InitializeBlocks ;Puts the logs and car codes in places  
-    portinitialization 
-    
+    ;portinitialization 
+    send readyflag
 GameLoop:  ;This loop gets Called every loop till player wins
 
     ScoreBar PlayerName1,PlayerScore1,PlayerName2,PlayerScore2,sep  ;Writing the score of each player
@@ -187,11 +189,11 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	; mov delayLoops,4    ;------This block makes sure that shifting doens't happen every frame so the game is easier
 	; DelayedLoop:
 	; dec delayLoops
-	
+	receive3ady direction
 	TakeGameInput frogPos,BoundsFlag  ;Take the input from users
 
     send BoundsFlag
-    receive direction, chatFlag  
+    ;receive direction, chatFlag  
 
     cmp direction,1
     je up 
