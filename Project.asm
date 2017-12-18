@@ -64,6 +64,7 @@ mes8 db '*To enter chat press SPACE','$'
 mes9 db '*To exit chat press ESC','$'
 mes10 db 'To Play level 1 press 1','$'
 mes11 db 'To Play level 2 press 2','$'
+mes12 db 'You won','$'
     MyBuffer1 LABEL BYTE
 	    BufferSize1 DB 15
 	    ActualSize1 DB ?
@@ -129,6 +130,7 @@ NameLoop:
 	mov [di],al
 	inc si
 	inc di
+	inc ActualSize2
 	loop NameLoop
 
 	cmp chatFlag,1
@@ -139,8 +141,6 @@ NameLoop:
 
 gamebegin:	
 
-;send readyflag
-;receive3ady readyflag2
 ;--------------------------------------------------------------   
     
     InitializeArena ;Gives every tile in grid main code with no logs or car then draw    
@@ -166,7 +166,7 @@ gamebegin:
     jnz drawBackGround
     
     InitializeBlocks levelflag;Puts the logs and car codes in places  
-    ;portinitialization 
+    
     send readyflag
 GameLoop:  ;This loop gets Called every loop till player wins
 
@@ -204,8 +204,8 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	; DelayedLoop:
 	; dec delayLoops
     ;mov direction,0
+	
 	receive3ady direction
-    mov BoundsFlag,0
 	TakeGameInput frogPos,BoundsFlag  ;Take the input from users
     cmp BoundsFlag,5
     jbe normal
@@ -222,8 +222,7 @@ GameLoop:  ;This loop gets Called every loop till player wins
     scrollVideo scrollRow
 
     normal:
-    send BoundsFlag
-    ;receive direction, chatFlag  
+    send BoundsFlag 
 
     cmp direction,1
     je up 
@@ -343,13 +342,14 @@ GameLoop:  ;This loop gets Called every loop till player wins
     mov dh,10
 	mov dl,10
     int 10h
-	PrintMessage PlayerName1
-	mov ah,2
-	mov bh,0
-    mov dh,10
-	add dl,ActualSize1
-    int 10h
-	PrintMessage mes7
+	PrintMessage mes12
+	; PrintMessage PlayerName1
+	; mov ah,2
+	; mov bh,0
+    ; mov dh,10
+	; add dl,ActualSize1
+    ; int 10h
+	; PrintMessage mes7
 	mov ah, 4ch
 	int 21h
 	hlt
