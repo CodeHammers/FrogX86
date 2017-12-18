@@ -151,7 +151,7 @@ gamebegin:
     cmp cx,640
     jnz drawBackGround
     
-    InitializeBlocks ;Puts the logs and car codes in places  
+    InitializeBlocks levelflag;Puts the logs and car codes in places  
     ;portinitialization 
     send readyflag
 GameLoop:  ;This loop gets Called every loop till player wins
