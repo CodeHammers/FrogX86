@@ -96,6 +96,8 @@ mov ds,ax
 
 portinitialization
 
+MainMenu:
+
 mov ah,0
 mov al,13h
 int 10h
@@ -107,6 +109,13 @@ MainMenu mes1,mes2,mes8,mes9,chatFlag
         MOV DX,184FH    ;ENDING COORDINATES
         INT 10H
 ;-----Level-------------------------
+
+	cmp chatFlag,1
+	je BeginChat 
+	
+	;CALL CHAT MACRO
+    ;jmp BeginChat
+	
 LevelMenu mes10,mes11,levelflag
 ;-----------------------------------
 		MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
@@ -134,12 +143,6 @@ NameLoop:
 	inc di
 	inc ActualSize2
 	loop NameLoop
-
-	cmp chatFlag,1
-	jne gamebegin 
-	
-	;CALL CHAT MACRO
-    jmp BeginChat
 
 gamebegin:	
 
@@ -955,5 +958,6 @@ BeginChat:
             CLEAR_SCREEN_UP
             MOVECURSOR 0,0
             ShowMessage GoodByeMessage
+			jmp MainMenu:
 
 hlt               
