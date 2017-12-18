@@ -26,13 +26,13 @@ levelflag db ?
         ToBeSent db ?,'$'
         ToBeReceived db '$','$'
         Divider db '--------------------------------------------------------------------------------$'
-        row1 db 0
+        row1 db 1
         col1 db 0
-        row2 db 13
+        row2 db 14
         col2 db 0
-        from1 dw 0
+        from1 dw 0100h
         to1 dw 0B4fh
-        from2 dw 0D00h 
+        from2 dw 0E00h 
         to2 dw 184Fh 
         ApplyNewLine db 0Dh  
         NUllChar db ' $'
@@ -827,6 +827,12 @@ BeginChat:
         ShowMessage Divider
 
         MOVECURSOR 0,0
+        ShowMessage PlayerName1
+        
+        MOVECURSOR 13,0
+        ShowMessage PlayerName2
+        
+        MOVECURSOR 1,0
         
         chat:
             mov ToBeReceived,'$'
