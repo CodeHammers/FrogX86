@@ -121,8 +121,9 @@ IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
         INT 10H
 	lea si,playerName1
 	lea di,playerName2 
-	mov cl,ActualSize1
+	mov cl,6
 	mov ch,0
+
 NameLoop:
 	send [si] 
 	receive3ady fakevalue
