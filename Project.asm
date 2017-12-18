@@ -26,13 +26,13 @@ levelflag db ?
         ToBeSent db ?,'$'
         ToBeReceived db '$','$'
         Divider db '--------------------------------------------------------------------------------$'
-        row1 db 0
+        row1 db 1
         col1 db 0
-        row2 db 13
+        row2 db 14
         col2 db 0
-        from1 dw 0
+        from1 dw 0100h
         to1 dw 0B4fh
-        from2 dw 0D00h 
+        from2 dw 0E00h 
         to2 dw 184Fh 
         ApplyNewLine db 0Dh  
         NUllChar db ' $'
@@ -95,7 +95,6 @@ mov ax,@data
 mov ds,ax
 
 portinitialization
-
 mov ah,0
 mov al,13h
 int 10h
@@ -213,6 +212,7 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	; mov delayLoops,4    ;------This block makes sure that shifting doens't happen every frame so the game is easier
 	; DelayedLoop:
 	; dec delayLoops
+    ;mov direction,0
 	
 	receive3ady direction
 	TakeGameInput frogPos,BoundsFlag  ;Take the input from users
@@ -298,35 +298,6 @@ GameLoop:  ;This loop gets Called every loop till player wins
 		mov BoundsFlag,5
     
     Alive:
-	cmp levelflag,1
-	jne level2
-	lea bx,tiles
-	add bx,frogPos
-	mov al,[bx]
-	cmp al ,10
-	jne Alive2level1
-	mov [bx],3
-	mov frogPos,620
-	inc playerScore1
-	inc PlayerScore1Num
-	mov [bx+1],3
-	mov [bx-1],3
-	;----------------------------------
-	Alive2level1:
-	lea bx,tiles
-	add bx,frogPos2
-	mov al,[bx]
-	cmp al,10
-	jne CheckWon
-	mov [bx],3
-	mov frogPos2,620
-	inc playerScore2
-	inc PlayerScore2Num
-	mov [bx+1],3
-	mov [bx-1],3
-	jmp CheckWon
-	;------------------------------------
-	level2:
 	lea bx,tiles
 	add bx,frogPos
 	mov al,[bx]
@@ -381,6 +352,13 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	mov dl,10
     int 10h
 	PrintMessage mes12
+	; PrintMessage PlayerName1
+	; mov ah,2
+	; mov bh,0
+    ; mov dh,10
+	; add dl,ActualSize1
+    ; int 10h
+	; PrintMessage mes7
 	mov ah, 4ch
 	int 21h
 	hlt
@@ -849,6 +827,12 @@ BeginChat:
         ShowMessage Divider
 
         MOVECURSOR 0,0
+        ShowMessage PlayerName1
+        
+        MOVECURSOR 13,0
+        ShowMessage PlayerName2
+        
+        MOVECURSOR 1,0
         
         chat:
             mov ToBeReceived,'$'
