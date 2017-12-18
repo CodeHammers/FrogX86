@@ -37,6 +37,20 @@ levelflag db ?
         ApplyNewLine db 0Dh  
         GoodByeMessage db 'Goodbye, we wish that you have enjoyed your time!$'
 ;---------------------------------------------------------------
+        ToBeSentGame db ?,'$'
+        ToBeReceivedGame db '$','$'
+        row1Game db 1
+        col1Game db 0
+        row2Game db 2
+        col2Game db 0
+        from1Game dw 0100h
+        to1Game dw 0127h
+        from2Game dw 0200h 
+        to2Game dw 0227h 
+        scrollRow dw ?
+;---------------------------------------------------------------
+
+;---------------------------------------------------------------
 
 ;------MainMenu\IntroScreen\StatusBar----------------
 mes1 db '*To start Frogx86 press ENTER','$'
@@ -189,9 +203,25 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	; mov delayLoops,4    ;------This block makes sure that shifting doens't happen every frame so the game is easier
 	; DelayedLoop:
 	; dec delayLoops
+    ;mov direction,0
 	receive3ady direction
+    mov BoundsFlag,0
 	TakeGameInput frogPos,BoundsFlag  ;Take the input from users
+    cmp BoundsFlag,5
+    jbe normal
 
+    mov al,BoundsFlag
+    mov ToBeSentGame, al 
+    MOVECURSOR row1Game,col1Game
+    ShowMessage ToBeSentGame
+    inc col1Game 
+    cmp col1Game,40
+    jne normal 
+    mov col1Game,0
+    mov scrollRow,8
+    scrollVideo scrollRow
+
+    normal:
     send BoundsFlag
     ;receive direction, chatFlag  
 
@@ -205,6 +235,8 @@ GameLoop:  ;This loop gets Called every loop till player wins
     je left 
     cmp direction,5
     je mafshoo5
+    cmp direction,6
+    ja character
     jmp beed 
 
     up:
@@ -226,6 +258,18 @@ GameLoop:  ;This loop gets Called every loop till player wins
     mafshoo5:
         mov frogPos2,620 
         jmp beed 
+
+    character:
+        mov al, direction
+        mov ToBeReceivedGame, al 
+        MOVECURSOR row2Game,col2Game
+        ShowMessage ToBeReceivedGame
+        inc col2Game
+        cmp col2Game,40
+        jne beed 
+        mov col2Game,0
+        mov scrollRow,16
+        scrollVideo scrollRow
 
     beed:    
         mov BoundsFlag,0

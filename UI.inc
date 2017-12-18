@@ -596,3 +596,17 @@ ScoreBar MACRO PlayerName1, PlayerScore1, PlayerName2, PlayerScore2, sep
         PrintMessage PlayerName2
       popa 
 ENDM ScoreBar
+
+scrollVideo MACRO row 
+	LOCAL label 
+      pusha
+	  mov al,8
+	  mov dx,row 
+	  mov cx,0
+	  label:
+	  	DrawHorizontalLine cx,dx,320,000b 
+		inc dx 
+		dec al 
+		jnz label  
+	  popa   
+ENDM scrollVideo 
