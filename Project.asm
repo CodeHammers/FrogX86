@@ -26,15 +26,16 @@ levelflag db ?
         ToBeSent db ?,'$'
         ToBeReceived db '$','$'
         Divider db '--------------------------------------------------------------------------------$'
-        row1 db 0
+        row1 db 1
         col1 db 0
-        row2 db 13
+        row2 db 14
         col2 db 0
-        from1 dw 0
+        from1 dw 0100h
         to1 dw 0B4fh
-        from2 dw 0D00h 
+        from2 dw 0E00h 
         to2 dw 184Fh 
         ApplyNewLine db 0Dh  
+        NUllChar db ' $'
         GoodByeMessage db 'Goodbye, we wish that you have enjoyed your time!$'
 ;---------------------------------------------------------------
         ToBeSentGame db ?,'$'
@@ -64,6 +65,7 @@ mes8 db '*To enter chat press SPACE','$'
 mes9 db '*To exit chat press ESC','$'
 mes10 db 'To Play level 1 press 1','$'
 mes11 db 'To Play level 2 press 2','$'
+mes12 db 'You won','$'
     MyBuffer1 LABEL BYTE
 	    BufferSize1 DB 15
 	    ActualSize1 DB ?
@@ -93,6 +95,32 @@ mov ax,@data
 mov ds,ax
 
 portinitialization
+mov ah,0
+mov al,13h
+int 10h
+
+IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
+        MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
+        MOV BH,00H     
+        MOV CX,0000H    ;STARTING COORDINATES
+        MOV DX,184FH    ;ENDING COORDINATES
+        INT 10H
+	lea si,playerName1
+	lea di,playerName2 
+	mov cl,6
+	mov ch,0
+
+NameLoop:
+	send [si] 
+	receive3ady fakevalue
+	mov al,fakevalue
+	mov [di],al
+	inc si
+	inc di
+	inc ActualSize2
+	loop NameLoop
+
+MainMenu:
 
 mov ah,0
 mov al,13h
@@ -105,6 +133,13 @@ MainMenu mes1,mes2,mes8,mes9,chatFlag
         MOV DX,184FH    ;ENDING COORDINATES
         INT 10H
 ;-----Level-------------------------
+
+	cmp chatFlag,1
+	je BeginChat 
+	
+	;CALL CHAT MACRO
+    ;jmp BeginChat
+	
 LevelMenu mes10,mes11,levelflag
 ;-----------------------------------
 		MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
@@ -112,35 +147,9 @@ LevelMenu mes10,mes11,levelflag
         MOV CX,0000H    ;STARTING COORDINATES
         MOV DX,184FH    ;ENDING COORDINATES
         INT 10H
-IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
-        MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
-        MOV BH,00H     
-        MOV CX,0000H    ;STARTING COORDINATES
-        MOV DX,184FH    ;ENDING COORDINATES
-        INT 10H
-	lea si,playerName1
-	lea di,playerName2 
-	mov cl,ActualSize1
-	mov ch,0
-NameLoop:
-	send [si] 
-	receive3ady fakevalue
-	mov al,fakevalue
-	mov [di],al
-	inc si
-	inc di
-	loop NameLoop
-
-	cmp chatFlag,1
-	jne gamebegin 
-	
-	;CALL CHAT MACRO
-    jmp BeginChat
 
 gamebegin:	
 
-;send readyflag
-;receive3ady readyflag2
 ;--------------------------------------------------------------   
     
     InitializeArena ;Gives every tile in grid main code with no logs or car then draw    
@@ -166,7 +175,7 @@ gamebegin:
     jnz drawBackGround
     
     InitializeBlocks levelflag;Puts the logs and car codes in places  
-    ;portinitialization 
+    
     send readyflag
 GameLoop:  ;This loop gets Called every loop till player wins
 
@@ -204,8 +213,8 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	; DelayedLoop:
 	; dec delayLoops
     ;mov direction,0
+	
 	receive3ady direction
-    mov BoundsFlag,0
 	TakeGameInput frogPos,BoundsFlag  ;Take the input from users
     cmp BoundsFlag,5
     jbe normal
@@ -222,8 +231,7 @@ GameLoop:  ;This loop gets Called every loop till player wins
     scrollVideo scrollRow
 
     normal:
-    send BoundsFlag
-    ;receive direction, chatFlag  
+    send BoundsFlag 
 
     cmp direction,1
     je up 
@@ -343,13 +351,14 @@ GameLoop:  ;This loop gets Called every loop till player wins
     mov dh,10
 	mov dl,10
     int 10h
-	PrintMessage PlayerName1
-	mov ah,2
-	mov bh,0
-    mov dh,10
-	add dl,ActualSize1
-    int 10h
-	PrintMessage mes7
+	PrintMessage mes12
+	; PrintMessage PlayerName1
+	; mov ah,2
+	; mov bh,0
+    ; mov dh,10
+	; add dl,ActualSize1
+    ; int 10h
+	; PrintMessage mes7
 	mov ah, 4ch
 	int 21h
 	hlt
@@ -818,6 +827,12 @@ BeginChat:
         ShowMessage Divider
 
         MOVECURSOR 0,0
+        ShowMessage PlayerName1
+        
+        MOVECURSOR 13,0
+        ShowMessage PlayerName2
+        
+        MOVECURSOR 1,0
         
         chat:
             mov ToBeReceived,'$'
@@ -836,6 +851,9 @@ BeginChat:
 
                 cmp al,27
                 je escape
+
+                cmp ah,0Eh
+                je BackSpace1
                  
                 mov ToBeSent,al
                 
@@ -850,6 +868,16 @@ BeginChat:
                 BackCol1:
                 jmp Re 
              
+             BackSpace1: 
+                cmp col1,0
+                je Re  
+                send ah 
+                dec col1 
+                MOVECURSOR row1,col1
+                ShowMessage NUllChar
+                MOVECURSOR row1,col1
+                jmp Re
+
              enter:
                 mov col1,0
                 inc row1
@@ -865,6 +893,9 @@ BeginChat:
                 cmp ToBeReceived,'$'
                 je chat 
 
+                cmp ToBeReceived, 0Eh
+                je Backspace2
+
                 cmp ToBeReceived, 0Dh 
                 je Enter2
 
@@ -877,6 +908,13 @@ BeginChat:
         
           jmp chat
           
+          Backspace2:
+            dec col2
+            MOVECURSOR row2,col2
+            ShowMessage NUllChar
+            MOVECURSOR row2,col2
+            jmp chat  
+
           Enter2:
             mov col2,0
             inc row2 
@@ -930,5 +968,6 @@ BeginChat:
             CLEAR_SCREEN_UP
             MOVECURSOR 0,0
             ShowMessage GoodByeMessage
+			jmp MainMenu:
 
 hlt               
