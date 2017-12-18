@@ -345,7 +345,6 @@ MainMenu MACRO mes1,mes2,mes3,mes4,chatFlag
 	LOCAL input
 	LOCAL check2
 	LOCAL EnterPressed
-	LOCAL finish
 	
 	mov ah,2
 	mov bh,0
@@ -417,13 +416,11 @@ MainMenu MACRO mes1,mes2,mes3,mes4,chatFlag
 	check2:
 	cmp al,20h
 	jne input
+	
 	mov chatFlag,1
-	jmp finish
 	
 	EnterPressed:
-	mov chatFlag,0
 	
-	finish:
 	popa
 ENDM MainMenu
 
