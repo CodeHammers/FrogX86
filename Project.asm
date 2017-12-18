@@ -35,6 +35,7 @@ levelflag db ?
         from2 dw 0D00h 
         to2 dw 184Fh 
         ApplyNewLine db 0Dh  
+        NUllChar db ' $'
         GoodByeMessage db 'Goodbye, we wish that you have enjoyed your time!$'
 ;---------------------------------------------------------------
         ToBeSentGame db ?,'$'
@@ -837,6 +838,9 @@ BeginChat:
 
                 cmp al,27
                 je escape
+
+                cmp ah,0Eh
+                je BackSpace1
                  
                 mov ToBeSent,al
                 
@@ -851,6 +855,16 @@ BeginChat:
                 BackCol1:
                 jmp Re 
              
+             BackSpace1: 
+                cmp col1,0
+                je Re  
+                send ah 
+                dec col1 
+                MOVECURSOR row1,col1
+                ShowMessage NUllChar
+                MOVECURSOR row1,col1
+                jmp Re
+
              enter:
                 mov col1,0
                 inc row1
@@ -866,6 +880,9 @@ BeginChat:
                 cmp ToBeReceived,'$'
                 je chat 
 
+                cmp ToBeReceived, 0Eh
+                je Backspace2
+
                 cmp ToBeReceived, 0Dh 
                 je Enter2
 
@@ -878,6 +895,13 @@ BeginChat:
         
           jmp chat
           
+          Backspace2:
+            dec col2
+            MOVECURSOR row2,col2
+            ShowMessage NUllChar
+            MOVECURSOR row2,col2
+            jmp chat  
+
           Enter2:
             mov col2,0
             inc row2 
