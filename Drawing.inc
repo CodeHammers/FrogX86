@@ -283,12 +283,6 @@ mov tiles + 607,9
 cmp level,2
 jnz lvl1
 
-mov tiles + 101,10
-mov tiles + 105,10
-mov tiles + 112,10
-mov tiles + 120,10
-mov tiles + 124,10
-
 mov tiles + 496,9
 mov tiles + 497,8
 mov tiles + 498,9
@@ -306,6 +300,12 @@ mov tiles + 572,8
 mov tiles + 573,9
 jmp lvl2:
 lvl1:
+
+mov tiles + 101,10
+mov tiles + 105,10
+mov tiles + 112,10
+mov tiles + 120,10
+mov tiles + 124,10
 
 mov tiles + 160,7
 mov tiles + 161,2
