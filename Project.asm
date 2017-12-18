@@ -307,7 +307,8 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	mov frogPos,620
 	inc playerScore1
 	inc PlayerScore1Num
-	
+	mov [bx+1],3
+	mov [bx-1],3
 	Alive2: 
 	lea bx,tiles
 	add bx,frogPos2
@@ -318,7 +319,8 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	mov frogPos2,620
 	inc playerScore2
 	inc PlayerScore2Num
-	
+	mov [bx+1],3
+	mov [bx-1],3
 	CheckWon:               ;--Check the winner
 	mov al,PlayerScore1Num
 	mov ah,PlayerScore2Num
@@ -352,13 +354,6 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	mov dl,10
     int 10h
 	PrintMessage mes12
-	; PrintMessage PlayerName1
-	; mov ah,2
-	; mov bh,0
-    ; mov dh,10
-	; add dl,ActualSize1
-    ; int 10h
-	; PrintMessage mes7
 	mov ah, 4ch
 	int 21h
 	hlt
