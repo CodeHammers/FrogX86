@@ -203,7 +203,7 @@ popA
 ENDM InitializeArena
 ;-----------------------------
 
-InitializeBlocks MACRO
+InitializeBlocks MACRO level
 
 ;Manualy creating endpoints
 mov tiles + 100,10
@@ -223,14 +223,6 @@ mov tiles + 145,2
 mov tiles + 146,2
 mov tiles + 147,6
 
-mov tiles + 160,7
-mov tiles + 161,2
-mov tiles + 162,2
-mov tiles + 163,2
-mov tiles + 164,2
-mov tiles + 165,2
-mov tiles + 166,2
-mov tiles + 167,6
 mov tiles + 177,7
 mov tiles + 178,2
 mov tiles + 179,2
@@ -272,40 +264,53 @@ mov tiles + 324,9
 mov tiles + 325,8
 mov tiles + 326,9
 
-mov tiles + 359,9
-mov tiles + 360,8
-mov tiles + 361,9
-
 mov tiles + 394,9
 mov tiles + 395,8
 mov tiles + 396,9
-
-mov tiles + 422,9
-mov tiles + 423,8
-mov tiles + 424,9
-
 
 mov tiles + 458,9
 mov tiles + 459,8
 mov tiles + 460,9
 
+mov tiles + 535,9
+mov tiles + 536,8
+mov tiles + 537,9
+
+mov tiles + 605,9
+mov tiles + 606,8
+mov tiles + 607,9
+
+cmp level,2
+jnz lvl1
 
 mov tiles + 496,9
 mov tiles + 497,8
 mov tiles + 498,9
 
-mov tiles + 535,9
-mov tiles + 536,8
-mov tiles + 537,9
+mov tiles + 359,9
+mov tiles + 360,8
+mov tiles + 361,9
 
+mov tiles + 422,9
+mov tiles + 423,8
+mov tiles + 424,9
 
 mov tiles + 571,9
 mov tiles + 572,8
 mov tiles + 573,9
+jmp lvl2:
+lvl1:
 
-mov tiles + 605,9
-mov tiles + 606,8
-mov tiles + 607,9
+mov tiles + 160,7
+mov tiles + 161,2
+mov tiles + 162,2
+mov tiles + 163,2
+mov tiles + 164,2
+mov tiles + 165,2
+mov tiles + 166,2
+mov tiles + 167,6
+
+lvl2:
 
 ENDM InitializeBlocks
 
