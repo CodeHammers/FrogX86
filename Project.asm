@@ -35,6 +35,7 @@ levelflag db ?
         from2 dw 0D00h 
         to2 dw 184Fh 
         ApplyNewLine db 0Dh  
+        NUllChar db ' $'
         GoodByeMessage db 'Goodbye, we wish that you have enjoyed your time!$'
 ;---------------------------------------------------------------
         ToBeSentGame db ?,'$'
@@ -64,6 +65,7 @@ mes8 db '*To enter chat press SPACE','$'
 mes9 db '*To exit chat press ESC','$'
 mes10 db 'To Play level 1 press 1','$'
 mes11 db 'To Play level 2 press 2','$'
+mes12 db 'You won','$'
     MyBuffer1 LABEL BYTE
 	    BufferSize1 DB 15
 	    ActualSize1 DB ?
@@ -97,21 +99,7 @@ portinitialization
 mov ah,0
 mov al,13h
 int 10h
-;MainMenu\IntroScreen------------
-MainMenu mes1,mes2,mes8,mes9,chatFlag
-        MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
-        MOV BH,00H      
-        MOV CX,0000H    ;STARTING COORDINATES
-        MOV DX,184FH    ;ENDING COORDINATES
-        INT 10H
-;-----Level-------------------------
-LevelMenu mes10,mes11,levelflag
-;-----------------------------------
-		MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
-        MOV BH,00H     
-        MOV CX,0000H    ;STARTING COORDINATES
-        MOV DX,184FH    ;ENDING COORDINATES
-        INT 10H
+
 IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
         MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
         MOV BH,00H     
@@ -120,8 +108,9 @@ IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
         INT 10H
 	lea si,playerName1
 	lea di,playerName2 
-	mov cl,ActualSize1
+	mov cl,6
 	mov ch,0
+
 NameLoop:
 	send [si] 
 	receive3ady fakevalue
@@ -129,18 +118,39 @@ NameLoop:
 	mov [di],al
 	inc si
 	inc di
+	inc ActualSize2
 	loop NameLoop
 
+MainMenu:
+
+mov ah,0
+mov al,13h
+int 10h
+;MainMenu\IntroScreen------------
+MainMenu mes1,mes2,mes8,mes9,chatFlag
+        MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
+        MOV BH,00H      
+        MOV CX,0000H    ;STARTING COORDINATES
+        MOV DX,184FH    ;ENDING COORDINATES
+        INT 10H
+;-----Level-------------------------
+
 	cmp chatFlag,1
-	jne gamebegin 
+	je BeginChat 
 	
 	;CALL CHAT MACRO
-    jmp BeginChat
+    ;jmp BeginChat
+	
+LevelMenu mes10,mes11,levelflag
+;-----------------------------------
+		MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
+        MOV BH,00H     
+        MOV CX,0000H    ;STARTING COORDINATES
+        MOV DX,184FH    ;ENDING COORDINATES
+        INT 10H
 
 gamebegin:	
 
-;send readyflag
-;receive3ady readyflag2
 ;--------------------------------------------------------------   
     
     InitializeArena ;Gives every tile in grid main code with no logs or car then draw    
@@ -166,7 +176,7 @@ gamebegin:
     jnz drawBackGround
     
     InitializeBlocks levelflag;Puts the logs and car codes in places  
-    ;portinitialization 
+    
     send readyflag
 GameLoop:  ;This loop gets Called every loop till player wins
 
@@ -203,9 +213,8 @@ GameLoop:  ;This loop gets Called every loop till player wins
 	; mov delayLoops,4    ;------This block makes sure that shifting doens't happen every frame so the game is easier
 	; DelayedLoop:
 	; dec delayLoops
-    ;mov direction,0
+	
 	receive3ady direction
-    mov BoundsFlag,0
 	TakeGameInput frogPos,BoundsFlag  ;Take the input from users
     cmp BoundsFlag,5
     jbe normal
@@ -222,8 +231,7 @@ GameLoop:  ;This loop gets Called every loop till player wins
     scrollVideo scrollRow
 
     normal:
-    send BoundsFlag
-    ;receive direction, chatFlag  
+    send BoundsFlag 
 
     cmp direction,1
     je up 
@@ -290,6 +298,35 @@ GameLoop:  ;This loop gets Called every loop till player wins
 		mov BoundsFlag,5
     
     Alive:
+	cmp levelflag,1
+	jne level2
+	lea bx,tiles
+	add bx,frogPos
+	mov al,[bx]
+	cmp al ,10
+	jne Alive2level1
+	mov [bx],3
+	mov frogPos,620
+	inc playerScore1
+	inc PlayerScore1Num
+	mov [bx+1],3
+	mov [bx-1],3
+	;----------------------------------
+	Alive2level1:
+	lea bx,tiles
+	add bx,frogPos2
+	mov al,[bx]
+	cmp al,10
+	jne CheckWon
+	mov [bx],3
+	mov frogPos2,620
+	inc playerScore2
+	inc PlayerScore2Num
+	mov [bx+1],3
+	mov [bx-1],3
+	jmp CheckWon
+	;------------------------------------
+	level2:
 	lea bx,tiles
 	add bx,frogPos
 	mov al,[bx]
@@ -343,13 +380,7 @@ GameLoop:  ;This loop gets Called every loop till player wins
     mov dh,10
 	mov dl,10
     int 10h
-	PrintMessage PlayerName1
-	mov ah,2
-	mov bh,0
-    mov dh,10
-	add dl,ActualSize1
-    int 10h
-	PrintMessage mes7
+	PrintMessage mes12
 	mov ah, 4ch
 	int 21h
 	hlt
@@ -836,6 +867,9 @@ BeginChat:
 
                 cmp al,27
                 je escape
+
+                cmp ah,0Eh
+                je BackSpace1
                  
                 mov ToBeSent,al
                 
@@ -850,6 +884,16 @@ BeginChat:
                 BackCol1:
                 jmp Re 
              
+             BackSpace1: 
+                cmp col1,0
+                je Re  
+                send ah 
+                dec col1 
+                MOVECURSOR row1,col1
+                ShowMessage NUllChar
+                MOVECURSOR row1,col1
+                jmp Re
+
              enter:
                 mov col1,0
                 inc row1
@@ -865,6 +909,9 @@ BeginChat:
                 cmp ToBeReceived,'$'
                 je chat 
 
+                cmp ToBeReceived, 0Eh
+                je Backspace2
+
                 cmp ToBeReceived, 0Dh 
                 je Enter2
 
@@ -877,6 +924,13 @@ BeginChat:
         
           jmp chat
           
+          Backspace2:
+            dec col2
+            MOVECURSOR row2,col2
+            ShowMessage NUllChar
+            MOVECURSOR row2,col2
+            jmp chat  
+
           Enter2:
             mov col2,0
             inc row2 
@@ -930,5 +984,6 @@ BeginChat:
             CLEAR_SCREEN_UP
             MOVECURSOR 0,0
             ShowMessage GoodByeMessage
+			jmp MainMenu:
 
 hlt               
