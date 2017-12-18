@@ -95,6 +95,30 @@ mov ax,@data
 mov ds,ax
 
 portinitialization
+mov ah,0
+mov al,13h
+int 10h
+
+IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
+        MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
+        MOV BH,00H     
+        MOV CX,0000H    ;STARTING COORDINATES
+        MOV DX,184FH    ;ENDING COORDINATES
+        INT 10H
+	lea si,playerName1
+	lea di,playerName2 
+	mov cl,6
+	mov ch,0
+
+NameLoop:
+	send [si] 
+	receive3ady fakevalue
+	mov al,fakevalue
+	mov [di],al
+	inc si
+	inc di
+	inc ActualSize2
+	loop NameLoop
 
 MainMenu:
 
@@ -123,26 +147,6 @@ LevelMenu mes10,mes11,levelflag
         MOV CX,0000H    ;STARTING COORDINATES
         MOV DX,184FH    ;ENDING COORDINATES
         INT 10H
-IntroScreen mes3,mes4,mes5,MyBuffer1,PlayerName1,ActualSize1
-        MOV AX,0600H    ;06 TO SCROLL & 00 FOR FULLJ SCREEN
-        MOV BH,00H     
-        MOV CX,0000H    ;STARTING COORDINATES
-        MOV DX,184FH    ;ENDING COORDINATES
-        INT 10H
-	lea si,playerName1
-	lea di,playerName2 
-	mov cl,6
-	mov ch,0
-
-NameLoop:
-	send [si] 
-	receive3ady fakevalue
-	mov al,fakevalue
-	mov [di],al
-	inc si
-	inc di
-	inc ActualSize2
-	loop NameLoop
 
 gamebegin:	
 
