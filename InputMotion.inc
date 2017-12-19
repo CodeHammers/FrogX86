@@ -12,6 +12,7 @@ TakeGameInput MACRO FrogPos1, BoundsFlag1
     LOCAL Finished
     LOCAL AgainU
     LOCAL char 
+    LOCAL escape
     pusha 
 
     ;Get key pressed
@@ -31,6 +32,8 @@ TakeGameInput MACRO FrogPos1, BoundsFlag1
       je Left
       cmp ah,4dh  ;(first player right)
       je Right
+      cmp al,27
+      je escape
       cmp al,0
       jne char 
       jmp Finished ;otherkey 
@@ -82,6 +85,9 @@ TakeGameInput MACRO FrogPos1, BoundsFlag1
       jmp Finished
       TouchedLeft:
       jmp Finished
+
+    escape:
+      jmp MainMenu
 
     char:
       mov BoundsFlag1, al
