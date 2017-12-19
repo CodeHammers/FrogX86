@@ -1,0 +1,18 @@
+1 - The frog moves with arrow keys.
+2 - The frog should avoid being hit by cars and use logs to cross the water.
+3 - The frog should only land on the yellow spots at the top of the screen. 
+4 - There are 2 levels in the game:
+    Level 1: It has less cars, so it easier to cross the street and the yellow spots are wider so       it's easier to land on them.
+    Level 2: It has more cars and the yellow spots are of a normal width. 
+5 - Whomever scores 3 points wins, the last point is not updated in the score bar as the screen
+    freezes to simulate a screenshot of the winning moment.
+6 - A frog may stay on a log for as long as it wants, it will move with the log.
+7 - In the game chat doesn't support the backspace key. 
+8 - The in-game chat is a 1 line chat, when the line is consumed, it gets scrolled. 
+9 - The chat module supports the backspace, enter keys and it has a scrolling functionality. 
+10- In both the chat module and the in-game chat, the upper half of the screen is your writing     space, while the lower part is the other's user space.
+11- Names are not written in the in-game chat to save space for some what lengthy messages. 
+12- Names shall not exceed 6 characters, preferably 5. 
+13- Recommended clock speed: ~5000 cycles.
+
+ 
